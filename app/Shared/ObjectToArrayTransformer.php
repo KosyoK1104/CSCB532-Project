@@ -9,21 +9,18 @@ use Traversable;
 
 final class ObjectToArrayTransformer
 {
-    public static function transform(object|array $object): mixed
+    public static function transform(object|array $object) : mixed
     {
         $result = [];
 
         if (is_array($object)) {
-            foreach ($object as $key => $value) {
-                $result[$key] = self::transform($value);
-            }
-            return $result;
+            return self::iterate($object);
         }
         if ($object instanceof JsonSerializable) {
             return $object->jsonSerialize();
         }
         if ($object instanceof Traversable) {
-            return self::traverse($object);
+            return self::iterate($object);
         }
         if (method_exists($object, 'toArray')) {
             return $object->toArray();
@@ -31,6 +28,9 @@ final class ObjectToArrayTransformer
         if (method_exists($object, '__toString')) {
             return $object->__toString();
         }
+        /**
+         * @var string[] $vars
+         */
         $vars = array_keys(get_object_vars($object));
         foreach ($vars as $var) {
             $result[self::camelToSnake($var)] = is_object($object->$var) ? self::transform($object->$var) : $object->$var;
@@ -38,15 +38,18 @@ final class ObjectToArrayTransformer
         return $result;
     }
 
-    private static function camelToSnake($string): string
+    private static function camelToSnake($string) : string
     {
         return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $string));
     }
 
-    private static function traverse(Traversable $object): array
+    private static function iterate(iterable $object) : array
     {
         $result = [];
         foreach ($object as $key => $value) {
+            if (!is_numeric($key)) {
+                $key = self::camelToSnake($key);
+            }
             $result[$key] = self::transform($value);
         }
         return $result;

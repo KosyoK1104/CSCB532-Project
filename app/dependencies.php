@@ -7,6 +7,7 @@ use App\Kernel\Http\HtmlResponseFactory;
 use App\Kernel\Http\Request;
 use App\Kernel\Http\RestController;
 use App\Kernel\Http\RestResponseFactory;
+use App\ServiceProviders\ConfigurationServiceProvider;
 use App\ServiceProviders\DatabaseServiceProvider;
 use App\ServiceProviders\HttpServiceProvider;
 use App\ServiceProviders\RouterServiceProvider;
@@ -19,6 +20,7 @@ $container = new Container();
 /**
  * Service providers
  */
+$container->addServiceProvider(new ConfigurationServiceProvider());
 $container->addServiceProvider(new RouterServiceProvider());
 $container->addServiceProvider(new TemplateServiceProvider());
 $container->addServiceProvider(new HttpServiceProvider());

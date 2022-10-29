@@ -39,9 +39,5 @@ final class HttpServiceProvider extends AbstractServiceProvider
         $container->addShared(StreamFactoryInterface::class, fn() => new StreamFactory());
         $container->addShared(ServerRequestInterface::class, fn() => ServerRequestFactory::fromGlobals());
         $container->addShared(ResponseInterface::class, fn() => new Response());
-
-        $whoops = new Run;
-        $whoops->pushHandler(new PrettyPageHandler);
-        $whoops->register();
     }
 }
