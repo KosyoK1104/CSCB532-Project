@@ -46,15 +46,6 @@ final class MethodStrategy extends ApplicationStrategy
             $parameters[$key] = $this->getContainer()->get($dependency->getType()->getName());
         }
 
-        $controller[0]->__setRequest(new Request($request));
-        $controller[0]->__setResponse(new Response());
-        if (is_subclass_of($controller[0], HtmlController::class)) {
-            $controller[0]->__setTwig($this->getContainer()->get(Twig::class));
-            $controller[0]->__setResponseFactory($this->getContainer()->get(ResponseFactory::class));
-        }
-        if (is_subclass_of($controller[0], RestController::class)) {
-            $controller[0]->__setResponseFactory($this->getContainer()->get(RestResponseFactory::class));
-        }
         $response = $controller(...array_values($parameters));
         if (!$response instanceof ResponseInterface) {
             throw new RuntimeException('Controller must return ResponseInterface');

@@ -11,11 +11,11 @@ use Traversable;
 class ParameterBag implements IteratorAggregate
 {
     public function __construct(
-        private $items = []
+        private readonly array $items = []
     ) {
     }
 
-    public function array(string $index): array
+    public function array(string $index) : array
     {
         if (is_array($this->items[$index])) {
             return $this->items[$index];
@@ -23,7 +23,7 @@ class ParameterBag implements IteratorAggregate
         return [];
     }
 
-    public function bag(string $index): self
+    public function bag(string $index) : self
     {
         if (is_array($this->items[$index])) {
             return new self($this->items[$index]);
@@ -31,40 +31,40 @@ class ParameterBag implements IteratorAggregate
         return new self();
     }
 
-    public function string(string $index, mixed $default = ''): string
+    public function string(string $index, mixed $default = '') : string
     {
         if (array_key_exists($index, $this->items)) {
-            return (string)$this->items[$index];
+            return (string) $this->items[$index];
         }
         return $default;
     }
 
-    public function stringOrNull(string $index): ?string
+    public function stringOrNull(string $index) : ?string
     {
         if (array_key_exists($index, $this->items)) {
-            return (string)$this->items[$index];
+            return (string) $this->items[$index];
         }
         return null;
     }
 
-    public function int(string $index, int $default = 0): int
+    public function int(string $index, int $default = 0) : int
     {
         if (array_key_exists($index, $this->items)) {
-            return (int)$this->items[$index];
+            return (int) $this->items[$index];
         }
         return $default;
     }
 
-    public function intOrNull(string $index): ?int
+    public function intOrNull(string $index) : ?int
     {
         if (array_key_exists($index, $this->items)) {
-            return (int)$this->items[$index];
+            return (int) $this->items[$index];
         }
         return null;
     }
 
-    public function getIterator(): Traversable
+    public function getIterator() : Traversable
     {
-        return new ArrayIterator($this);
+        return new ArrayIterator($this->items);
     }
 }

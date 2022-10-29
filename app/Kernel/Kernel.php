@@ -4,64 +4,71 @@ declare(strict_types=1);
 
 namespace App\Kernel;
 
-use App\Kernel\Http\RestResponseFactory;
+use App\Kernel\Exceptions\AppException;
 use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 use League\Route\Http\Exception as HttpException;
 use League\Route\Router;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Throwable;
-use Whoops\Run;
+use Psr\Http\Message\StreamFactoryInterface;
 
 final class Kernel
 {
     private static ContainerInterface $container;
     private static ServerRequestInterface $serverRequest;
-    private static RestResponseFactory $responseFactory;
+    private static ResponseInterface $response;
+    private static StreamFactoryInterface $streamFactory;
 
-    public function __construct()
+    private function __construct()
     {
-        if (!isset(self::$responseFactory)) {
-            self::__setResponseFactory(self::$container->get(RestResponseFactory::class));
-        }
+        self::$response = self::$container->get(ResponseInterface::class);
+        self::$serverRequest = self::$container->get(ServerRequestInterface::class);
+        self::$streamFactory = self::$container->get(StreamFactoryInterface::class);
     }
 
-    public static function __setContainer(ContainerInterface $container): void
+    public static function __setContainer(ContainerInterface $container) : void
     {
         Kernel::$container = $container;
     }
 
-    public static function __setServerRequest(ServerRequestInterface $serverRequest): void
-    {
-        Kernel::$serverRequest = $serverRequest;
-    }
-
-    public static function create(): self
+    public static function create() : self
     {
         return new self();
     }
 
-
-    public static function __setResponseFactory(RestResponseFactory $responseFactory): void
-    {
-        self::$responseFactory = $responseFactory;
-    }
-
-    public function run(): void
+    public function run() : void
     {
         try {
             $router = Kernel::$container->get(Router::class);
 
-            $response = $router->dispatch(Kernel::$serverRequest);
-        } catch (HttpException $e) {
-            $response = self::$responseFactory->error($e->getMessage(), $e->getCode());
+            self::$response = $router->dispatch(Kernel::$serverRequest);
+        }
+        catch (HttpException $e) {
+            self::$response
+                ->withStatus($e->getCode())
+                ->withBody(
+                    self::$streamFactory
+                        ->createStream($e->getMessage())
+                )
+                ->withHeader('Content-type', 'application/json')
+            ;
+        }
+        catch (AppException $e) {
+            self::$response
+                ->withStatus($e->getCode())
+                ->withBody(
+                    self::$streamFactory
+                        ->createStream($e->getMessage())
+                )
+                ->withHeader('Content-type', 'application/json')
+            ;
         }
 
-        $this->emit($response);
+        $this->emit(self::$response);
     }
 
-    private function emit(ResponseInterface $response): void
+    private function emit(ResponseInterface $response) : void
     {
         (new SapiEmitter())->emit($response);
     }

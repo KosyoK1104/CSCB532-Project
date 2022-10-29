@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 namespace App\Kernel\Http;
 
-use Laminas\Diactoros\Stream;
-use Laminas\Diactoros\StreamFactory;
 use Psr\Http\Message\ResponseInterface;
 use Twig\Environment;
 
 abstract class HtmlController extends Controller
 {
     private readonly Environment $twig;
-    private readonly ResponseFactory $responseFactory;
+    private readonly HtmlResponseFactory $responseFactory;
 
     public function __setTwig(Environment $twig): void
     {
         $this->twig = $twig;
     }
 
-    public function __setResponseFactory(ResponseFactory $responseFactory): void
+    public function __setResponseFactory(HtmlResponseFactory $responseFactory): void
     {
         $this->responseFactory = $responseFactory;
     }

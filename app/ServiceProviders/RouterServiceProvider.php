@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\ServiceProviders;
 
+use App\Kernel\Http\DatabaseMiddleware;
 use App\Kernel\Http\MethodStrategy;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Route\Router;
@@ -26,6 +27,7 @@ final class RouterServiceProvider extends AbstractServiceProvider
             $strategy = new MethodStrategy();
             $strategy->setContainer($container);
             $router->setStrategy($strategy);
+            $router->middleware($container->get(DatabaseMiddleware::class));
             return $router;
         });
     }

@@ -14,7 +14,6 @@ $dotenv = Dotenv::createImmutable('../');
 $dotenv->load();
 
 Kernel::__setContainer(require 'dependencies.php');
-Kernel::__setServerRequest(ServerRequestFactory::fromGlobals());
 
 $kernel = Kernel::create();
 
