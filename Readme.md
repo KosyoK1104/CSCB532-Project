@@ -20,6 +20,7 @@
 
 - Docker
 - PHP 8.1
+- Composer
 
 ### Install
 
@@ -37,3 +38,4 @@
 3. Fill DB_HOST=host.docker.internal
 4. Fill DB_NAME with the database name
 5. Fill DB_USERNAME and DB_PASSWORD with the MariaDB credentials
+6. Run ```composer install``` in the console
