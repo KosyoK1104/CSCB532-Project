@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Shared\Helpers\ObjectToArrayTransformer;
 use PHPUnit\Framework\TestCase;
 
 final class ArrayToObjectTransformerTest extends TestCase
@@ -14,7 +15,8 @@ final class ArrayToObjectTransformerTest extends TestCase
         $object->child = $childObject;
         $object->foo = 'foo';
         $object->fooBar = 'fooBar';
-        self::assertEquals(\App\Shared\ObjectToArrayTransformer::transform($object),
+        self::assertEquals(
+            ObjectToArrayTransformer::transform($object),
             [
                 'foo' => 'foo',
                 'foo_bar' => 'fooBar',

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Kernel\Http;
 
-use App\Shared\Database;
-use Exception;
+use App\Shared\Database\Database;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Throwable;
 
 final class DatabaseMiddleware implements MiddlewareInterface
 {
@@ -19,7 +19,7 @@ final class DatabaseMiddleware implements MiddlewareInterface
     }
 
     /**
-     * @throws Exception
+     * @throws Throwable
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler) : ResponseInterface
     {
@@ -27,7 +27,7 @@ final class DatabaseMiddleware implements MiddlewareInterface
             $response = $handler->handle($request);
             $this->database->commit();
         }
-        catch (Exception $e) {
+        catch (Throwable $e) {
             $this->database->rollback();
             throw $e;
         }

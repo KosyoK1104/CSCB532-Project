@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Kernel\Http;
 
-use App\Shared\ParameterBag;
+use App\Shared\Helpers\ParameterBag;
 
 trait ServerRequestParameterBag
 {

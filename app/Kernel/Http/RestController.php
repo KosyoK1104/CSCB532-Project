@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Kernel\Http;
 
-use App\Shared\ObjectToArrayTransformer;
+use App\Shared\Helpers\ObjectToArrayTransformer;
 use Psr\Http\Message\ResponseInterface;
 
 abstract class RestController extends Controller

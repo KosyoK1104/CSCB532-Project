@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Kernel\Kernel;
 use Dotenv\Dotenv;
-use Laminas\Diactoros\ServerRequestFactory;
 
 require '../vendor/autoload.php';
 

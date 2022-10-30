@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\ServiceProviders;
 
-use App\Shared\Database;
+use App\Shared\Database\Database;
 use League\Container\ServiceProvider\AbstractServiceProvider;
 
 final class DatabaseServiceProvider extends AbstractServiceProvider

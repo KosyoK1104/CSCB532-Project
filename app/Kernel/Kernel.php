@@ -40,31 +40,33 @@ final class Kernel
     public function run() : void
     {
         try {
+            /**
+             * @var Router $router
+             */
             $router = Kernel::$container->get(Router::class);
 
             self::$response = $router->dispatch(Kernel::$serverRequest);
         }
         catch (HttpException $e) {
-            self::$response
+            self::$response = self::$response
                 ->withStatus($e->getCode())
                 ->withBody(
                     self::$streamFactory
-                        ->createStream($e->getMessage())
+                        ->createStream(json_encode(['reason' => $e->getMessage(), 'code' => $e->getCode()]))
                 )
                 ->withHeader('Content-type', 'application/json')
             ;
         }
         catch (AppException $e) {
-            self::$response
+            self::$response = self::$response
                 ->withStatus($e->getCode())
                 ->withBody(
                     self::$streamFactory
-                        ->createStream($e->getMessage())
+                        ->createStream(json_encode(['reason' => $e->getMessage(), 'code' => $e->getCode()]))
                 )
                 ->withHeader('Content-type', 'application/json')
             ;
         }
-
         $this->emit(self::$response);
     }
 

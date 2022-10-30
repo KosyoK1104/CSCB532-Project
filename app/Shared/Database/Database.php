@@ -6,7 +6,7 @@ declare(strict_types=1);
  * Wrapper for PDO
  */
 
-namespace App\Shared;
+namespace App\Shared\Database;
 
 use PDO;
 use PDOStatement;
@@ -187,4 +187,9 @@ final class Database
         }
     }
 
+    public function nextId(string $table) : ?int
+    {
+        $query = "SHOW TABLE STATUS WHERE Name = :table;";
+        return $this->row($query, ['table' => $table])['Auto_increment'];
+    }
 }

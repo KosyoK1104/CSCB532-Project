@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Clients\ClientsServiceProvider;
 use App\Kernel\Http\HtmlController;
 use App\Kernel\Http\HtmlResponseFactory;
 use App\Kernel\Http\Request;
@@ -25,13 +26,13 @@ $container->addServiceProvider(new RouterServiceProvider());
 $container->addServiceProvider(new TemplateServiceProvider());
 $container->addServiceProvider(new HttpServiceProvider());
 $container->addServiceProvider(new DatabaseServiceProvider());
+$container->addServiceProvider(new ClientsServiceProvider());
 
 $container->inflector(HtmlController::class)
     ->invokeMethods(
         [
-            '__setRequest'         => [Request::class],
             '__setTwig'            => [Environment::class],
-            '__setResponseFactory' => [HtmlResponseFactory::class]
+            '__setResponseFactory' => [HtmlResponseFactory::class],
         ]
     )
 ;
@@ -39,7 +40,6 @@ $container->inflector(HtmlController::class)
 $container->inflector(RestController::class)
     ->invokeMethods(
         [
-            '__setRequest'         => [Request::class],
             '__setResponseFactory' => [RestResponseFactory::class],
         ]
     )

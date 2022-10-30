@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\ServiceProviders;
 
-use App\Kernel\Http\RestResponseFactory;
 use Laminas\Diactoros\Response;
 use Laminas\Diactoros\ResponseFactory;
 use Laminas\Diactoros\ServerRequestFactory;
@@ -14,8 +13,6 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
-use Whoops\Handler\PrettyPageHandler;
-use Whoops\Run;
 
 final class HttpServiceProvider extends AbstractServiceProvider
 {
