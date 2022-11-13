@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="{{asset('css/app.css')}}">
 </head>
 <body>
-<div id="root"></div>
+<div id="root">
+</div>
 </body>
 </html>
