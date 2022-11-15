@@ -1,11 +1,14 @@
 import React, {useState} from "react";
 import "./App.css"
-import axios from "axios";
+import Api from "../services/Api";
+import ClientAuthService from "../services/ClientAuthService";
 
 function App() {
     const [form, setForm] = useState({
         email: '',
-        password: ''
+        username: '',
+        password: '',
+        repeat_password: ''
     })
 
     const [login, setLogin] = useState({
@@ -22,19 +25,32 @@ function App() {
 
     const handleCreate = (e) => {
         e.preventDefault()
-        axios.post('/api/users/create', form).then(response => console.log(response))
+        ClientAuthService.register(form)
+            .then(r => console.log(r))
     }
 
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        axios.post('/api/users/login', form).then(response => console.log(response))
+        ClientAuthService.login(login)
+            .then(r => console.log(r))
+    }
+
+    const handleLogout = (e) => {
+        Api.post('/api/clients/logout', login).then(response => console.log(response))
     }
 
     return <div className="border">
+        asdasd
         <form onSubmit={handleCreate}>
+            <label htmlFor="email">Email</label>
             <input type="text" name="email" value={form.email} onChange={handleChangeForm}/>
+            <label htmlFor="email">username</label>
+            <input type="text" name="username" value={form.username} onChange={handleChangeForm}/>
+            <label htmlFor="email">password</label>
             <input type="password" name="password" value={form.password} onChange={handleChangeForm}/>
+            <label htmlFor="email">repeat_password</label>
+            <input type="password" name="repeat_password" value={form.repeat_password} onChange={handleChangeForm}/>
             <button type="submit">Submit</button>
         </form>
         <form onSubmit={handleSubmit}>
@@ -42,6 +58,7 @@ function App() {
             <input type="password" name="password" value={login.password} onChange={handleLoginForm}/>
             <button type="submit">Submit</button>
         </form>
+        <button onClick={handleLogout}>Logout</button>
         <pre>{form.email}</pre>
         <pre>{form.password}</pre>
 
