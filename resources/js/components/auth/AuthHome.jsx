@@ -1,0 +1,30 @@
+import React from "react";
+import {useNavigate} from "react-router-dom";
+
+export default function AuthHome() {
+    const navigate = useNavigate();
+
+    function handleClick(location) {
+        navigate(location)
+    }
+
+    return (
+        <div className="card ">
+            <div className="card-header">
+                Home
+            </div>
+            <div className="card-body container__body">
+                <div className="card__body">
+                    <div className="row">
+                        <div className="col d-flex justify-content-center">
+                            <button className="btn btn-primary" onClick={() => navigate('login')}>Login</button>
+                        </div>
+                        <div className="col d-flex justify-content-center">
+                            <button className="btn btn-primary" onClick={() => navigate('register')}>Register</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}

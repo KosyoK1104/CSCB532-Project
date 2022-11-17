@@ -1,0 +1,18 @@
+.container__view {
+    height: 100vh;
+}
+
+.container__card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.container__card{
+    width: 30%;
+}
+
+.card__body{
+    padding:40px;
+}

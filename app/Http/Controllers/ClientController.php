@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
 use Throwable;
 
-class ClientController extends Controller
+final class ClientController extends Controller
 {
     /**
      * Login client and add session parameter 'cl'
