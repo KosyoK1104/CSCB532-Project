@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Package;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class PackageController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return ?Response
      */
-    public function index()
+    public function index() : ?Response
     {
         //
     }
@@ -20,10 +22,10 @@ class PackageController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return ?Response
      */
-    public function store(Request $request)
+    public function store(Request $request) : ?Response
     {
         //
     }
@@ -31,10 +33,10 @@ class PackageController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Package  $packages
-     * @return \Illuminate\Http\Response
+     * @param Package $packages
+     * @return Response
      */
-    public function show(Package $packages)
+    public function show(Package $packages) : Response
     {
         //
     }
@@ -42,11 +44,11 @@ class PackageController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Package  $packages
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Package $packages
+     * @return Response
      */
-    public function update(Request $request, Package $packages)
+    public function update(Request $request, Package $packages) : Response
     {
         //
     }
@@ -54,10 +56,10 @@ class PackageController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Package  $packages
-     * @return \Illuminate\Http\Response
+     * @param Package $packages
+     * @return Response
      */
-    public function destroy(Package $packages)
+    public function destroy(Package $packages) : Response
     {
         //
     }

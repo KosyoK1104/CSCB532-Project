@@ -1,18 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Office;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class OfficeController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response|null
      */
-    public function index()
+    public function index() : ?Response
     {
         //
     }
@@ -20,10 +23,10 @@ class OfficeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response|null
      */
-    public function store(Request $request)
+    public function store(Request $request) : ?Response
     {
         //
     }
@@ -31,10 +34,10 @@ class OfficeController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Office  $office
-     * @return \Illuminate\Http\Response
+     * @param Office $office
+     * @return Response|null
      */
-    public function show(Office $office)
+    public function show(Office $office) : ?Response
     {
         //
     }
@@ -42,11 +45,11 @@ class OfficeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Office  $office
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Office $office
+     * @return Response|null
      */
-    public function update(Request $request, Office $office)
+    public function update(Request $request, Office $office) : ?Response
     {
         //
     }
@@ -54,10 +57,10 @@ class OfficeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Office  $office
-     * @return \Illuminate\Http\Response
+     * @param Office $office
+     * @return Response|null
      */
-    public function destroy(Office $office)
+    public function destroy(Office $office) : ?Response
     {
         //
     }

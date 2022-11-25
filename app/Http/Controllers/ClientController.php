@@ -10,36 +10,54 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
+
+use function response;
 
 final class ClientController extends Controller
 {
+    public function me(Request $request) : JsonResponse
+    {
+        $clientSession = $request->session()->get('cl');
+        $client = Client::find($clientSession['id']);
+        $request->session()->regenerate();
+        return response()->json(
+            [
+                'id'       => $client->id,
+                'username' => $client->username,
+                'email'    => $client->email,
+            ]
+        );
+    }
+
     /**
      * Login client and add session parameter 'cl'
      *
      * @throws InvalidArgumentException
      */
+
     public function login(Request $request) : JsonResponse
     {
-        $client = Client::where('email', '=', $request->string('email'))->firstOrFail();
+        $client = Client::where('email', '=', $request->string('email'))->first();
 
         if (is_null($client)) {
-            throw new InvalidArgumentException('Invalid user');
+            throw new NotFoundHttpException('Invalid user');
         }
         if (!password_verify($request->string('password')->value(), $client->password)) {
-            throw new InvalidArgumentException('Invalid user');
+            throw new NotFoundHttpException('Invalid user');
         }
 
         $data = ['id' => $client->id];
-        Session::put('cl', $data);
-        return \response()->json(['data' => $data]);
+        $request->session()->put('cl', $data);
+        return response()->json(['data' => $data]);
     }
 
     public function logout(Request $request) : JsonResponse
     {
         Session::remove('cl');
         $request->session()->remove('cl');
-        return \response()->json();
+        return response()->json();
     }
 
     /**
@@ -55,7 +73,7 @@ final class ClientController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 401);
+            return response()->json(['errors' => $validator->errors()], 400);
         }
 
         $client = new Client();

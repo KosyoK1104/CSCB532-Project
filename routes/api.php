@@ -27,7 +27,7 @@ Route::middleware(UnauthenticatedClient::class)->group(function () {
     Route::post('/clients/login', [ClientController::class, 'login']);
 });
 Route::middleware(AuthenticatedClient::class)->group(function () {
-    Route::get('/clients/{client}', [ClientController::class, 'show']);
+    Route::get('/clients/me', [ClientController::class, 'me']);
     Route::post('/clients/logout', [ClientController::class, 'logout']);
 });
 
