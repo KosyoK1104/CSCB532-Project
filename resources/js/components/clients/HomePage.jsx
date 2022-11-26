@@ -1,23 +1,30 @@
-import React from "react";
-import {Link, Outlet} from "react-router-dom";
-import Me from "./../../services/Me"
+import React from "react"
+import Me from "../../services/Me";
 import toast from "react-hot-toast";
+import {Link, Outlet} from "react-router-dom";
+import ClientStore from "../../store/clients";
+import {logout, setMe} from "../../store/clients/me";
 
-class ClientLayout extends React.Component {
+export class HomePage extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = {
-            me: Me.initialState(),
-
+            me: ClientStore.getState().me.me,
         }
     }
 
     load() {
         Me.me()
             .then((result) => {
-                this.setState({me: result.me})
+                ClientStore.dispatch(setMe(result.me))
+                console.log(ClientStore.getState().me)
+                this.setState({me: ClientStore.getState().me.me})
             })
-        console.log(this.state)
+            .catch(() => {
+                ClientStore.dispatch(logout())
+                this.props.navigate('/login')
+            })
     }
 
     componentDidMount() {
@@ -37,7 +44,7 @@ class ClientLayout extends React.Component {
                         <div className="collapse navbar-collapse">
                             <ul className="navbar-nav">
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/profile">Account</Link>
+                                    <Link className="nav-link" to="/account">Account</Link>
                                 </li>
                                 <li className="nav-item">
                                     <a className="nav-link" href="#">Deliveries</a>
@@ -64,5 +71,3 @@ class ClientLayout extends React.Component {
         )
     }
 }
-
-export default ClientLayout

@@ -3,9 +3,12 @@ import {useNavigate} from "react-router-dom";
 import ClientAuthService from "../../services/ClientAuthService";
 import toast from "react-hot-toast";
 import Api from "../../services/Api";
+import {setMe} from "../../store/clients/me";
+import {useDispatch} from "react-redux";
 
 export default function Login() {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [form, setForm] = useState({
         email: null,
         password: null,

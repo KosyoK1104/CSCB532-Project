@@ -4,28 +4,37 @@ import AuthLayout from "./auth/AuthLayout"
 import AuthHome from "./auth/AuthHome"
 import Register from "./auth/Register"
 import Login from "./auth/Login"
-import ClientLayout from "./clients/ClientLayout"
-import ClientHome from "./clients/ClientHome"
 import {Toaster} from "react-hot-toast";
 import NotFound from "./NotFound"
+import AccountLayout from "./clients/account/AccountLayout";
+import {HomePage} from "./clients/HomePage";
+import AccountHome from "./clients/account/AccountHome";
+import {Provider} from "react-redux";
+import clientStore from "../store/clients/index"
+import {Address} from "./clients/account/Address";
+
 export default function App() {
     return (
-        <div>
+        <Provider store={clientStore}>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<AuthLayout/>}>
+                    <Route path="" element={<AuthLayout/>}>
                         <Route index element={<AuthHome/>}></Route>
                         <Route path="register" element={<Register/>}></Route>
                         <Route path="login" element={<Login/>}></Route>
                     </Route>
-                    <Route path="/profile" element={<ClientLayout/>}>
-                        <Route index element={<ClientHome/>}></Route>
+                    <Route path="/account" element={<HomePage/>}>
+                        <Route element={<AccountLayout/>}>
+                            <Route index element={<AccountHome/>}>
+                            </Route>
+                            <Route path="address" element={<Address/>}></Route>
+                        </Route>
                     </Route>
-                    <Route path="*" element={<NotFound/>}></Route>
+                    <Route path="*" element={<NotFound/>}/>
                 </Routes>
+                <Toaster/>
             </BrowserRouter>
-            <Toaster/>
-        </div>
+        </Provider>
     )
 }
 
