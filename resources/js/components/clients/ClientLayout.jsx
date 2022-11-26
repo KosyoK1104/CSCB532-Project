@@ -32,7 +32,7 @@ class ClientLayout extends React.Component {
     render() {
         return (
             <div>
-                <nav className="navbar navbar-light bg-light navbar-expand-lg">
+                <nav className="navbar navbar-light bg-light navbar-expand-lg mb-4">
                     <div className="container">
                         <div className="collapse navbar-collapse">
                             <ul className="navbar-nav">

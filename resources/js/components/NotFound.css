@@ -9,4 +9,18 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    color: crimson;
+}
+
+.not-found__icon{
+    position: absolute;
+    left: 50%;
+    bottom: 80px;
+    height: 100px;
+    width: auto;
+    transform: translateX(-50%);
+}
+
+.not-found__title{
+    font-weight: bold;
 }

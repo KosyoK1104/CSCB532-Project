@@ -1,5 +1,6 @@
 import React from "react"
 import "./NotFound.css"
+import {FaBan} from "react-icons/fa"
 
 class NotFound extends React.Component {
 
@@ -7,7 +8,8 @@ class NotFound extends React.Component {
         return (
             <div className="not-found__wrapper">
                 <div className="not-found">
-                    <h1>Not found</h1>
+                    <FaBan className="not-found__icon"/>
+                    <h1 className="not-found__title">Not found</h1>
                 </div>
             </div>
         )
