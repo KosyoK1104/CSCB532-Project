@@ -1,58 +1,74 @@
 import React from "react";
 import {BsPersonSquare} from "react-icons/bs";
 import {FaRegAddressBook, FiSettings, GiSettingsKnobs, SlLogout} from "react-icons/all";
-import {Outlet} from "react-router-dom";
-import {Navigate} from "react-router-dom";
+import {Outlet, useLocation, useNavigate} from "react-router-dom";
+import Me from "../../../services/Me";
+import {logout} from "../../../store/clients/me";
+import toast from "react-hot-toast";
+import {useDispatch} from "react-redux";
 
-class AccountLayout extends React.Component {
+export default function AccountLayout(props) {
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const location = useLocation()
+    const handleLogout = () => {
+        Me.logout()
+            .then(() => dispatch(logout()))
+            .catch((error) => toast.error(error.response.message))
+    }
 
-    render() {
-        return (
-            <div className="container">
-                <div className="row">
-                    <div className="col-3">
-                        <ul className="nav nav-pills">
-                            <li className="nav-item col-12">
-                                <a href="/account"
-                                   className="nav-link active">
+    let navLink = (path) => {
+        let classes = ['nav-link']
+        console.log(location)
+        if(path === location.pathname){
+            classes.push('active')
+        }
+        return classes.join(' ')
+    }
+
+    return (
+        <div className="container">
+            <div className="row">
+                <div className="col-3">
+                    <ul className="nav nav-pills">
+                        <li className="nav-item cursor-pointer col-12">
+                            <span onClick={() => navigate('/account')}
+                                  className={navLink('/account')}>
                                     <span className="nav-icon">
                                         <BsPersonSquare/></span>
-                                    My account
-                                </a>
-                            </li>
-                            <li className="nav-item col-12">
-                                <a href="/account/address" className="nav-link">
-                                    <span className="nav-icon"><FaRegAddressBook/></span>
-                                    Address
-                                </a>
-                            </li>
-                            <li className="nav-item col-12">
-                                <a href="#" className="nav-link">
-                                    <span className="nav-icon"><GiSettingsKnobs/></span>
-                                    Preferences
-                                </a>
-                            </li>
-                            <li className="nav-item col-12">
-                                <a href="#" className="nav-link">
-                                    <span className="nav-icon"><FiSettings/></span>
-                                    Settings
-                                </a>
-                            </li>
-                            <li className="nav-item col-12">
-                                <a href="#" className="nav-link">
-                                    <span className="nav-icon"><SlLogout/></span>
-                                    Logout
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="col-9">
-                        <Outlet/>
-                    </div>
+                                My account
+                            </span>
+                        </li>
+                        <li className="nav-item cursor-pointer col-12">
+                            <span onClick={() => navigate('/account/address')} className={navLink('/account/address')}>
+                                <span className="nav-icon"><FaRegAddressBook/></span>
+                                Address
+                            </span>
+                        </li>
+                        <li className="nav-item cursor-pointer col-12">
+                            <a href="#" className="nav-link">
+                                <span className="nav-icon"><GiSettingsKnobs/></span>
+                                Preferences
+                            </a>
+                        </li>
+                        <li className="nav-item cursor-pointer col-12">
+                            <a href="#" className="nav-link">
+                                <span className="nav-icon"><FiSettings/></span>
+                                Settings
+                            </a>
+                        </li>
+                        <li className="nav-item cursor-pointer col-12">
+                            <span onClick={handleLogout} className="nav-link">
+                                <span className="nav-icon"><SlLogout/></span>
+                                Logout
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <div className="col-9">
+                    <Outlet/>
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
 }
-
-export default AccountLayout

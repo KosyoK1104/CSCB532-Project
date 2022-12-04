@@ -7,15 +7,15 @@ import Login from "./auth/Login"
 import {Toaster} from "react-hot-toast";
 import NotFound from "./NotFound"
 import AccountLayout from "./clients/account/AccountLayout";
-import {HomePage} from "./clients/HomePage";
+import HomePage from "./clients/HomePage";
 import AccountHome from "./clients/account/AccountHome";
 import {Provider} from "react-redux";
-import clientStore from "../store/clients/index"
-import {Address} from "./clients/account/Address";
+import store from "../store"
+import Address from "./clients/account/Address";
 
 export default function App() {
     return (
-        <Provider store={clientStore}>
+        <Provider store={store}>
             <BrowserRouter>
                 <Routes>
                     <Route path="" element={<AuthLayout/>}>

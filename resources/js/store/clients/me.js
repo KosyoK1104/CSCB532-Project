@@ -1,13 +1,11 @@
 import {createSlice} from '@reduxjs/toolkit'
 import Me from "../../services/Me"
 
-export const meSlice = createSlice({
+export const slice = createSlice({
     name: 'me',
-    initialState: {me: Me.initialState()}
-    ,
+    initialState: {me: Me.initialState()},
     reducers: {
         setMe(state, newMe) {
-            console.log(newMe)
             state.me = newMe.payload
         },
         logout(state) {
@@ -16,6 +14,6 @@ export const meSlice = createSlice({
     }
 })
 
-export const {setMe, logout} = meSlice.actions
+export const {setMe, logout} = slice.actions
 
-export default meSlice.reducer
+export default slice.reducer
