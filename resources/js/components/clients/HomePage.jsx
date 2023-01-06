@@ -16,7 +16,7 @@ export default function HomePage(props) {
             })
             .catch(() => {
                 dispatch(logout())
-                props.navigate('/login')
+                navigate('/login')
             })
     }
 

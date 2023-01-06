@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
@@ -35,6 +36,11 @@ class Client extends Authenticatable
             get: fn($value) => $value,
             set: fn($value) => Hash::make($value)
         );
+    }
+
+    public function clientProfile() : HasOne
+    {
+        return $this->hasOne(ClientProfile::class);
     }
     /*
         protected function createdAt() : Attribute

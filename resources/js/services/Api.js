@@ -1,6 +1,6 @@
 import axios from "axios";
 import toast from "react-hot-toast";
-
+import {useNavigate} from "react-router-dom";
 function withInterceptor() {
     const instance = axios.create()
 
@@ -11,7 +11,9 @@ function withInterceptor() {
         if(error.response.status === 401) {
             toast.error('Unauthenticated!')
             // history.push('/login')
-            window.location = '/login'
+            let navigate = useNavigate()
+            navigate('/login')
+            // window.location = '/login'
         }
 
         if(error.response.status >= 500 && error.response.status <= 599) {

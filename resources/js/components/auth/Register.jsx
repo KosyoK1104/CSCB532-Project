@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import ClientAuthService from "../../services/ClientAuthService";
 import {useNavigate} from "react-router-dom";
 import Api from "../../services/Api";
+import {Button, Card, Col, Divider, Form, Input, Row} from "antd";
 
 export default function Register() {
 
@@ -18,6 +19,7 @@ export default function Register() {
         password: null,
         repeat_password: null
     })
+    const [submitLoading, setSubmitLoading] = useState(false)
 
     function handleInput(event) {
         setForm(form => ({
@@ -27,69 +29,54 @@ export default function Register() {
     }
 
     function handleRegister() {
+        setSubmitLoading(true)
         ClientAuthService.register(form)
             .then(response => navigate('/login'))
             .catch(error => {
                 setErrors(Api.resolveValidationError(error))
             })
+            .finally(() => setSubmitLoading(false))
     }
 
     return (
-        <div className="card ">
-            <div className="card-header">
-                Register
-            </div>
-            <div className="card-body container__body">
-                <div className="card__body">
-                    <form method="POST" onSubmit={(event) => event.preventDefault()}
-                          noValidate="">
+        <>
+            <Row justify={"center"} align={"middle"}>
+                <Col span={8}>
+                    <Card>
+                        <Divider orientation={"center"}>Register</Divider>
+                        <Form labelCol={{span: 5}} wrapperCol={{span: 19}}>
+                            <Form.Item label='E-mail' name='email'
+                                       validateStatus={errors.email.length > 0 ? "error" : ""}
+                                       help={errors.email[0] ?? ''}>
+                                <Input name='email' onChange={handleInput}/>
+                            </Form.Item>
 
-                        <div className={`form-group ${errors.hasOwnProperty('email') ? "is-invalid" : ""}`}>
-                            <label htmlFor="email">Email address</label>
-                            <input type="text" name="email" className="form-control"
-                                   onChange={event => handleInput(event)}/>
-                        </div>
-                        {errors.email?.map((error, index) => (
-                            <div key={index} className="invalid-feedback">
-                                {error}
-                            </div>
-                        ))}
-                        <div className={`form-group ${errors.hasOwnProperty('username') ? "is-invalid" : ""}`}>
-                            <label htmlFor="username">Username</label>
-                            <input type="text" name="username" className="form-control"
-                                   onChange={event => handleInput(event)}/>
-                        </div>
-                        {errors.username?.map((error, index) => (
-                            <div key={index} className="invalid-feedback">
-                                {error}
-                            </div>
-                        ))}
-                        <div className={`form-group ${errors.hasOwnProperty('password') ? "is-invalid" : ""}`}>
-                            <label htmlFor="password">Password</label>
-                            <input type="password" name="password" className="form-control"
-                                   onChange={event => handleInput(event)}/>
-                        </div>
-                        {errors.password?.map((error, index) => (
-                            <div key={index} className="invalid-feedback">
-                                {error}
-                            </div>
-                        ))}
-                        <div className={`form-group ${errors.hasOwnProperty('repeat_password') ? "is-invalid" : ""}`}>
-                            <label htmlFor="repeat_password">Repeat password</label>
-                            <input type="password" name="repeat_password" className="form-control"
-                                   onChange={event => handleInput(event)}/>
-                        </div>
-                        {errors.repeat_password?.map((error, index) => (
-                            <div key={index} className="invalid-feedback">
-                                {error}
-                            </div>
-                        ))}
-                        <button type="submit" className="btn btn-primary mt-2"
-                                onClick={() => handleRegister()}>Register
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
+                            <Form.Item label='Username' name='username'
+                                       validateStatus={errors.username.length > 0 ? "error" : ""}
+                                       help={errors.username[0] ?? ''}>
+                                <Input name='username' onChange={handleInput}/>
+                            </Form.Item>
+
+                            <Form.Item label='Password' name='password'
+                                       validateStatus={errors.password.length > 0 ? "error" : ""}
+                                       help={errors.password[0] ?? ''}>
+                                <Input.Password name='password' onChange={handleInput}/>
+                            </Form.Item>
+
+                            <Form.Item label='Repeat password' name='repeat_password'
+                                       validateStatus={errors.repeat_password.length > 0 ? "error" : ""}
+                                       help={errors.repeat_password[0] ?? ''}>
+                                <Input.Password name='repeat_password' onChange={handleInput}/>
+                            </Form.Item>
+                            <Form.Item wrapperCol={{offset: 5, span: 19}}>
+                                <Button loading={submitLoading} type={"primary"} onClick={handleRegister}>
+                                    Register
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                    </Card>
+                </Col>
+            </Row>
+        </>
     )
 }

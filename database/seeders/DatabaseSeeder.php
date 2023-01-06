@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Client;
+use App\Models\ClientProfile;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,6 +16,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        Client::factory(5)
+            ->has(ClientProfile::factory())
+            ->create()
+        ;
+
+//        ClientProfile::factory()->for($clients)->create();
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

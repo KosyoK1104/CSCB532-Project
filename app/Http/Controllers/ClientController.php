@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
@@ -40,11 +41,10 @@ final class ClientController extends Controller
     public function login(Request $request) : JsonResponse
     {
         $client = Client::where('email', '=', $request->string('email'))->first();
-
         if (is_null($client)) {
             throw new NotFoundHttpException('Invalid user');
         }
-        if (!password_verify($request->string('password')->value(), $client->password)) {
+        if (!Hash::check($request->string('password')->value(), $client->password)) {
             throw new NotFoundHttpException('Invalid user');
         }
 
@@ -67,8 +67,8 @@ final class ClientController extends Controller
     {
         $validator = Validator::make($request->request->all(), [
             'email'           => 'required|email|unique:clients',
-            'username'        => 'required|string|min:6|unique:clients',
-            'password'        => 'required|string|min:6',
+            'username'        => 'required|string|min::6|unique:clients',
+            'password'        => 'required|string|min::6',
             'repeat_password' => 'required|string|same:password',
         ]);
 

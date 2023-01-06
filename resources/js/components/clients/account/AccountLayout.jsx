@@ -20,7 +20,7 @@ export default function AccountLayout(props) {
     let navLink = (path) => {
         let classes = ['nav-link']
         console.log(location)
-        if(path === location.pathname){
+        if(path === location.pathname) {
             classes.push('active')
         }
         return classes.join(' ')
@@ -29,7 +29,7 @@ export default function AccountLayout(props) {
     return (
         <div className="container">
             <div className="row">
-                <div className="col-3">
+                <div className="col-12 col-lg-3">
                     <ul className="nav nav-pills">
                         <li className="nav-item cursor-pointer col-12">
                             <span onClick={() => navigate('/account')}
@@ -65,7 +65,7 @@ export default function AccountLayout(props) {
                         </li>
                     </ul>
                 </div>
-                <div className="col-9">
+                <div className="col-12 col-lg-9 mt-3 mt-lg-0">
                     <Outlet/>
                 </div>
             </div>

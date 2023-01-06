@@ -4,6 +4,7 @@ import ClientAuthService from "../../services/ClientAuthService";
 import toast from "react-hot-toast";
 import Api from "../../services/Api";
 import {useDispatch} from "react-redux";
+import {Alert, Button, Card, Col, Divider, Form, Input, Row} from 'antd'
 
 export default function Login() {
     const navigate = useNavigate()
@@ -12,6 +13,8 @@ export default function Login() {
         email: null,
         password: null,
     })
+    const [submitLoading, setSubmitLoading] = useState(false)
+    const [error, setError] = useState(null)
 
     function handleInput(event) {
         setForm(form => ({
@@ -21,39 +24,44 @@ export default function Login() {
     }
 
     function handleLogin(event) {
+        setSubmitLoading(true)
         ClientAuthService.login(form)
             .then(result => {
                 navigate('/account')
             })
             .catch(error => {
+                setError(Api.resolveError(error))
                 toast.error(Api.resolveError(error))
             })
+            .finally(() => setSubmitLoading(false))
     }
 
     return (
-        <div className="card ">
-            <div className="card-header">
-                Login
-            </div>
-            <div className="card-body container__body">
-                <div className="card__body">
-                    <form method="POST" onSubmit={(event) => event.preventDefault()}>
-                        <div className="form-group">
-                            <label htmlFor="exampleInputEmail1">Email address</label>
-                            <input type="text" name="email" className="form-control"
-                                   onChange={(event) => handleInput(event)}/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="exampleInputEmail1">Password</label>
-                            <input type="password" name="password" className="form-control"
-                                   onChange={(event) => handleInput(event)}/>
-                        </div>
-                        <button type="submit" className="btn btn-primary mt-2"
-                                onClick={() => handleLogin()}>Login
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
+        <>
+            <Row justify={"center"} className="h-100" align={"middle"}>
+                <Col span={8}>
+                    <Card>
+                        <Divider orientation={"center"}>Login</Divider>
+                        {error !== null && <Alert message={error} type="error" closable className="mb-3" showIcon
+                                                  onClose={() => setError(null)}/>}
+                        <Form labelCol={{ span: 4 }}
+                              wrapperCol={{ span: 20 }}>
+                            <Form.Item label='E-mail' name='email'>
+                                <Input name='email' onChange={handleInput}/>
+                            </Form.Item>
+
+                            <Form.Item label='Password' name='password'>
+                                <Input.Password name='password' onChange={handleInput}/>
+                            </Form.Item>
+                            <Form.Item wrapperCol={{offset: 4, span:20}}>
+                                <Button loading={submitLoading} type={"primary"} onClick={handleLogin}>
+                                    Login
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                    </Card>
+                </Col>
+            </Row>
+        </>
     )
 }

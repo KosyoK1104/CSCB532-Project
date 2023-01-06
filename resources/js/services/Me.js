@@ -12,7 +12,7 @@ export default {
 
     logout() {
         return Api.post('/api/clients/logout')
-            .then(response => {
+            .then(() => {
                 window.location = '/login'
             })
     },

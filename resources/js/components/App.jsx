@@ -12,29 +12,32 @@ import AccountHome from "./clients/account/AccountHome";
 import {Provider} from "react-redux";
 import store from "../store"
 import Address from "./clients/account/Address";
+import {ConfigProvider} from "antd";
 
 export default function App() {
     return (
-        <Provider store={store}>
-            <BrowserRouter>
-                <Routes>
-                    <Route path="" element={<AuthLayout/>}>
-                        <Route index element={<AuthHome/>}></Route>
-                        <Route path="register" element={<Register/>}></Route>
-                        <Route path="login" element={<Login/>}></Route>
-                    </Route>
-                    <Route path="/account" element={<HomePage/>}>
-                        <Route element={<AccountLayout/>}>
-                            <Route index element={<AccountHome/>}>
-                            </Route>
-                            <Route path="address" element={<Address/>}></Route>
+        <ConfigProvider>
+            <Provider store={store}>
+                <BrowserRouter>
+                    <Routes>
+                        <Route path="" element={<AuthLayout/>}>
+                            <Route index element={<AuthHome/>}></Route>
+                            <Route path="register" element={<Register/>}></Route>
+                            <Route path="login" element={<Login/>}></Route>
                         </Route>
-                    </Route>
-                    <Route path="*" element={<NotFound/>}/>
-                </Routes>
-                <Toaster/>
-            </BrowserRouter>
-        </Provider>
+                        <Route path="/account" element={<HomePage/>}>
+                            <Route element={<AccountLayout/>}>
+                                <Route index element={<AccountHome/>}>
+                                </Route>
+                                <Route path="address" element={<Address/>}></Route>
+                            </Route>
+                        </Route>
+                        <Route path="*" element={<NotFound/>}/>
+                    </Routes>
+                    <Toaster/>
+                </BrowserRouter>
+            </Provider>
+        </ConfigProvider>
     )
 }
 

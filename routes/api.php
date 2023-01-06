@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ClientProfileController;
 use App\Http\Middleware\AuthenticatedClient;
 use App\Http\Middleware\UnauthenticatedClient;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,7 @@ Route::middleware(UnauthenticatedClient::class)->group(function () {
 Route::middleware(AuthenticatedClient::class)->group(function () {
     Route::get('/clients/me', [ClientController::class, 'me']);
     Route::post('/clients/logout', [ClientController::class, 'logout']);
+    Route::get('/clients/me/profile', [ClientProfileController::class, 'forMe']);
 });
 
 Route::delete('/clients/{client}/delete', [ClientController::class, 'destroy']);

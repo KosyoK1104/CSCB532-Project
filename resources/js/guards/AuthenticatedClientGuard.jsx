@@ -1,4 +1,3 @@
-import store from '../store/clients'
 import {useDispatch} from "react-redux";
 import {setMe} from "../store/clients/me";
 
