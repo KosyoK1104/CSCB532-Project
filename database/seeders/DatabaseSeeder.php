@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Client;
 use App\Models\ClientProfile;
+use App\Models\Employee;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,6 +21,8 @@ class DatabaseSeeder extends Seeder
             ->has(ClientProfile::factory())
             ->create()
         ;
+
+        Employee::factory(5)->create();
 
 //        ClientProfile::factory()->for($clients)->create();
         // \App\Models\User::factory(10)->create();

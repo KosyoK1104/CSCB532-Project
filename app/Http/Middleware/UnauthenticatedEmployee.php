@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Middleware;
+
+use App\Exceptions\HttpRuntimeException;
+use App\Http\EmployeeSessionProvider;
+use Closure;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+final class UnauthenticatedEmployee
+{
+    public function __construct(
+        private readonly EmployeeSessionProvider $employeeSessionProvider
+    ) {
+    }
+
+    public function handle(Request $request, Closure $next) : Response
+    {
+        if ($this->employeeSessionProvider->isLogged()) {
+            throw new HttpRuntimeException('You are already logged in!');
+        }
+        return $next($request);
+    }
+}

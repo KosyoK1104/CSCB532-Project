@@ -72,26 +72,11 @@ final class ClientController extends Controller
             'repeat_password' => 'required|string|same:password',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 400);
-        }
-
         $client = new Client();
-        $client->fill($request->request->all());
+        $client->fill($validator->validated());
         $client->saveOrFail();
         return response()->json(['data' => ['id' => $client->id]]);
     }
-//
-//    /**
-//     * Display the specified resource.
-//     *
-//     * @param Client $client
-//     * @return JsonResponse
-//     */
-//    public function show(Client $client) : JsonResponse
-//    {
-//        return \response()->json(['data' => $client]);
-//    }
 
     /**
      * Update the specified resource in storage.
