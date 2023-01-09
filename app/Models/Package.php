@@ -25,4 +25,17 @@ use Illuminate\Database\Eloquent\Model;
 class Package extends Model
 {
     use HasFactory, HasUuids;
+
+    protected $dateFormat = 'U';
+
+    protected $fillable = ["weight", "delivery_type", "recipient_name", "recipient_address", "recipient_phone_number"];
+
+    protected $casts = [
+        'type' => DeliveryType::class,
+    ];
+
+
+
+
+
 }

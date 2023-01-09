@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\EmployeeType;
 use App\Models\Package;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Enum;
+use Illuminate\Validation\Rules\Password;
 
 class PackageController extends Controller
 {
@@ -14,7 +19,7 @@ class PackageController extends Controller
      * Display a listing of the resource.
      * @return ?Response
      */
-    public function index() : ?Response
+    public function index(): ?Response
     {
         //
     }
@@ -25,9 +30,31 @@ class PackageController extends Controller
      * @param Request $request
      * @return ?Response
      */
-    public function store(Request $request) : ?Response
+    public function validateRequest(Request $request): array
     {
-        //
+        $validator = Validator::make($request->request->all(), [
+            'tracking_number' => 'required|string|min:6',
+            'price' => 'required|double|min:0',
+            'weight' => 'required|string',
+            'delivery_type' => 'required|string',
+            'recipient_name' => 'required|string',
+            'recipient_phone_number' => 'required|string|max:10|min:10',
+            'recipient_address' => 'required|string',
+        ]);
+
+        return $validator->validated();
+    }
+
+    public function store(Request $request): JsonResponse
+    {
+        $validatedRequest = $this->validateRequest($request);
+        $package = new Package();
+        $package->fill($validatedRequest);
+        $package->tracking_number = $this->generateTrackingNumber();
+        $package->price = 10.10; // TODO
+        $package->saveOrFail();
+
+        return response()->json(['id' => $package->id]);
     }
 
     /**
@@ -36,9 +63,9 @@ class PackageController extends Controller
      * @param Package $packages
      * @return Response
      */
-    public function show(Package $packages) : Response
+    public function show(Package $packages): Response
     {
-        //
+
     }
 
     /**
@@ -48,7 +75,7 @@ class PackageController extends Controller
      * @param Package $packages
      * @return Response
      */
-    public function update(Request $request, Package $packages) : Response
+    public function update(Request $request, Package $packages): Response
     {
         //
     }
@@ -59,12 +86,13 @@ class PackageController extends Controller
      * @param Package $packages
      * @return Response
      */
-    public function destroy(Package $packages) : Response
+    public function destroy(Package $packages): Response
     {
         //
     }
 
-    private function generateTrackingNumber() {
+    private function generateTrackingNumber()
+    {
         $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $length = rand(15, 15);
