@@ -23,7 +23,20 @@ export default function Login() {
         }))
     }
 
-    function handleLogin(event) {
+    function handleClientLogin(event) {
+        setSubmitLoading(true)
+        ClientAuthService.login(form)
+            .then(result => {
+                navigate('/account')
+            })
+            .catch(error => {
+                setError(Api.resolveError(error))
+                toast.error(Api.resolveError(error))
+            })
+            .finally(() => setSubmitLoading(false))
+    }
+
+    function handleEmployeeLogin(event) {
         setSubmitLoading(true)
         ClientAuthService.login(form)
             .then(result => {
@@ -54,8 +67,11 @@ export default function Login() {
                                 <Input.Password name='password' onChange={handleInput}/>
                             </Form.Item>
                             <Form.Item wrapperCol={{offset: 4, span:20}}>
-                                <Button loading={submitLoading} type={"primary"} onClick={handleLogin}>
-                                    Login
+                                <Button loading={submitLoading} type={"primary"} onClick={handleClientLogin}>
+                                    Login as client
+                                </Button>
+                                <Button loading={submitLoading} type={"primary"} onClick={handleEmployeeLogin}>
+                                    Login as employee
                                 </Button>
                             </Form.Item>
                         </Form>
