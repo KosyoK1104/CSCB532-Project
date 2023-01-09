@@ -56,18 +56,20 @@ final class EmployeeSessionProvider
 
     public function initialize(Request $request, Employee $employee) : array
     {
-
         $data = $this->generateSessionData($employee);
-        $request->session()->put(self::SESSION_KEY,);
+        $request->session()->put(self::SESSION_KEY, $data);
         Session::put(self::SESSION_KEY, $data);
         $this->session = Session::get(self::SESSION_KEY);
         return $data;
     }
 
-    public function getEmployee() : Employee
+    public function getEmployee(Request $request) : Employee
     {
         if (!is_null($this->session)) {
             return Employee::find($this->session['id']);
+        }
+        if (!is_null($request->session()->get(self::SESSION_KEY))){
+            return Employee::find($request->session()->get(self::SESSION_KEY)['id']);
         }
         throw new NotFoundHttpException('Invalid user');
     }

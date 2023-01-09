@@ -26,7 +26,7 @@ class EmployeeController extends Controller
 
     public function me(Request $request) : JsonResponse
     {
-        $employee = $this->employeeSession->getEmployee();
+        $employee = $this->employeeSession->getEmployee($request);
         $request->session()->regenerate();
         return response()->json(
             [
@@ -75,7 +75,7 @@ class EmployeeController extends Controller
             'repeat_password' => 'required|string|min::6|same:password',
         ]);
         $validated = $validator->validated();
-        $employee = $this->employeeSession->getEmployee();
+        $employee = $this->employeeSession->getEmployee($request);
         if (!Hash::check($validated['password'], $employee->password)) {
             throw new InvalidArgumentException('Provided previous password does not match with current!');
         }
