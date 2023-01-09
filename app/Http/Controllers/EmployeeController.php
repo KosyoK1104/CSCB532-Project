@@ -24,6 +24,18 @@ class EmployeeController extends Controller
     ) {
     }
 
+    public function me(Request $request) : JsonResponse
+    {
+        $employee = $this->employeeSession->getEmployee();
+        $request->session()->regenerate();
+        return response()->json(
+            [
+                'id'    => $employee->id,
+                'email' => $employee->email,
+            ]
+        );
+    }
+
     /**
      * @throws Throwable
      */
@@ -31,7 +43,7 @@ class EmployeeController extends Controller
     {
         $validator = Validator::make($request->request->all(), [
             'email'    => 'required|email|unique:employees',
-            'password' => new Password(6),
+            'password' => (new Password(6))->letters()->numbers(),
             'type'     => new Enum(EmployeeType::class),
         ]);
 
