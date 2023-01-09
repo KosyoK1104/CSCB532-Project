@@ -34,6 +34,16 @@ Route::middleware(AuthenticatedClient::class)->group(function () {
     Route::get('/clients/me', [ClientController::class, 'me']);
     Route::post('/clients/logout', [ClientController::class, 'logout']);
     Route::get('/clients/me/profile', [ClientProfileController::class, 'forMe']);
+    /*
+     * TODO implement these
+    Route::get('/clients/packages', [\App\Http\Controllers\PackageController::class, 'index']);
+    Route::post('/clients/packages', [\App\Http\Controllers\PackageController::class, 'create']);
+    Route::get('/clients/packages/{package}', [\App\Http\Controllers\PackageController::class, 'get']);
+    */
+
+    /*
+     * Route::get('/clients/offices);
+     */
 });
 
 Route::middleware(UnauthenticatedEmployee::class)->group(callback: function () {
@@ -42,10 +52,33 @@ Route::middleware(UnauthenticatedEmployee::class)->group(callback: function () {
 });
 
 Route::middleware(AuthenticatedEmployee::class)->group(function () {
-    Route::delete('/clients/{client}/delete', [ClientController::class, 'destroy']);
+    Route::get('/employees/me', [ClientController::class, 'me']);
     Route::post('/employees/logout', [EmployeeController::class, 'logout']);
     Route::post('/employees/password', [EmployeeController::class, 'changePassword']);
 
+    //Route::delete('/employees/clients/{client}', [ClientControllerForEmployee::class, 'destroy']);
+
+
+    /*
+     * TODO implement these
+    Route::get('/emoloyees/packages', [\App\Http\Controllers\PackageControllerForEmployee::class, 'index']);
+    Route::get('/emoloyees/packages/{package}', [\App\Http\Controllers\PackageControllerForEmployee::class, 'get']);
+    Route::get('/emoloyees/clients/{client}/packages', [\App\Http\Controllers\PackageControllerForEmployee::class, 'forClient']);
+    Route::get('/emoloyees/clients/{client}/packages/{package}', [\App\Http\Controllers\PackageControllerForEmployee::class, 'forClient']);
+    Route::get('/emoloyees/packages/{package}/receive', [\App\Http\Controllers\PackageControllerForEmployee::class, 'receive']);
+    Route::get('/emoloyees/packages/{package}/give', [\App\Http\Controllers\PackageControllerForEmployee::class, 'give']);
+    Route::get('/emoloyees/packages/{package}/in-office', [\App\Http\Controllers\PackageControllerForEmployee::class, 'inOffice']);
+    Route::get('/emoloyees/packages/{package}/in-warehouse', [\App\Http\Controllers\PackageControllerForEmployee::class, 'inWarehouse']);
+    */
+
+    /*
+     * TODO implement these
+     * Route::get('/employees/offices);
+     * Route::get('/employees/offices/{office});
+     * Route::post('/employees/offices);
+     * Route::put('/employees/offices/{office});
+     * Route::delete('/employees/offices/{offices});
+     */
 });
 
 
