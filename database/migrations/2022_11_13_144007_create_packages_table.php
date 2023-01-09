@@ -14,6 +14,26 @@ return new class extends Migration{
     {
         Schema::create('packages', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('tracking_number')->unique();
+            $table->uuid('office_id')->nullable();
+            $table->uuid('client_id')->nullable();
+            $table->foreign('office_id')->references('id')->on('offices')->restrictOnDelete()->restrictOnUpdate();
+            $table->foreign('client_id')->references('id')->on('clients')->restrictOnDelete()->restrictOnUpdate();
+            $table->string('delivery_type'); //this should be enum
+            $table->string('status');
+            $table->double('price')->unsigned();
+            $table->double('weight')->unsigned();
+
+            $table->string('recipient_name');
+            $table->string('recipient_phone_number')->nullable(false);
+            $table->string('recipient_address')->nullable();
+
+
+            $table->integer('created_at')->unsigned();
+            $table->integer('updated_at')->unsigned();
+
+
+
         });
     }
 
