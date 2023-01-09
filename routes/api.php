@@ -52,7 +52,7 @@ Route::middleware(UnauthenticatedEmployee::class)->group(callback: function () {
 });
 
 Route::middleware(AuthenticatedEmployee::class)->group(function () {
-    Route::get('/employees/me', [ClientController::class, 'me']);
+    Route::get('/employees/me', [EmployeeController::class, 'me']);
     Route::post('/employees/logout', [EmployeeController::class, 'logout']);
     Route::post('/employees/password', [EmployeeController::class, 'changePassword']);
 
