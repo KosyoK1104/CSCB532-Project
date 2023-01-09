@@ -6,8 +6,10 @@ namespace App\Http\Controllers;
 
 use App\Http\EmployeeSessionProvider;
 use App\Models\EmployeeProfile;
+use App\Models\EmployeeProfilePicture;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class EmployeeProfileController extends Controller
@@ -54,6 +56,29 @@ class EmployeeProfileController extends Controller
                 'phone_number' => $employee->employeeProfile()->phone_number,
             ]
         );
+    }
+
+    public function storeProfilePicture(Request $request) : JsonResponse
+    {
+        $employee = $this->employeeSessionProvider->getEmployee($request);
+
+        if ($request->file('file')) {
+            return response()->json();
+        }
+        $path = $request->file('file')->store('pictures');
+        if ($employee->employeeProfilePicture()->doesntExist()) {
+            $employeeProfilePicture = new EmployeeProfilePicture();
+            $employeeProfilePicture->employee_id = $employee->id;
+            $employee->path = $path;
+            $employeeProfilePicture->saveOrFail();
+        }
+        else {
+            $employeeProfilePicture = $employee->employeeProfilePicture()->getRelated();
+            $employeeProfilePicture->path = $path;
+            $employeeProfilePicture->updateOrFail();
+        }
+
+        return response()->json(['path' => Storage::url($path)]);
     }
 
 }

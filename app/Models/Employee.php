@@ -35,4 +35,10 @@ class Employee extends Model
     {
         return $this->hasOne(EmployeeProfile::class);
     }
+
+
+    public function employeeProfilePicture() : HasOne
+    {
+        return $this->hasOne(EmployeeProfilePicture::class);
+    }
 }

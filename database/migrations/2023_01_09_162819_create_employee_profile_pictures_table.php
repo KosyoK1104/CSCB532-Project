@@ -14,13 +14,12 @@ return new class extends Migration{
      */
     public function up() : void
     {
-        Schema::create('employee_profiles', function (Blueprint $table) {
-            $table->uuid('employee_id')->primary();
+        Schema::create('employee_profile_pictures', function (Blueprint $table) {
+            $table->uuid('employee_id');
             $table->foreign('employee_id')->references('id')->on('employees');
-            $table->string('name');
-            $table->string('phone_number');
+            $table->string('path');
             $table->integer('created_at');
-            $table->integer('updated_at');
+            $table->integer('uptadet_at');
         });
     }
 
@@ -31,6 +30,6 @@ return new class extends Migration{
      */
     public function down() : void
     {
-        Schema::dropIfExists('employee_profiles');
+        Schema::dropIfExists('employee_profile_pictures');
     }
 };
