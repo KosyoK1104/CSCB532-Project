@@ -21,15 +21,14 @@ export default function App() {
                 <BrowserRouter>
                     <Routes>
                         <Route path="" element={<AuthLayout/>}>
-                            <Route index element={<AuthHome/>}></Route>
-                            <Route path="register" element={<Register/>}></Route>
-                            <Route path="login" element={<Login/>}></Route>
+                            <Route index element={<AuthHome/>}/>
+                            <Route path="register" element={<Register/>}/>
+                            <Route path="login" element={<Login/>}/>
                         </Route>
                         <Route path="/account" element={<HomePage/>}>
                             <Route element={<AccountLayout/>}>
-                                <Route index element={<AccountHome/>}>
-                                </Route>
-                                <Route path="address" element={<Address/>}></Route>
+                                <Route index element={<AccountHome/>}/>
+                                <Route path="address" element={<Address/>}/>
                             </Route>
                         </Route>
                         <Route path="*" element={<NotFound/>}/>

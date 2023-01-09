@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import ClientAuthService from "../../services/ClientAuthService";
+import EmployeeAuthService from "../../services/EmployeeAuthService";
 import toast from "react-hot-toast";
 import Api from "../../services/Api";
 import {useDispatch} from "react-redux";
@@ -38,7 +39,7 @@ export default function Login() {
 
     function handleEmployeeLogin(event) {
         setSubmitLoading(true)
-        ClientAuthService.login(form)
+        EmployeeAuthService.login(form)
             .then(result => {
                 navigate('/account')
             })
@@ -70,6 +71,7 @@ export default function Login() {
                                 <Button loading={submitLoading} type={"primary"} onClick={handleClientLogin}>
                                     Login as client
                                 </Button>
+
                                 <Button loading={submitLoading} type={"primary"} onClick={handleEmployeeLogin}>
                                     Login as employee
                                 </Button>

@@ -1,8 +1,10 @@
 import {configureStore} from '@reduxjs/toolkit'
-import clientMeReducer from './clients/me'
+import meClientReducer from './clients/MeClient'
+import meEmployeeReducer from './emoloyees/MeEmployee'
 
 export default configureStore({
     reducer: {
-        clientMe: clientMeReducer
+        meClient: meClientReducer,
+        meEmployee: meEmployeeReducer
     }
 })

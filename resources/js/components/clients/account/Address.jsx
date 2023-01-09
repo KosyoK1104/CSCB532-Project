@@ -3,7 +3,7 @@ import {useSelector} from "react-redux";
 import Api from "../../../services/Api";
 
 export default function Address(props) {
-    const me = useSelector(state => state.clientMe.me)
+    const me = useSelector(state => state.meClient.me)
     let loading = true
     const [address, setAddress] = useState({
         id: null,

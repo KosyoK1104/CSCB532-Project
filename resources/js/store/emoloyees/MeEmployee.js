@@ -1,8 +1,8 @@
 import {createSlice} from '@reduxjs/toolkit'
-import Me from "../../services/MeClient"
+import Me from "../../services/MeEmployee"
 
 export const slice = createSlice({
-    name: 'me',
+    name: 'employeeMe',
     initialState: {
         me: Me.initialState(),
         isAuthenticated: false

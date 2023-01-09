@@ -2,10 +2,12 @@ import React from "react";
 import {BsPersonSquare} from "react-icons/bs";
 import {FaRegAddressBook, FiSettings, GiSettingsKnobs, SlLogout} from "react-icons/all";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
-import Me from "../../../services/MeClient";
-import {logout} from "../../../store/clients/MeClient";
+import Me from "../../../services/MeEmployee";
+import {logout} from "../../../store/employees/me";
 import toast from "react-hot-toast";
 import {useDispatch} from "react-redux";
+
+
 
 export default function AccountLayout(props) {
     const navigate = useNavigate()
@@ -37,12 +39,6 @@ export default function AccountLayout(props) {
                                     <span className="nav-icon">
                                         <BsPersonSquare/></span>
                                 My account
-                            </span>
-                        </li>
-                        <li className="nav-item cursor-pointer col-12">
-                            <span onClick={() => navigate('/account/address')} className={navLink('/account/address')}>
-                                <span className="nav-icon"><FaRegAddressBook/></span>
-                                Address
                             </span>
                         </li>
                         <li className="nav-item cursor-pointer col-12">

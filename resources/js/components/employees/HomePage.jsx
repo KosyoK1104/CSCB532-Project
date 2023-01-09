@@ -1,12 +1,12 @@
 import React, {useEffect} from "react"
-import Me from "../../services/MeClient";
+import Me from "../../services/MeEmployee";
 import toast from "react-hot-toast";
 import {Outlet, useNavigate} from "react-router-dom";
-import {logout, setMe} from "../../store/clients/MeClient";
+import {logout, setMe} from "../../store/employees/MeEmployee";
 import {useDispatch, useSelector} from "react-redux";
 
 export default function HomePage(props) {
-    const me = useSelector(state => state.meClient.me)
+    const me = useSelector(state => state.meEmployee.me)
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const load = () => {
@@ -40,7 +40,7 @@ export default function HomePage(props) {
                                 <span className="nav-link" onClick={() => navigate('/account')}>Account</span>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#">My packages</a>
+                                <a className="nav-link" href="#">All packages</a>
                             </li>
                         </ul>
                         <div className="ms-auto">
@@ -63,29 +63,3 @@ export default function HomePage(props) {
         </div>
     )
 }
-
-/*
-export class HomePage extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            me: ClientStore.getState().me.me,
-        }
-    }
-
-    componentDidMount() {
-        this.load()
-    }
-
-    handleLogout() {
-        Me.logout()
-            .catch((error) => toast.error(error.response.message))
-    }
-
-    render() {
-        return (
-
-        )
-    }
-}*/

@@ -1,5 +1,5 @@
 import {useDispatch} from "react-redux";
-import {setMe} from "../store/clients/me";
+import {setMe} from "../store/clients/MeClient";
 
 const requireLogin = (to, from, next) => {
     const me = store.getState().me
