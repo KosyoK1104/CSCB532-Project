@@ -8,8 +8,12 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * @property EmployeeType $type
+ */
 class Employee extends Model
 {
     use HasFactory, HasUuids;
@@ -25,5 +29,10 @@ class Employee extends Model
             get: fn($value) => $value,
             set: fn($value) => Hash::make($value)
         );
+    }
+
+    public function employeeProfile() : HasOne
+    {
+        return $this->hasOne(EmployeeProfile::class);
     }
 }

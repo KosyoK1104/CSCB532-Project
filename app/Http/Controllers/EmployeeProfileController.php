@@ -1,64 +1,59 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
+use App\Http\EmployeeSessionProvider;
 use App\Models\EmployeeProfile;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class EmployeeProfileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    public function __construct(
+        private readonly EmployeeSessionProvider $employeeSessionProvider
+    ) {
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    private function validateRequest(Request $request) : array
     {
-        //
+        $validator = Validator::make($request->request->all(), [
+            'name'         => 'required|min:4',
+            'phone_number' => 'required|min:4|max:4',
+        ]);
+
+        return $validator->validated();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\EmployeeProfile  $employeeProfile
-     * @return \Illuminate\Http\Response
-     */
-    public function show(EmployeeProfile $employeeProfile)
+    public function store(Request $request) : JsonResponse
     {
-        //
+        $validated = $this->validateRequest($request);
+        $employee = $this->employeeSessionProvider->getEmployee($request);
+        if ($employee->employeeProfile()->doesntExist()) {
+            $employeeProfile = new EmployeeProfile();
+            $employeeProfile->fill($validated);
+            $employeeProfile->employee_id = $employee->id;
+            $employeeProfile->saveOrFail();
+        }
+        else {
+            $employeeProfile = $employee->employeeProfile()->getRelated();
+            $employeeProfile->update($validated);
+            $employeeProfile->updateOrFail();
+        }
+        return response()->json();
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\EmployeeProfile  $employeeProfile
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, EmployeeProfile $employeeProfile)
+    public function get(Request $request) : JsonResponse
     {
-        //
+        $employee = $this->employeeSessionProvider->getEmployee($request);
+        return response()->json(
+            [
+                'name'         => $employee->employeeProfile()->name,
+                'phone_number' => $employee->employeeProfile()->phone_number,
+            ]
+        );
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\EmployeeProfile  $employeeProfile
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(EmployeeProfile $employeeProfile)
-    {
-        //
-    }
 }

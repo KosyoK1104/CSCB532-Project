@@ -32,6 +32,7 @@ class EmployeeController extends Controller
             [
                 'id'    => $employee->id,
                 'email' => $employee->email,
+                'type'  => $employee->type->value,
             ]
         );
     }

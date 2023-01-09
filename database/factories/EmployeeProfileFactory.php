@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
+use App\Models\EmployeeProfile;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\EmployeeProfile>
+ * @extends Factory<EmployeeProfile>
  */
 class EmployeeProfileFactory extends Factory
 {
@@ -14,10 +17,11 @@ class EmployeeProfileFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition() : array
     {
         return [
-            //
+            'name'         => $this->faker->name(),
+            'phone_number' => $this->faker->phoneNumber(),
         ];
     }
 }
