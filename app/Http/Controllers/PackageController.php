@@ -63,4 +63,15 @@ class PackageController extends Controller
     {
         //
     }
+
+    private function generateTrackingNumber() {
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $length = rand(15, 15);
+        $trackingNumber = '';
+        for ($i = 0; $i < $length; $i++) {
+            $trackingNumber .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $trackingNumber;
+    }
 }
