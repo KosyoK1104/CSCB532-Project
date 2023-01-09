@@ -1,5 +1,5 @@
 import React, {useEffect} from "react"
-import Me from "../../services/Me";
+import Me from "../../services/MeClient";
 import toast from "react-hot-toast";
 import {Outlet, useNavigate} from "react-router-dom";
 import {logout, setMe} from "../../store/clients/me";

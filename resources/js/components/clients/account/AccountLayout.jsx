@@ -2,7 +2,7 @@ import React from "react";
 import {BsPersonSquare} from "react-icons/bs";
 import {FaRegAddressBook, FiSettings, GiSettingsKnobs, SlLogout} from "react-icons/all";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
-import Me from "../../../services/Me";
+import Me from "../../../services/MeClient";
 import {logout} from "../../../store/clients/me";
 import toast from "react-hot-toast";
 import {useDispatch} from "react-redux";

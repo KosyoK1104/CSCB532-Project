@@ -1,5 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit'
-import Me from "../../services/Me"
+import Me from "../../services/MeClient"
 
 export const slice = createSlice({
     name: 'me',
