@@ -3,10 +3,9 @@ import {BsPersonSquare} from "react-icons/bs";
 import {FaRegAddressBook, FiSettings, GiSettingsKnobs, SlLogout} from "react-icons/all";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import Me from "../../../services/MeEmployee";
-import {logout} from "../../../store/employees/me";
+import {logout} from "../../../store/employees/MeEmployee";
 import toast from "react-hot-toast";
 import {useDispatch} from "react-redux";
-
 
 
 export default function AccountLayout(props) {
@@ -22,7 +21,7 @@ export default function AccountLayout(props) {
     let navLink = (path) => {
         let classes = ['nav-link']
         console.log(location)
-        if(path === location.pathname) {
+        if (path === location.pathname) {
             classes.push('active')
         }
         return classes.join(' ')

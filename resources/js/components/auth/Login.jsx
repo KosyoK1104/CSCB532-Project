@@ -28,7 +28,7 @@ export default function Login() {
         setSubmitLoading(true)
         ClientAuthService.login(form)
             .then(result => {
-                navigate('/account')
+                navigate('/client/account')
             })
             .catch(error => {
                 setError(Api.resolveError(error))
@@ -41,7 +41,7 @@ export default function Login() {
         setSubmitLoading(true)
         EmployeeAuthService.login(form)
             .then(result => {
-                navigate('/account')
+                navigate('/employee/account')
             })
             .catch(error => {
                 setError(Api.resolveError(error))

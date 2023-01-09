@@ -1,6 +1,6 @@
 import {configureStore} from '@reduxjs/toolkit'
 import meClientReducer from './clients/MeClient'
-import meEmployeeReducer from './emoloyees/MeEmployee'
+import meEmployeeReducer from './employees/MeEmployee'
 
 export default configureStore({
     reducer: {

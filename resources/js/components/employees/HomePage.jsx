@@ -12,6 +12,7 @@ export default function HomePage(props) {
     const load = () => {
         Me.me()
             .then((result) => {
+                console.log(result)
                 dispatch(setMe(result.me))
             })
             .catch(() => {
@@ -42,11 +43,14 @@ export default function HomePage(props) {
                             <li className="nav-item">
                                 <a className="nav-link" href="#">All packages</a>
                             </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="#">Clients</a>
+                            </li>
                         </ul>
                         <div className="ms-auto">
                             <div className="row">
                                 <div className="col">
-                                    <span>Hello, {me.username}!</span>
+                                    <span>Hello, {me.email}!</span>
                                 </div>
                             </div>
                             <div className="row">

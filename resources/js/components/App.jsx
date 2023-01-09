@@ -1,17 +1,25 @@
 import "./App.css"
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+
 import AuthLayout from "./auth/AuthLayout"
 import AuthHome from "./auth/AuthHome"
 import Register from "./auth/Register"
 import Login from "./auth/Login"
 import {Toaster} from "react-hot-toast";
 import NotFound from "./NotFound"
-import AccountLayout from "./clients/account/AccountLayout";
-import HomePage from "./clients/HomePage";
-import AccountHome from "./clients/account/AccountHome";
+
+import ClientHomePage from "./clients/HomePage";
+import ClientAccountLayout from "./clients/account/AccountLayout";
+import ClientAccountHome from "./clients/account/AccountHome";
+import ClientAddress from "./clients/account/Address";
+
+import EmployeeHomePage from "./employees/HomePage";
+import EmployeeAccountHome from "./employees/account/AccountHome";
+import EmployeeAccountLayout from "./employees/account/AccountLayout";
+
 import {Provider} from "react-redux";
 import store from "../store"
-import Address from "./clients/account/Address";
+
 import {ConfigProvider} from "antd";
 
 export default function App() {
@@ -25,12 +33,20 @@ export default function App() {
                             <Route path="register" element={<Register/>}/>
                             <Route path="login" element={<Login/>}/>
                         </Route>
-                        <Route path="/account" element={<HomePage/>}>
-                            <Route element={<AccountLayout/>}>
-                                <Route index element={<AccountHome/>}/>
-                                <Route path="address" element={<Address/>}/>
+
+                        <Route path="client" element={<ClientHomePage/>}>
+                            <Route path="account" element={<ClientAccountLayout/>}>
+                                <Route index element={<ClientAccountHome/>}/>
+                                <Route path="address" element={<ClientAddress/>}/>
                             </Route>
                         </Route>
+
+                        <Route path="employee" element={<EmployeeHomePage/>}>
+                            <Route path="account" element={<EmployeeAccountLayout/>}>
+                                <Route index element={<EmployeeAccountHome/>}/>
+                            </Route>
+                        </Route>
+
                         <Route path="*" element={<NotFound/>}/>
                     </Routes>
                     <Toaster/>
