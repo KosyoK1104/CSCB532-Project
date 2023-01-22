@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -14,8 +16,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
-        'passwords' => 'users',
+        'guard'     => 'clients',
+        'passwords' => 'clients',
     ],
 
     /*
@@ -36,9 +38,13 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
+        'clients'   => [
+            'driver'   => 'session',
+            'provider' => 'clients',
+        ],
+        'employees' => [
+            'driver'   => 'session',
+            'provider' => 'employees',
         ],
     ],
 
@@ -60,10 +66,14 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+        'clients'   => [
+            'driver'   => 'eloquent',
+            'model'    => App\Models\Client::class,
         ],
+        'employees' => [
+            'driver'   => 'eloquent',
+            'model'    => App\Models\Employee::class,
+        ]
 
         // 'users' => [
         //     'driver' => 'database',
@@ -89,8 +99,8 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
-            'table' => 'password_resets',
-            'expire' => 60,
+            'table'    => 'password_resets',
+            'expire'   => 60,
             'throttle' => 60,
         ],
     ],

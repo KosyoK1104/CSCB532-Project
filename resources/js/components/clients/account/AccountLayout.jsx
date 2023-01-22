@@ -32,15 +32,15 @@ export default function AccountLayout(props) {
                 <div className="col-12 col-lg-3">
                     <ul className="nav nav-pills">
                         <li className="nav-item cursor-pointer col-12">
-                            <span onClick={() => navigate('/account')}
-                                  className={navLink('/account')}>
+                            <span onClick={() => navigate('/client/account')}
+                                  className={navLink('/client/account')}>
                                     <span className="nav-icon">
                                         <BsPersonSquare/></span>
                                 My account
                             </span>
                         </li>
                         <li className="nav-item cursor-pointer col-12">
-                            <span onClick={() => navigate('/account/address')} className={navLink('/account/address')}>
+                            <span onClick={() => navigate('/client/account/address')} className={navLink('/client/account/address')}>
                                 <span className="nav-icon"><FaRegAddressBook/></span>
                                 Address
                             </span>

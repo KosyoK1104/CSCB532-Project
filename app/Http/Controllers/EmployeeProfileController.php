@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\EmployeeSessionProvider;
+use App\Models\Employee;
 use App\Models\EmployeeProfile;
 use App\Models\EmployeeProfilePicture;
 use Illuminate\Http\JsonResponse;
@@ -14,9 +14,10 @@ use Illuminate\Support\Facades\Validator;
 
 class EmployeeProfileController extends Controller
 {
-    public function __construct(
-        private readonly EmployeeSessionProvider $employeeSessionProvider
-    ) {
+
+    private function getEmployee() : Employee
+    {
+        return auth('employees')->user();
     }
 
     private function validateRequest(Request $request) : array
@@ -29,10 +30,13 @@ class EmployeeProfileController extends Controller
         return $validator->validated();
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function store(Request $request) : JsonResponse
     {
         $validated = $this->validateRequest($request);
-        $employee = $this->employeeSessionProvider->getEmployee($request);
+        $employee = $this->getEmployee();
         if ($employee->employeeProfile()->doesntExist()) {
             $employeeProfile = new EmployeeProfile();
             $employeeProfile->fill($validated);
@@ -47,20 +51,23 @@ class EmployeeProfileController extends Controller
         return response()->json();
     }
 
-    public function get(Request $request) : JsonResponse
+    public function get() : JsonResponse
     {
-        $employee = $this->employeeSessionProvider->getEmployee($request);
+        $employee = $this->getEmployee();
         return response()->json(
             [
-                'name'         => $employee->employeeProfile()->name,
-                'phone_number' => $employee->employeeProfile()->phone_number,
+                'name'         => $employee->employeeProfile()->getRelated()->name,
+                'phone_number' => $employee->employeeProfile()->getRelated()->phone_number,
             ]
         );
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function storeProfilePicture(Request $request) : JsonResponse
     {
-        $employee = $this->employeeSessionProvider->getEmployee($request);
+        $employee = $this->getEmployee();
 
         if ($request->file('file')) {
             return response()->json();

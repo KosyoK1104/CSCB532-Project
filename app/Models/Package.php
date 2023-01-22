@@ -18,10 +18,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $recipient_name
  * @property string $recipient_phone_number
  * @property string $recipient_address
- * @property integer $created_at
- * @property integer $updated_at
+ * @property int $created_at
+ * @property int $updated_at
  */
-
 class Package extends Model
 {
     use HasFactory, HasUuids;
@@ -33,9 +32,5 @@ class Package extends Model
     protected $casts = [
         'type' => DeliveryType::class,
     ];
-
-
-
-
 
 }

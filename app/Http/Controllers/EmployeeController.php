@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\EmployeeSessionProvider;
 use App\Models\Employee;
 use App\Models\EmployeeType;
 use Illuminate\Http\JsonResponse;
@@ -19,14 +18,18 @@ use Throwable;
 
 class EmployeeController extends Controller
 {
-    public function __construct(
-        private readonly EmployeeSessionProvider $employeeSession
-    ) {
+    public function __construct()
+    {
+    }
+
+    private function getEmployee() : Employee
+    {
+        return auth('employees')->user();
     }
 
     public function me(Request $request) : JsonResponse
     {
-        $employee = $this->employeeSession->getEmployee($request);
+        $employee = $this->getEmployee();
         $request->session()->regenerate();
         return response()->json(
             [
@@ -56,7 +59,7 @@ class EmployeeController extends Controller
 
     public function login(Request $request) : JsonResponse
     {
-        $employee = Employee::where('email', '=', $request->string('email'))->first();
+        $employee = (new \App\Models\Employee)->where('email', '=', $request->string('email'))->first();
         if (is_null($employee)) {
             throw new NotFoundHttpException('Invalid user');
         }
@@ -64,8 +67,8 @@ class EmployeeController extends Controller
             throw new NotFoundHttpException('Invalid user');
         }
 
-        $data = $this->employeeSession->initialize($request, $employee);
-        return response()->json(['data' => $data]);
+        auth('employees')->login($employee);
+        return response()->json(['data' => ['id' => $employee->id]]);
     }
 
     public function changePassword(Request $request) : JsonResponse
@@ -76,17 +79,20 @@ class EmployeeController extends Controller
             'repeat_password' => 'required|string|min::6|same:password',
         ]);
         $validated = $validator->validated();
-        $employee = $this->employeeSession->getEmployee($request);
+
+        $employee = $this->getEmployee();
+
         if (!Hash::check($validated['password'], $employee->password)) {
             throw new InvalidArgumentException('Provided previous password does not match with current!');
         }
+
         $employee->password = $validated['password'];
         return response()->json();
     }
 
-    public function logout(Request $request) : JsonResponse
+    public function logout() : JsonResponse
     {
-        $this->employeeSession->destroy($request);
+        auth('employees')->logout();
         return response()->json();
     }
 }

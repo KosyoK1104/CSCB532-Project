@@ -10,9 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @mixin Builder
@@ -24,10 +22,10 @@ use Laravel\Sanctum\HasApiTokens;
  */
 class Client extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, HasUuids;
+    use HasFactory, HasUuids;
 
     protected $fillable = ['email', 'username', 'password'];
-    protected $hidden = ['password', 'email_verified_at'];
+    protected $hidden = ['password'];
     protected $dateFormat = 'U';
 
     protected function password() : Attribute

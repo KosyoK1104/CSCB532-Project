@@ -1,6 +1,6 @@
 import React from "react";
 import {BsPersonSquare} from "react-icons/bs";
-import {FaRegAddressBook, FiSettings, GiSettingsKnobs, SlLogout} from "react-icons/all";
+import {FiSettings, GiSettingsKnobs, SlLogout} from "react-icons/all";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import Me from "../../../services/MeEmployee";
 import {logout} from "../../../store/employees/MeEmployee";
@@ -21,7 +21,7 @@ export default function AccountLayout(props) {
     let navLink = (path) => {
         let classes = ['nav-link']
         console.log(location)
-        if (path === location.pathname) {
+        if(path === location.pathname) {
             classes.push('active')
         }
         return classes.join(' ')
@@ -33,8 +33,8 @@ export default function AccountLayout(props) {
                 <div className="col-12 col-lg-3">
                     <ul className="nav nav-pills">
                         <li className="nav-item cursor-pointer col-12">
-                            <span onClick={() => navigate('/account')}
-                                  className={navLink('/account')}>
+                            <span onClick={() => navigate('/employee/account')}
+                                  className={navLink('/emoloyee/account')}>
                                     <span className="nav-icon">
                                         <BsPersonSquare/></span>
                                 My account

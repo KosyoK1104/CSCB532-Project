@@ -8,7 +8,6 @@ use App\Models\Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -18,11 +17,14 @@ use function response;
 
 final class ClientController extends Controller
 {
-    public function me(Request $request) : JsonResponse
+    private function getClient() : Client
     {
-        $clientSession = $request->session()->get('cl');
-        $client = Client::find($clientSession['id']);
-        $request->session()->regenerate();
+        return auth('clients')->user();
+    }
+
+    public function me() : JsonResponse
+    {
+        $client = $this->getClient();
         return response()->json(
             [
                 'id'       => $client->id,
@@ -40,7 +42,7 @@ final class ClientController extends Controller
 
     public function login(Request $request) : JsonResponse
     {
-        $client = Client::where('email', '=', $request->string('email'))->first();
+        $client = (new \App\Models\Client)->where('email', '=', $request->string('email'))->first();
         if (is_null($client)) {
             throw new NotFoundHttpException('Invalid user');
         }
@@ -48,20 +50,19 @@ final class ClientController extends Controller
             throw new NotFoundHttpException('Invalid user');
         }
 
-        $data = ['id' => $client->id];
-        $request->session()->put('cl', $data);
-        return response()->json(['data' => $data]);
+        auth('clients')->login($client);
+        return response()->json(['data' => ['id' => $client->id]]);
     }
 
-    public function logout(Request $request) : JsonResponse
+    public function logout() : JsonResponse
     {
-        Session::remove('cl');
-        $request->session()->remove('cl');
+        auth('clients')->logout();
         return response()->json();
     }
 
     /**
      * Store a newly created resource in storage.
+     * @throws Throwable
      */
     public function store(Request $request) : JsonResponse
     {

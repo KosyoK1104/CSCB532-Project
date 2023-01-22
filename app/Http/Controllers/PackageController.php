@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\EmployeeType;
 use App\Models\Package;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\Enum;
-use Illuminate\Validation\Rules\Password;
 
 class PackageController extends Controller
 {
@@ -28,7 +25,7 @@ class PackageController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return ?Response
+     * @return array
      */
     public function validateRequest(Request $request): array
     {
@@ -45,6 +42,9 @@ class PackageController extends Controller
         return $validator->validated();
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function store(Request $request): JsonResponse
     {
         $validatedRequest = $this->validateRequest($request);
@@ -91,14 +91,17 @@ class PackageController extends Controller
         //
     }
 
-    private function generateTrackingNumber()
+    /**
+     * @throws \Exception
+     */
+    private function generateTrackingNumber() : string
     {
         $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
-        $length = rand(15, 15);
+        $length = random_int(15, 15);
         $trackingNumber = '';
         for ($i = 0; $i < $length; $i++) {
-            $trackingNumber .= $characters[rand(0, $charactersLength - 1)];
+            $trackingNumber .= $characters[random_int(0, $charactersLength - 1)];
         }
         return $trackingNumber;
     }

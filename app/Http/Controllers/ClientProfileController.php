@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Validator;
 
 final class ClientProfileController extends Controller
 {
+    private function getClient() : Client
+    {
+        return auth('clients')->user();
+    }
+
     private function validatedRequest(Request $request) : array
     {
         $validator = Validator::make($request->request->all(), [
@@ -24,17 +29,9 @@ final class ClientProfileController extends Controller
         return $validator->validated();
     }
 
-    private function getClientFromRequest(Request $request) : Client
+    public function forMe() : JsonResponse
     {
-        $clientSession = $request->session()->get('cl');
-        $client = Client::find($clientSession['id']);
-        $request->session()->regenerate();
-        return $client;
-    }
-
-    public function forMe(Request $request) : JsonResponse
-    {
-        $client = $this->getClientFromRequest($request);
+        $client = $this->getClient();
 
         $clientProfile = $client->clientProfile()->first();
         return response()->json(
@@ -55,7 +52,7 @@ final class ClientProfileController extends Controller
 
     public function create(Request $request) : JsonResponse
     {
-        $client = $this->getClientFromRequest($request);
+        $client = $this->getClient();
 
         $validated = $this->validatedRequest($request);
 
@@ -67,7 +64,7 @@ final class ClientProfileController extends Controller
 
     public function update(Request $request) : JsonResponse
     {
-        $client = $this->getClientFromRequest($request);
+        $client = $this->getClient();
 
         $validated = $this->validatedRequest($request);
 
