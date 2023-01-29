@@ -1,11 +1,12 @@
 import React from "react";
 import {BsPersonSquare} from "react-icons/bs";
-import {FiSettings, GiSettingsKnobs, SlLogout} from "react-icons/all";
+import {FiSettings, SlLogout} from "react-icons/all";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import Me from "../../../services/MeEmployee";
 import {logout} from "../../../store/employees/MeEmployee";
 import toast from "react-hot-toast";
 import {useDispatch} from "react-redux";
+import LoaderProvider from "../../../components/LoaderProvider";
 
 
 export default function AccountLayout(props) {
@@ -41,16 +42,12 @@ export default function AccountLayout(props) {
                             </span>
                         </li>
                         <li className="nav-item cursor-pointer col-12">
-                            <a href="#" className="nav-link">
-                                <span className="nav-icon"><GiSettingsKnobs/></span>
-                                Preferences
-                            </a>
-                        </li>
-                        <li className="nav-item cursor-pointer col-12">
-                            <a href="#" className="nav-link">
-                                <span className="nav-icon"><FiSettings/></span>
+                            <span onClick={() => navigate('/employee/account/settings')}
+                                  className={navLink('/emoloyee/account/settings')}>
+                                    <span className="nav-icon">
+                                        <FiSettings/></span>
                                 Settings
-                            </a>
+                            </span>
                         </li>
                         <li className="nav-item cursor-pointer col-12">
                             <span onClick={handleLogout} className="nav-link">
@@ -61,7 +58,9 @@ export default function AccountLayout(props) {
                     </ul>
                 </div>
                 <div className="col-12 col-lg-9 mt-3 mt-lg-0">
-                    <Outlet/>
+                    <LoaderProvider>
+                        <Outlet/>
+                    </LoaderProvider>
                 </div>
             </div>
         </div>

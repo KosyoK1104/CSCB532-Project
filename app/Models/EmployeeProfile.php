@@ -10,10 +10,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property string $employee_id
+ * @property ?string $name
+ * @property ?string $phone_number
+ * @property ?string $profile_picture
  */
 class EmployeeProfile extends Model
 {
     use HasFactory;
+
+    protected $primaryKey = 'employee_id';
 
     protected $fillable = [
         'name',

@@ -43,4 +43,9 @@ class Employee extends Authenticatable
     {
         return $this->hasOne(EmployeeProfilePicture::class);
     }
+
+    public function isAdmin() : bool
+    {
+        return $this->type === EmployeeType::ADMIN;
+    }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientProfileController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EmployeeProfileController;
 use App\Http\Middleware\AuthenticatedClient;
 use App\Http\Middleware\AuthenticatedEmployee;
 use App\Http\Middleware\UnauthenticatedClient;
@@ -40,7 +41,6 @@ Route::middleware(AuthenticatedClient::class)->group(function () {
     Route::post('/clients/packages', [\App\Http\Controllers\PackageController::class, 'create']);
     Route::get('/clients/packages/{package}', [\App\Http\Controllers\PackageController::class, 'get']);
     */
-
     /*
      * Route::get('/clients/offices);
      */
@@ -55,9 +55,12 @@ Route::middleware(AuthenticatedEmployee::class)->group(function () {
     Route::get('/employees/me', [EmployeeController::class, 'me']);
     Route::post('/employees/logout', [EmployeeController::class, 'logout']);
     Route::post('/employees/password', [EmployeeController::class, 'changePassword']);
+    Route::get('/employees/me/profile', [EmployeeProfileController::class, 'forMe']);
+    Route::put('/employees/me/profile', [EmployeeProfileController::class, 'store']);
+    Route::post('/employees/me/profile-picture', [EmployeeProfileController::class, 'setProfilePicture']);
+    Route::delete('/employees/me/profile-picture', [EmployeeProfileController::class, 'removeProfilePicture']);
 
     //Route::delete('/employees/clients/{client}', [ClientControllerForEmployee::class, 'destroy']);
-
 
     /*
      * TODO implement these
@@ -70,7 +73,6 @@ Route::middleware(AuthenticatedEmployee::class)->group(function () {
     Route::get('/emoloyees/packages/{package}/in-office', [\App\Http\Controllers\PackageControllerForEmployee::class, 'inOffice']);
     Route::get('/emoloyees/packages/{package}/in-warehouse', [\App\Http\Controllers\PackageControllerForEmployee::class, 'inWarehouse']);
     */
-
     /*
      * TODO implement these
      * Route::get('/employees/offices);
@@ -81,5 +83,6 @@ Route::middleware(AuthenticatedEmployee::class)->group(function () {
      */
 });
 
-
-
+Route::match(['get', 'post', 'put', 'delete'], '/{any}', function () {
+    return response()->json(['message' => 'Not found'], 404);
+})->where('any', '.*');

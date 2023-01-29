@@ -6,14 +6,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use App\Models\EmployeeProfile;
-use App\Models\EmployeeProfilePicture;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Throwable;
 
 class EmployeeProfileController extends Controller
 {
+    protected function getProfile() : EmployeeProfile
+    {
+        return $this->getEmployee()->employeeProfile()->getResults();
+    }
 
     private function getEmployee() : Employee
     {
@@ -24,14 +28,14 @@ class EmployeeProfileController extends Controller
     {
         $validator = Validator::make($request->request->all(), [
             'name'         => 'required|min:4',
-            'phone_number' => 'required|min:4|max:4',
+            'phone_number' => 'required|min:10',
         ]);
 
         return $validator->validated();
     }
 
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function store(Request $request) : JsonResponse
     {
@@ -44,48 +48,57 @@ class EmployeeProfileController extends Controller
             $employeeProfile->saveOrFail();
         }
         else {
-            $employeeProfile = $employee->employeeProfile()->getRelated();
-            $employeeProfile->update($validated);
+            $employeeProfile = $this->getProfile();
+            $employeeProfile->fill($validated);
             $employeeProfile->updateOrFail();
         }
         return response()->json();
     }
 
-    public function get() : JsonResponse
+    public function forMe() : JsonResponse
     {
-        $employee = $this->getEmployee();
+        $employeeProfile = $this->getProfile();
+
         return response()->json(
             [
-                'name'         => $employee->employeeProfile()->getRelated()->name,
-                'phone_number' => $employee->employeeProfile()->getRelated()->phone_number,
+                'name'            => $employeeProfile->name,
+                'phone_number'    => $employeeProfile->phone_number,
+                'profile_picture' => Storage::url($employeeProfile->profile_picture ?? 'default-profile-picture.png'),
             ]
         );
     }
 
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
-    public function storeProfilePicture(Request $request) : JsonResponse
+    public function setProfilePicture(Request $request) : JsonResponse
     {
-        $employee = $this->getEmployee();
+        $validator = Validator::make($request->allFiles(), [
+            'profile_picture' => 'required|image',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+        $employeeProfile = $this->getProfile();
+        $previousProfilePicture = $employeeProfile->profile_picture;
+        if ($previousProfilePicture !== null) {
+            Storage::delete($previousProfilePicture);
+        }
+        $employeeProfile->profile_picture = $request->file('profile_picture')?->store('profile_pictures');
+        $employeeProfile->updateOrFail();
+        return response()->json();
+    }
 
-        if ($request->file('file')) {
-            return response()->json();
-        }
-        $path = $request->file('file')->store('pictures');
-        if ($employee->employeeProfilePicture()->doesntExist()) {
-            $employeeProfilePicture = new EmployeeProfilePicture();
-            $employeeProfilePicture->employee_id = $employee->id;
-            $employee->path = $path;
-            $employeeProfilePicture->saveOrFail();
-        }
-        else {
-            $employeeProfilePicture = $employee->employeeProfilePicture()->getRelated();
-            $employeeProfilePicture->path = $path;
-            $employeeProfilePicture->updateOrFail();
-        }
-
-        return response()->json(['path' => Storage::url($path)]);
+    /**
+     * @throws Throwable
+     */
+    public function removeProfilePicture() : JsonResponse
+    {
+        $employeeProfile = $this->getProfile();
+        Storage::delete($employeeProfile->profile_picture);
+        $employeeProfile->profile_picture = null;
+        $employeeProfile->updateOrFail();
+        return response()->json();
     }
 
 }

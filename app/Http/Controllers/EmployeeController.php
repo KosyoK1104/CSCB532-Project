@@ -59,7 +59,7 @@ class EmployeeController extends Controller
 
     public function login(Request $request) : JsonResponse
     {
-        $employee = (new \App\Models\Employee)->where('email', '=', $request->string('email'))->first();
+        $employee = (new Employee)->where('email', '=', $request->string('email'))->first();
         if (is_null($employee)) {
             throw new NotFoundHttpException('Invalid user');
         }

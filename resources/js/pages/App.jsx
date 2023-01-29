@@ -21,6 +21,11 @@ import {Provider} from "react-redux";
 import store from "../store"
 
 import {ConfigProvider} from "antd";
+import OfficeRoot from "./employees/offices/OfficeRoot";
+import OfficeListing from "./employees/offices/view/OfficeListing";
+import CreateOffice from "./employees/offices/view/CreateOffice";
+import OfficeView from "./employees/offices/view/OfficeView";
+import AccountSettings from "./employees/account/AccountSettings";
 
 export default function App() {
     return (
@@ -44,6 +49,12 @@ export default function App() {
                         <Route path="employee" element={<EmployeeHomePage/>}>
                             <Route path="account" element={<EmployeeAccountLayout/>}>
                                 <Route index element={<EmployeeAccountHome/>}/>
+                                <Route path="settings" element={<AccountSettings/>}/>
+                            </Route>
+                            <Route path="offices" element={<OfficeRoot/>}>
+                                <Route index element={<OfficeListing/>}/>
+                                <Route path="create" element={<CreateOffice/>}/>
+                                <Route path=":id" element={<OfficeView/>}/>
                             </Route>
                         </Route>
 

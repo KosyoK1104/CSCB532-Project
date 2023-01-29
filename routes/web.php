@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//get file url
+Route::get('/storage/{path}', function (\Symfony\Component\HttpFoundation\Request $request){
+    $path = $request->path();
+    $path = str_replace('storage/', '', $path);
+    return Storage::get($path);
+})->where('path', '.*');
+
 Route::get('{any}', function () {
     return view('index');
 })->where('any', '.*');

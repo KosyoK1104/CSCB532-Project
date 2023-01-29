@@ -1,10 +1,14 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 import {useNavigate} from "react-router-dom";
+import store from "../store";
+import {loading_plus, loading_minus} from "../store/loading";
+
 function withInterceptor() {
     const instance = axios.create()
-
+    store.dispatch(loading_plus())
     instance.interceptors.response.use(function(response) {
+        store.dispatch(loading_minus())
         return response
     }, function(error) {
         console.log(error)
@@ -20,7 +24,7 @@ function withInterceptor() {
             toast.error('Unexpected error')
             return
         }
-
+        store.dispatch(loading_minus())
         return Promise.reject(error)
     })
 
@@ -28,16 +32,30 @@ function withInterceptor() {
 }
 
 export default {
+    formatQueryParams(params = {}, page = null) {
+        let queryParams = ''
 
+        if(page) {
+            queryParams += 'page=' + page
+        }
 
-    get: function(endpoint = '') {
-        return withInterceptor().get(endpoint)
+        for(let key in params) {
+            if(params[key]) {
+                queryParams += '&' + key + '=' + params[key]
+            }
+        }
+
+        return queryParams
     },
-    post: function(endpoint = '', data = {}) {
-        return withInterceptor().post(endpoint, data)
+
+    get: function(endpoint = '', config = {}) {
+        return withInterceptor().get(endpoint, config)
     },
-    put: function(endpoint = '', data = {}) {
-        return withInterceptor().put(endpoint, data)
+    post: function(endpoint = '', data = {}, config = {}) {
+        return withInterceptor().post(endpoint, data, config)
+    },
+    put: function(endpoint = '', data = {}, config = {}) {
+        return withInterceptor().put(endpoint, data, config)
     },
     delete: function(endpoint = '', data = {}) {
         return withInterceptor().delete(endpoint, data)

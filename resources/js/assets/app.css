@@ -16,3 +16,7 @@ body{
 .nav-icon{
     margin-right: 10px;
 }
+
+.display-hidden {
+    display: none;
+}
