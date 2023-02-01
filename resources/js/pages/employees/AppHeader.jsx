@@ -12,14 +12,22 @@ const AppHeader = ({me, handleLogout}) => {
                             <span className="nav-link" onClick={() => navigate('/employee/account')}>Account</span>
                         </li>
                         <li className="nav-item cursor-pointer">
-                            <span className="nav-link" href="#">All packages</span>
+                            <span className="nav-link" >All packages</span>
                         </li>
                         <li className="nav-item cursor-pointer">
-                            <span className="nav-link" href="#">Clients</span>
+                            <span className="nav-link" >Clients</span>
                         </li>
                         <li className="nav-item cursor-pointer">
                             <span className="nav-link" onClick={() => navigate('/employee/offices')}>Offices</span>
                         </li>
+                        {
+                            me.type === 'admin' && (
+                                <li className="nav-item cursor-pointer">
+                                <span className="nav-link"
+                                      onClick={() => navigate('/employee/employees')}>Employees</span>
+                                </li>
+                            )
+                        }
                     </ul>
                     <div className="ms-auto">
                         <div className="row">

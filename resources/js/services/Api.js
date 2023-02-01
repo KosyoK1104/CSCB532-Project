@@ -1,8 +1,7 @@
 import axios from "axios";
 import toast from "react-hot-toast";
-import {useNavigate} from "react-router-dom";
 import store from "../store";
-import {loading_plus, loading_minus} from "../store/loading";
+import {loading_minus, loading_plus} from "../store/loading";
 
 function withInterceptor() {
     const instance = axios.create()
@@ -11,15 +10,17 @@ function withInterceptor() {
         store.dispatch(loading_minus())
         return response
     }, function(error) {
-        console.log(error)
+        store.dispatch(loading_minus())
         if(error.response.status === 401) {
             toast.error('Unauthenticated!')
             // history.push('/login')
-            let navigate = useNavigate()
-            navigate('/login')
+            window.location.href = '/login'
             // window.location = '/login'
         }
-
+        if(error.response.status === 403) {
+            toast.error('Unauthorized!')
+            window.location.href = '/employee/account'
+        }
         if(error.response.status >= 500 && error.response.status <= 599) {
             toast.error('Unexpected error')
             return

@@ -25,7 +25,7 @@ export default function AccountHome() {
                     <h5 className="card-title">
                         My account
                     </h5>
-                    <div className="card-text">
+                    <div className="card-body">
                         <div className="row">
                             <div className="col-md-4">
                                 <img src={employee.profile_picture} alt="Profile picture" className="rounded img"/>

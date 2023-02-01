@@ -1,6 +1,6 @@
 import {Outlet} from "react-router-dom";
 
-const OfficeRoot = () => {
+const EmployeeRoot = () => {
     return (
         <>
             <Outlet/>
@@ -8,4 +8,4 @@ const OfficeRoot = () => {
     )
 }
 
-export default OfficeRoot
+export default EmployeeRoot;

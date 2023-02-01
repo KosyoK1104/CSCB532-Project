@@ -1,5 +1,10 @@
 .card-header{
-    background-color: #ffffff !important;
+    background-color: inherit;
     border-bottom: 0;
     padding: 20px 20px 0 20px;
+}
+
+.card-footer{
+    background-color: inherit;
+    border-top: 0;
 }

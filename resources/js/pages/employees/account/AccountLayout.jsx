@@ -9,7 +9,7 @@ import {useDispatch} from "react-redux";
 import LoaderProvider from "../../../components/LoaderProvider";
 
 
-export default function AccountLayout(props) {
+export default function AccountLayout() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const location = useLocation()
@@ -21,7 +21,6 @@ export default function AccountLayout(props) {
 
     let navLink = (path) => {
         let classes = ['nav-link']
-        console.log(location)
         if(path === location.pathname) {
             classes.push('active')
         }
@@ -47,6 +46,14 @@ export default function AccountLayout(props) {
                                     <span className="nav-icon">
                                         <FiSettings/></span>
                                 Settings
+                            </span>
+                        </li>
+                        <li className="nav-item cursor-pointer col-12">
+                            <span onClick={() => navigate('/employee/account/change-password')}
+                                  className={navLink('/emoloyee/account/change-password')}>
+                                    <span className="nav-icon">
+                                        <FiSettings/></span>
+                                Change password
                             </span>
                         </li>
                         <li className="nav-item cursor-pointer col-12">

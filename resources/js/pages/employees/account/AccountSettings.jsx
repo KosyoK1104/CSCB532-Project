@@ -96,20 +96,22 @@ const AccountSettings = () => {
                             </div>
                             <div className="col-md-6 col-12">
                                 <form onSubmit={handleSubmitProfilePicture} encType="multipart/form-data">
-                                    <img className="profile-picture" src={user.profile_picture} alt="Profile picture"/>
+                                    <img className="profile-picture img-fluid" src={user.profile_picture} alt="Profile picture"/>
                                     <div className="form-group">
                                         <label htmlFor="profile_picture"></label>
                                         <input type={"file"} name="profile_picture" onChange={handleImageChange}
                                                multiple={false} id="profile-picture"
+                                               className="form-control"
                                                accept={acceptedImageTypes.join(', ')}/>
                                     </div>
-                                    <button type="submit" className="btn btn-primary mt-3">Save</button>
-                                    {user.profile_picture === DEFAULT_PROFILE_PICTURE ? '' :
-                                        <button className="btn btn-primary mt-3"
-                                                onClick={handleDeleteProfilePicture}>Delete
-                                        </button>}
+                                    <div className="d-flex gap-2">
+                                        <button type="submit" className="btn btn-primary mt-3">Save</button>
+                                        {user.profile_picture === DEFAULT_PROFILE_PICTURE ? '' :
+                                            <button className="btn btn-primary mt-3"
+                                                    onClick={handleDeleteProfilePicture}>Delete
+                                            </button>}
+                                    </div>
                                 </form>
-
                             </div>
                         </div>
                     </div>

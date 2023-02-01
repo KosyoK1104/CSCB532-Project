@@ -12,13 +12,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
 
 /**
+ * @propery string $id
  * @property EmployeeType $type
+ * @property string $email
  */
 class Employee extends Authenticatable
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['email', 'username', 'password', 'employee_type'];
+    protected $fillable = ['email', 'username', 'password', 'type'];
     protected $hidden = ['password'];
 
     protected $casts = [
@@ -37,11 +39,6 @@ class Employee extends Authenticatable
     public function employeeProfile() : HasOne
     {
         return $this->hasOne(EmployeeProfile::class);
-    }
-
-    public function employeeProfilePicture() : HasOne
-    {
-        return $this->hasOne(EmployeeProfilePicture::class);
     }
 
     public function isAdmin() : bool

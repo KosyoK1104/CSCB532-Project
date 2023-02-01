@@ -26,6 +26,13 @@ import OfficeListing from "./employees/offices/view/OfficeListing";
 import CreateOffice from "./employees/offices/view/CreateOffice";
 import OfficeView from "./employees/offices/view/OfficeView";
 import AccountSettings from "./employees/account/AccountSettings";
+import EmployeeRoot from "./employees/employees/EmployeeRoot";
+import EmployeesListing from "./employees/employees/EmployeesListing";
+import EmployeeLayout from "./employees/employees/view/EmployeeLayout";
+import EmployeeHome from "./employees/employees/view/EmployeeHome";
+import UpdateEmployee from "./employees/employees/view/UpdateEmployee";
+import CreateEmployee from "./employees/employees/CreateEmployee";
+import ChangePassword from "./employees/account/ChangePassword";
 
 export default function App() {
     return (
@@ -50,6 +57,15 @@ export default function App() {
                             <Route path="account" element={<EmployeeAccountLayout/>}>
                                 <Route index element={<EmployeeAccountHome/>}/>
                                 <Route path="settings" element={<AccountSettings/>}/>
+                                <Route path="change-password" element={<ChangePassword/>}/>
+                            </Route>
+                            <Route path="employees" element={<EmployeeRoot/>}>
+                                <Route index element={<EmployeesListing/>}/>
+                                <Route path="create" element={<CreateEmployee/>}/>
+                                <Route path=":id" element={<EmployeeLayout/>}>
+                                    <Route index element={<EmployeeHome/>}/>
+                                    <Route path="update" element={<UpdateEmployee/>}/>
+                                </Route>
                             </Route>
                             <Route path="offices" element={<OfficeRoot/>}>
                                 <Route index element={<OfficeListing/>}/>

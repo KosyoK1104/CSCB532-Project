@@ -6,6 +6,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ClientProfileController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeProfileController;
+use App\Http\Middleware\AdminAuthenticatedEmployee;
 use App\Http\Middleware\AuthenticatedClient;
 use App\Http\Middleware\AuthenticatedEmployee;
 use App\Http\Middleware\UnauthenticatedClient;
@@ -54,11 +55,18 @@ Route::middleware(UnauthenticatedEmployee::class)->group(callback: function () {
 Route::middleware(AuthenticatedEmployee::class)->group(function () {
     Route::get('/employees/me', [EmployeeController::class, 'me']);
     Route::post('/employees/logout', [EmployeeController::class, 'logout']);
-    Route::post('/employees/password', [EmployeeController::class, 'changePassword']);
+    Route::post('/employees/me/change-password', [EmployeeController::class, 'changePassword']);
     Route::get('/employees/me/profile', [EmployeeProfileController::class, 'forMe']);
     Route::put('/employees/me/profile', [EmployeeProfileController::class, 'store']);
     Route::post('/employees/me/profile-picture', [EmployeeProfileController::class, 'setProfilePicture']);
     Route::delete('/employees/me/profile-picture', [EmployeeProfileController::class, 'removeProfilePicture']);
+
+    Route::middleware(AdminAuthenticatedEmployee::class)->group(function () {
+        Route::get('/employees/employees', [EmployeeController::class, 'listing']);
+        Route::get('/employees/employees/{employee}', [EmployeeController::class, 'get']);
+        Route::put('/employees/employees/{employee}', [EmployeeController::class, 'update']);
+        Route::post('/employees/employees', [EmployeeController::class, 'create']);
+    });
 
     //Route::delete('/employees/clients/{client}', [ClientControllerForEmployee::class, 'destroy']);
 
