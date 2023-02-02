@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,10 @@ Route::get('/storage/{path}', function (\Symfony\Component\HttpFoundation\Reques
     return Storage::get($path);
 })->where('path', '.*');
 
-Route::get('{any}', function () {
+//Route::get('/', function () {
+//    dd("asddwadwad");
+//});
+
+Route::get('/{any}', function () {
     return view('index');
 })->where('any', '.*');
