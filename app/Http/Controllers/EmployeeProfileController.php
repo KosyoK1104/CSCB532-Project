@@ -14,12 +14,12 @@ use Throwable;
 
 class EmployeeProfileController extends Controller
 {
-    protected function getProfile() : EmployeeProfile
+    protected function profile() : EmployeeProfile
     {
-        return $this->getEmployee()->employeeProfile()->getResults();
+        return $this->employee()->employeeProfile()->getResults();
     }
 
-    private function getEmployee() : Employee
+    private function employee() : Employee
     {
         return auth('employees')->user();
     }
@@ -40,7 +40,7 @@ class EmployeeProfileController extends Controller
     public function store(Request $request) : JsonResponse
     {
         $validated = $this->validateRequest($request);
-        $employee = $this->getEmployee();
+        $employee = $this->employee();
         if ($employee->employeeProfile()->doesntExist()) {
             $employeeProfile = new EmployeeProfile();
             $employeeProfile->fill($validated);
@@ -48,7 +48,7 @@ class EmployeeProfileController extends Controller
             $employeeProfile->saveOrFail();
         }
         else {
-            $employeeProfile = $this->getProfile();
+            $employeeProfile = $this->profile();
             $employeeProfile->fill($validated);
             $employeeProfile->updateOrFail();
         }
@@ -57,7 +57,7 @@ class EmployeeProfileController extends Controller
 
     public function forMe() : JsonResponse
     {
-        $employeeProfile = $this->getProfile();
+        $employeeProfile = $this->profile();
 
         return response()->json(
             [
@@ -79,7 +79,7 @@ class EmployeeProfileController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        $employeeProfile = $this->getProfile();
+        $employeeProfile = $this->profile();
         $previousProfilePicture = $employeeProfile->profile_picture;
         if ($previousProfilePicture !== null) {
             Storage::delete($previousProfilePicture);
@@ -94,7 +94,7 @@ class EmployeeProfileController extends Controller
      */
     public function removeProfilePicture() : JsonResponse
     {
-        $employeeProfile = $this->getProfile();
+        $employeeProfile = $this->profile();
         Storage::delete($employeeProfile->profile_picture);
         $employeeProfile->profile_picture = null;
         $employeeProfile->updateOrFail();

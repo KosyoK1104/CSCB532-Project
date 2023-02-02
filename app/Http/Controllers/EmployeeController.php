@@ -156,7 +156,7 @@ class EmployeeController extends Controller
             'name'         => 'required|min:4',
             'phone_number' => 'required|min:10',
         ]);
-        $employee->employeeProfile()->getResults()->update($validator->validated());
+        $employee->employeeProfile()->update($validator->validated());
         $employee->saveOrFail();
         return response()->json(['data' => ['id' => $employee->id]]);
     }

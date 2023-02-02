@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import OfficeService from "../../../../services/OfficeService";
+import {useNavigate} from "react-router-dom";
 
 const inMemoryOfficeService = {
     offices: [
@@ -43,7 +44,7 @@ const inMemoryOfficeService = {
 
 
 const OfficeListing = () => {
-
+    const navigate = useNavigate();
     let [offices, setOffices] = useState([]);
     let [page, setPage] = useState(1);
     let [searchParams, setSearchParams] = useState({
@@ -89,8 +90,12 @@ const OfficeListing = () => {
         })
     }
 
+    const goToOffice = (id) => {
+        navigate(`/employee/offices/${id}`)
+    }
+
     return (
-        <div className="container-fluid">
+        <div className="container">
             <div className="card">
                 <div className="card-header">
                     <h3 className="card-title">Offices</h3>
@@ -124,12 +129,13 @@ const OfficeListing = () => {
                         </thead>
                         <tbody>
                         {offices.map((office) => (
-                            <tr key={office.id}>
+                            <tr onDoubleClick={() => goToOffice(office.id)} key={office.id}>
                                 <td>{office.id}</td>
                                 <td>{office.name}</td>
                                 <td>{office.city}</td>
                                 <td>
-                                    <a href={'/offices/' + office.id}>View</a>
+                                    <button className="btn btn-outline-secondary btn-sm" onClick={() => goToOffice(office.id)}>View
+                                    </button>
                                 </td>
                             </tr>
                         ))}
