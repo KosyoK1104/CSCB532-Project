@@ -32,7 +32,7 @@ export default function AuthLayout() {
                     })}
                 </Menu>
             </Header>
-            <Content>
+            <Content className="position-relative">
                 <Outlet/>
             </Content>
             <Footer>FOOTER</Footer>

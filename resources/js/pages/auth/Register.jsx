@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import ClientAuthService from "../../services/ClientAuthService";
 import {useNavigate} from "react-router-dom";
 import Api from "../../services/Api";
-import {Button, Card, Col, Divider, Form, Input, Row} from "antd";
 
 export default function Register() {
 
@@ -39,44 +38,43 @@ export default function Register() {
     }
 
     return (
-        <>
-            <Row justify={"center"} align={"middle"}>
-                <Col span={8}>
-                    <Card>
-                        <Divider orientation={"center"}>Register</Divider>
-                        <Form labelCol={{span: 5}} wrapperCol={{span: 19}}>
-                            <Form.Item label='E-mail' name='email'
-                                       validateStatus={errors.email.length > 0 ? "error" : ""}
-                                       help={errors.email[0] ?? ''}>
-                                <Input name='email' onChange={handleInput}/>
-                            </Form.Item>
-
-                            <Form.Item label='Username' name='username'
-                                       validateStatus={errors.username.length > 0 ? "error" : ""}
-                                       help={errors.username[0] ?? ''}>
-                                <Input name='username' onChange={handleInput}/>
-                            </Form.Item>
-
-                            <Form.Item label='Password' name='password'
-                                       validateStatus={errors.password.length > 0 ? "error" : ""}
-                                       help={errors.password[0] ?? ''}>
-                                <Input.Password name='password' onChange={handleInput}/>
-                            </Form.Item>
-
-                            <Form.Item label='Repeat password' name='repeat_password'
-                                       validateStatus={errors.repeat_password.length > 0 ? "error" : ""}
-                                       help={errors.repeat_password[0] ?? ''}>
-                                <Input.Password name='repeat_password' onChange={handleInput}/>
-                            </Form.Item>
-                            <Form.Item wrapperCol={{offset: 5, span: 19}}>
-                                <Button loading={submitLoading} type={"primary"} onClick={handleRegister}>
-                                    Register
-                                </Button>
-                            </Form.Item>
-                        </Form>
-                    </Card>
-                </Col>
-            </Row>
-        </>
+        <div className="card w-100 w-lg-25 w-sm-75 w-md-50  position-absolute top-50 start-50 translate-middle">
+            <form>
+                <div className="card-header">
+                    <h4 className="card-title text-center text-secondary">Register</h4>
+                    <hr/>
+                </div>
+                <div className="card-body px-4">
+                    <div className="form-group">
+                        <label htmlFor="email">Email</label>
+                        <input type="email" className="form-control" id="email" name="email"
+                               value={form.email} onChange={handleInput}>
+                        </input>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="username">Username</label>
+                        <input className="form-control" id="username" name="username"
+                               value={form.username} onChange={handleInput}>
+                        </input>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="password">Password</label>
+                        <input type="password" className="form-control" id="password" name="password"
+                               value={form.password} onChange={handleInput}>
+                        </input>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="repeat_password">Repeat password</label>
+                        <input type="password" className="form-control" id="repeat_password" name="repeat_password"
+                               value={form.repeat_password} onChange={handleInput}>
+                        </input>
+                    </div>
+                </div>
+                <div className="card-footer pb-2 d-flex flex-sm-row flex-column justify-content-center gap-2">
+                    <button type="button" className="btn btn-primary" onClick={handleRegister}>Register
+                    </button>
+                </div>
+            </form>
+        </div>
     )
 }

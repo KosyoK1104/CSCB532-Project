@@ -33,35 +33,48 @@ export default function Address(props) {
                             <div className="col-12">
                                 <div className="row">
                                     <div className="col-12 col-lg-6">
-                                        <label htmlFor="region" className="form-label">Street</label>
-                                        <input name="region" className="form-control" type="text"
-                                               value={address.street}/>
+                                        <div className="form-group">
+                                            <label htmlFor="street" className="form-label">Street</label>
+                                            <input name="street" className="form-control" type="text"
+                                                   value={address.street}/>
+                                        </div>
                                     </div>
                                     <div className="ol-12 col-lg-6">
-                                        <label htmlFor="city" className="form-label">Street №</label>
-                                        <input name="city" className="form-control" type="text"
-                                               value={address.street_number}/></div>
-
-                                    <div className="ol-12 col-lg-6">
-                                        <label htmlFor="address1" className="form-label">Region</label>
-                                        <input name="address1" className="form-control" type="text"
-                                               value={address.region}/>
-                                    </div>
-                                    <div className="ol-12 col-lg-6">
-                                        <label htmlFor="region" className="form-label">Region №</label>
-                                        <input name="region" className="form-control" type="text"
-                                               value={address.block}/>
+                                        <div className="form-group">
+                                            <label htmlFor="city" className="form-label">Street №</label>
+                                            <input name="city" className="form-control" type="text"
+                                                   value={address.street_number}/></div>
                                     </div>
 
                                     <div className="ol-12 col-lg-6">
-                                        <label htmlFor="city" className="form-label">City</label>
-                                        <input name="city" className="form-control" type="text" value={address.city}/>
+                                        <div className="form-group">
+                                            <label htmlFor="address1" className="form-label">Region</label>
+                                            <input name="address1" className="form-control" type="text"
+                                                   value={address.region}/>
+                                        </div>
+                                    </div>
+                                    <div className="ol-12 col-lg-6">
+                                        <div className="form-group">
+                                            <label htmlFor="region" className="form-label">Region №</label>
+                                            <input name="region" className="form-control" type="text"
+                                                   value={address.block}/>
+                                        </div>
                                     </div>
 
                                     <div className="ol-12 col-lg-6">
-                                        <label htmlFor="address1" className="form-label">Postal code</label>
-                                        <input name="address1" className="form-control" type="text"
-                                               value={address.postal_code}/>
+                                        <div className="form-group">
+                                            <label htmlFor="city" className="form-label">City</label>
+                                            <input name="city" className="form-control" type="text"
+                                                   value={address.city}/>
+                                        </div>
+                                    </div>
+
+                                    <div className="ol-12 col-lg-6">
+                                        <div className="form-group">
+                                            <label htmlFor="address1" className="form-label">Postal code</label>
+                                            <input name="address1" className="form-control" type="text"
+                                                   value={address.postal_code}/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -72,28 +85,3 @@ export default function Address(props) {
         </div>
     )
 }
-
-/*
-
-export class Address extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            me: ClientStore.getState().me.me
-        }
-    }
-
-    componentDidMount() {
-        this.setState({me: ClientStore.getState().me.me})
-        console.log(this.state)
-    }
-
-    render() {
-        return (
-
-        )
-    }
-}
-*/
-
-// export default connect(mapStateToProps)(Address)

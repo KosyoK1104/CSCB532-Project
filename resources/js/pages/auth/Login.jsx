@@ -5,7 +5,6 @@ import EmployeeAuthService from "../../services/EmployeeAuthService";
 import toast from "react-hot-toast";
 import Api from "../../services/Api";
 import {useDispatch} from "react-redux";
-import {Alert, Button, Card, Col, Divider, Form, Input, Row} from 'antd'
 
 export default function Login() {
     const navigate = useNavigate()
@@ -51,35 +50,34 @@ export default function Login() {
     }
 
     return (
-        <>
-            <Row justify={"center"} className="h-100" align={"middle"}>
-                <Col span={8}>
-                    <Card>
-                        <Divider orientation={"center"}>Login</Divider>
-                        {error !== null && <Alert message={error} type="error" closable className="mb-3" showIcon
-                                                  onClose={() => setError(null)}/>}
-                        <Form labelCol={{ span: 4 }}
-                              wrapperCol={{ span: 20 }}>
-                            <Form.Item label='E-mail' name='email'>
-                                <Input name='email' onChange={handleInput}/>
-                            </Form.Item>
-
-                            <Form.Item label='Password' name='password'>
-                                <Input.Password name='password' onChange={handleInput}/>
-                            </Form.Item>
-                            <Form.Item wrapperCol={{offset: 4, span:20}}>
-                                <Button loading={submitLoading} type={"primary"} onClick={handleClientLogin}>
-                                    Login as client
-                                </Button>
-
-                                <Button loading={submitLoading} type={"primary"} onClick={handleEmployeeLogin}>
-                                    Login as employee
-                                </Button>
-                            </Form.Item>
-                        </Form>
-                    </Card>
-                </Col>
-            </Row>
-        </>
+        <div className="card w-100 w-lg-25 w-sm-75 w-md-50  position-absolute top-50 start-50 translate-middle">
+            <form>
+                <div className="card-header">
+                    <h4 className="card-title text-center text-secondary">Login</h4>
+                    <hr/>
+                </div>
+                <div className="card-body px-4">
+                    <div className="form-group">
+                        <label htmlFor="email">Email</label>
+                        <input type="email" className="form-control" id="email" name="email"
+                               value={form.email} onChange={handleInput}>
+                        </input>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="password">Password</label>
+                        <input type="password" className="form-control" id="password" name="password"
+                               value={form.password} onChange={handleInput}>
+                        </input>
+                    </div>
+                </div>
+                <div className="card-footer pb-2 d-flex flex-sm-row flex-column justify-content-center gap-2">
+                    <button type="button" className="btn btn-primary" onClick={handleClientLogin}>Login as client
+                    </button>
+                    <button type="button" className="btn btn-outline-primary" onClick={handleEmployeeLogin}>Login as
+                        employee
+                    </button>
+                </div>
+            </form>
+        </div>
     )
 }

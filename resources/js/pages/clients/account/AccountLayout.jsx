@@ -7,7 +7,7 @@ import {logout} from "../../../store/clients/MeClient";
 import toast from "react-hot-toast";
 import {useDispatch} from "react-redux";
 
-export default function AccountLayout(props) {
+export default function AccountLayout() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const location = useLocation()

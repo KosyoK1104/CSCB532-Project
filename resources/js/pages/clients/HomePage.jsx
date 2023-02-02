@@ -37,7 +37,7 @@ export default function HomePage(props) {
                     <div className="collapse navbar-collapse">
                         <ul className="navbar-nav">
                             <li className="nav-item">
-                                <span className="nav-link" onClick={() => navigate('/account')}>Account</span>
+                                <span className="nav-link cursor-pointer" onClick={() => navigate('/client/account')}>Account</span>
                             </li>
                             <li className="nav-item">
                                 <a className="nav-link" href="#">My packages</a>
@@ -63,29 +63,3 @@ export default function HomePage(props) {
         </div>
     )
 }
-
-/*
-export class HomePage extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            me: ClientStore.getState().me.me,
-        }
-    }
-
-    componentDidMount() {
-        this.load()
-    }
-
-    handleLogout() {
-        Me.logout()
-            .catch((error) => toast.error(error.response.message))
-    }
-
-    render() {
-        return (
-
-        )
-    }
-}*/
