@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import OfficeService from "../../../../services/OfficeService";
 import {useNavigate} from "react-router-dom";
+import '../OfficeListing.css';
 
 const inMemoryOfficeService = {
     offices: [
@@ -61,11 +62,13 @@ const OfficeListing = () => {
     }
 
     useEffect(() => {
+      if (!searchParams.id && !searchParams.name && !searchParams.city) {
         inMemoryOfficeService.load(page, searchParams)
-            .then((response) => {
-                setOffices(response.data)
-            })
-    }, [])
+          .then(response => {
+            setOffices(response.data)
+          });
+      }
+    }, [searchParams]);
 
     const handlePageChange = (page) => {
         setPage(page)
@@ -90,7 +93,9 @@ const OfficeListing = () => {
         })
     }
 
-    const goToOffice = (id) => {
+    // make a listener and if all the fields are empty, then load the data from the in-memory service use react state
+
+    const goToEditOffice = (id) => {
         navigate(`/employee/offices/${id}`)
     }
 
@@ -99,6 +104,7 @@ const OfficeListing = () => {
             <div className="card">
                 <div className="card-header">
                     <h3 className="card-title">Offices</h3>
+                    <button className="btn btn-success">Create</button>
                 </div>
                 <div className="card-body p-3">
                     <table className="table table-hover">
@@ -129,13 +135,17 @@ const OfficeListing = () => {
                         </thead>
                         <tbody>
                         {offices.map((office) => (
-                            <tr onDoubleClick={() => goToOffice(office.id)} key={office.id}>
+                            <tr onDoubleClick={() => goToEditOffice(office.id)} key={office.id}>
                                 <td>{office.id}</td>
                                 <td>{office.name}</td>
                                 <td>{office.city}</td>
                                 <td>
-                                    <button className="btn btn-outline-secondary btn-sm" onClick={() => goToOffice(office.id)}>View
-                                    </button>
+                                    <div className="btn-group">
+                                        <button className="btn btn-sm btn-outline-warning" onClick={() => goToEditOffice(office.id)}>Edit
+                                        </button>
+                                        <button className="btn btn-sm btn-outline-danger">Delete
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}
