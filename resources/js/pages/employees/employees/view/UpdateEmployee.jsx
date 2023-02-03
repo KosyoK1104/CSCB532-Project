@@ -29,7 +29,7 @@ const UpdateEmployee = () => {
     }
 
     const load = () => {
-        Api.get(`/api/employees/employees/${id}`)
+        Api.get(`/api/employees/employees/${id}`, employee)
             .then((result) => {
                 setEmployee(result.data.data);
             })

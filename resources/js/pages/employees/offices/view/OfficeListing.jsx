@@ -135,15 +135,15 @@ const OfficeListing = () => {
                         </thead>
                         <tbody>
                         {offices.map((office) => (
-                            <tr onDoubleClick={() => goToEditOffice(office.id)} key={office.id}>
+                            <tr onDoubleClick={() => goToEditOffice(office.id)} key={office.id} className="text-center">
                                 <td>{office.id}</td>
                                 <td>{office.name}</td>
                                 <td>{office.city}</td>
                                 <td>
-                                    <div className="btn-group">
-                                        <button className="btn btn-sm btn-outline-warning" onClick={() => goToEditOffice(office.id)}>Edit
+                                    <div className="d-flex gap-2">
+                                        <button className="btn btn-sm btn-outline-warning w-100" onClick={() => goToEditOffice(office.id)}>Edit
                                         </button>
-                                        <button className="btn btn-sm btn-outline-danger">Delete
+                                        <button className="btn btn-sm btn-outline-danger w-100">Delete
                                         </button>
                                     </div>
                                 </td>

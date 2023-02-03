@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import PackageService from "../../../../services/PackageService";
+import PackageService from "../../../services/PackageService";
 import {useNavigate} from "react-router-dom";
 
 const packageService = {
@@ -24,22 +24,22 @@ const packageService = {
     load: (page, searchParams) => {
         let packages = packageService.packages
         if (searchParams.id) {
-            packages = packages.filter((package) => package.id === parseInt(searchParams.id))
+            packages = packages.filter((el) => el.id === parseInt(searchParams.id))
         }
         if (searchParams.sender) {
-            packages = packages.filter((package) => package.sender.toLowerCase().includes(searchParams.sender.toLowerCase()))
+            packages = packages.filter((el) => el.sender.toLowerCase().includes(searchParams.sender.toLowerCase()))
         }
         if (searchParams.recipient) {
-            packages = packages.filter((package) => package.recipient.toLowerCase().includes(searchParams.recipient.toLowerCase()))
+            packages = packages.filter((el) => el.recipient.toLowerCase().includes(searchParams.recipient.toLowerCase()))
         }
         if (searchParams.city) {
-            packages = packages.filter((package) => package.city.toLowerCase().includes(searchParams.city.toLowerCase()))
+            packages = packages.filter((el) => el.city.toLowerCase().includes(searchParams.city.toLowerCase()))
         }
         if (searchParams.address) {
-            packages = packages.filter((package) => package.address.toLowerCase().includes(searchParams.address.toLowerCase()))
+            packages = packages.filter((el) => el.address.toLowerCase().includes(searchParams.address.toLowerCase()))
         }
         if (searchParams.weight) {
-            packages = packages.filter((package) => package.weight === parseFloat(searchParams.weight))
+            packages = packages.filter((el) => el.weight === parseFloat(searchParams.weight))
         }
 
         return Promise.resolve({
@@ -119,56 +119,57 @@ const PackageListing = () => {
                             <th>City</th>
                             <th>Address</th>
                             <th>Weight</th>
+                            <th></th>
                         </tr>
                         <tr>
-                            <td>
+                            <th>
                                 <input type="text" name="id" className="form-control" value={searchParams.id}
                                        onChange={handleSearchChange}/>
-                            </td>
+                            </th>
 
-                            <td>
+                            <th>
                                 <input type="text" name="sender" className="form-control" value={searchParams.sender}
                                        onChange={handleSearchChange}/>
-                            </td>
+                            </th>
 
-                            <td>
+                            <th>
                                 <input type="text" name="recipient" className="form-control"
                                        value={searchParams.recipient}
                                        onChange={handleSearchChange}/>
-                            </td>
+                            </th>
 
-                            <td>
+                            <th>
                                 <input type="text" name="city" className="form-control" value={searchParams.city}
                                        onChange={handleSearchChange}/>
-                            </td>
+                            </th>
 
-                            <td>
+                            <th>
                                 <input type="text" name="address" className="form-control" value={searchParams.address}
                                        onChange={handleSearchChange}/>
-                            </td>
+                            </th>
 
-                            <td>
+                            <th>
                                 <input type="text" name="weight" className="form-control" value={searchParams.weight}
                                        onChange={handleSearchChange}/>
-                            </td>
+                            </th>
 
-                            <td>
-                                <button className="btn btn-primary" onClick={handleSearch}>Search package</button>
-                            </td>
+                            <th>
+                                <button className="btn btn-primary" onClick={handleSearch}>Search</button>
+                            </th>
                         </tr>
                         </thead>
                         <tbody>
-                        {packages.map((package) => (
-                            <tr onDoubleClick={() => goToPackage(package.id)} key={package.id}>
-                                <td>{package.id}</td>
-                                <td>{package.sender}</td>
-                                <td>{package.recipient}</td>
-                                <td>{package.city}</td>
-                                <td>{package.address}</td>
-                                <td>{package.weight}</td>
+                        {packages.map((el) => (
+                            <tr onDoubleClick={() => goToPackage(el.id)} key={el.id}>
+                                <td>{el.id}</td>
+                                <td>{el.sender}</td>
+                                <td>{el.recipient}</td>
+                                <td>{el.city}</td>
+                                <td>{el.address}</td>
+                                <td>{el.weight}</td>
                                 <td>
                                     <button className="btn btn-outline-secondary btn-sm"
-                                            onClick={() => goToPackage(package.id)}>View
+                                            onClick={() => goToPackage(el.id)}>View
                                     </button>
                                 </td>
                             </tr>

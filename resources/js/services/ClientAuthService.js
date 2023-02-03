@@ -10,7 +10,6 @@ export default {
     login(data) {
         return Api.post('/api/clients/login', data)
             .then(response => {
-                console.log(response)
                 return response.data.data
             })
     },

@@ -3,26 +3,3 @@
     display: flex;
     justify-content: space-between;
 }
-
-.btn.btn-primary{
-    margin-right: 5px;
-    width: 100%;
-}
-
-.btn-group{
-    justify-content: space-between;
-    width: 100%;
-}
-
-.btn-group button:first-child{
-    margin-right: 5px;
-}
-
-.btn-group button:last-child{
-    margin-left: 5px;
-}
-
-td{
-    text-align: center;
-    cursor: pointer;
-}

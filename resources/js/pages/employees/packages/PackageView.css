@@ -1,0 +1,12 @@
+.form-control:disabled{
+    background-color: #fff !important;
+    opacity: 1;
+    border-radius: 0;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.form-group label{
+    margin-bottom: 0 !important;
+    margin-top: 5px;
+}

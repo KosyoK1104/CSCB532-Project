@@ -6,7 +6,8 @@ import LoaderProvider from "../../../components/LoaderProvider";
 const EmployeesListing = () => {
     const [employees, setEmployees] = useState([]);
     const navigate = useNavigate();
-    useEffect(() => {
+
+    const load = () => {
         Api.get('/api/employees/employees')
             .then(response => {
                 setEmployees(response.data.data);
@@ -14,10 +15,19 @@ const EmployeesListing = () => {
             .catch(error => {
                 console.log(error);
             })
+    }
+
+    useEffect(() => {
+        load();
     }, []);
 
     const goToEmployee = (id) => {
         navigate(`/employee/employees/${id}`);
+    }
+
+    const deleteEmployee = (id) => {
+        Api.delete(`/api/employees/employees/${id}`)
+            .then(() => load())
     }
 
     return (
@@ -39,6 +49,15 @@ const EmployeesListing = () => {
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Type</th>
+                                <th width="10"></th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th>
+                                    <button className="btn btn-primary w-100">Search</button>
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -47,6 +66,16 @@ const EmployeesListing = () => {
                                     <td>{employee.name}</td>
                                     <td>{employee.email}</td>
                                     <td>{employee.type}</td>
+                                    <td>
+                                        <div className="d-flex justify-content-between gap-2">
+                                            <button className="btn btn-outline-secondary btn-sm w-100"
+                                                    onClick={() => goToEmployee(employee.id)}>View
+                                            </button>
+                                            <button className="btn btn-outline-danger btn-sm w-100"
+                                                    onClick={() => deleteEmployee(employee.id)}>Delete
+                                            </button>
+                                        </div>
+                                    </td>
                                 </tr>
                             ))}
                             </tbody>

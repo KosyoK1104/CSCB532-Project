@@ -34,6 +34,10 @@
     .w-sm-100 {
         width: 100% !important;
     }
+
+    .display-sm-hidden {
+        display: none;
+    }
 }
 
 
@@ -53,6 +57,10 @@
     .w-md-100 {
         width: 100% !important;
     }
+
+    .display-md-hidden {
+        display: none;
+    }
 }
 
 @media (min-width: 992px) {
@@ -70,6 +78,10 @@
 
     .w-lg-100 {
         width: 100% !important;
+    }
+
+    .display-lg-hidden {
+        display: none;
     }
 }
 
@@ -90,6 +102,10 @@
     .w-xl-100 {
         width: 100% !important;
     }
+
+    .display-xl-hidden {
+        display: none;
+    }
 }
 
 
@@ -108,6 +124,10 @@
 
     .w-xxl-100 {
         width: 100% !important;
+    }
+
+    .display-xxl-hidden {
+        display: none;
     }
 }
 

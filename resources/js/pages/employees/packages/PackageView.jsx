@@ -1,31 +1,33 @@
 import {useParams} from "react-router-dom";
 import {useState} from "react";
-import Api from "../../../../services/Api";
+import Api from "../../../services/Api";
+import './PackageView.css';
+import InfoLine from "../../../components/InfoLine";
 
 const PackageView = () => {
     const {id} = useParams();
     //Пратките имат подател, получател, адрес за доставка и тегло.
     // За определяне на цената на за доставка играе роля теглото на пратката и дали тя ще се доставя до офис или до точен адрес
 
-    let [package, setPackage] = useState({
+    let [clientPackage, setClientPackage] = useState({
         id: id,
-        sender: '',
-        recipient: '',
-        city: '',
-        address: '',
-        weight: '',
+        sender: 'Test',
+        recipient: 'Test',
+        city: 'Test',
+        address: 'Test',
+        weight: 'Test',
     });
 
     const onChange = (e) => {
-        setPackage({
-            ...package,
+        setClientPackage({
+            ...clientPackage,
             name: e.target.value
         })
     }
 
     const onSubmit = (e) => {
         e.preventDefault();
-        Api.post('/api/employees/packages', package)
+        Api.post('/api/employees/packages', clientPackage)
             .catch((error) => {
                 console.log(eror);
             })
@@ -34,49 +36,28 @@ const PackageView = () => {
     return (
         <div className="container">
             <div className="card">
-                <form onSubmit={onSubmit}>
-                    <div className="card-header">
-                        <h3>Package {package.visual_id}</h3>
-                    </div>
-                    <div className="card-body">
-                        <div className="row">
-                            <div className="col-md-6 col-12">
-
-                                <div className="form-group">
-                                    <label htmlFor={"sender"}>Sender</label>
-                                    <input type="text" className="form-control" id="sender" name="sender"
-                                           value={package.sender} onChange={onChange}/>
-                                </div>
-
-                                <div className="form-group">
-                                    <label htmlFor={"recipient"}>Recipient</label>
-                                    <input type="text" className="form-control" id="recipient" name="recipient"
-                                           value={package.recipient} onChange={onChange}/>
-                                </div>
-
-                                <div className="form-group">
-                                    <label htmlFor={"city"}>City</label>
-                                    <input type="text" className="form-control" id="city" name="city"
-                                           value={package.city} onChange={onChange}/>
-                                </div>
-
-                                <div className="form-group">
-                                    <label htmlFor={"address"}>Address</label>
-                                    <input type="text" className="form-control" id="address" name="address"
-                                           value={package.address} onChange={onChange}/>
-                                </div>
-
-                                <div className="form-group">
-                                    <label htmlFor={"weight"}>Weight</label>
-                                    <input type="text" className="form-control" id="weight" name="weight"
-                                           value={package.weight} onChange={onChange}/>
-                                </div>
-
-                            </div>
+                <div className="card-header">
+                    <h3>Package {clientPackage.visual_id}</h3>
+                </div>
+                <div className="card-body">
+                    <div className="row">
+                        <div className="col-12 col-md-6">
+                            <InfoLine label="Sender" value={clientPackage.sender}/>
+                        </div>
+                        <div className="col-12 col-md-6">
+                            <InfoLine label="Recipient" value={clientPackage.recipient}/>
+                        </div>
+                        <div className="col-12 col-md-6">
+                            <InfoLine label="City" value={clientPackage.city}/>
+                        </div>
+                        <div className="col-12 col-md-6">
+                            <InfoLine label="Address" value={clientPackage.address}/>
+                        </div>
+                        <div className="col-12 col-md-6">
+                            <InfoLine label="Weight" value={clientPackage.weight}/>
                         </div>
                     </div>
-
-                </form>
+                </div>
             </div>
         </div>
     );

@@ -5,7 +5,7 @@ export default {
         return Api.get('/api/clients/me')
             .then(response => {
                 return {
-                    me: response.data
+                    me: response.data.data
                 }
             })
     },

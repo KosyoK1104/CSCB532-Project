@@ -18,7 +18,6 @@ export default function Register() {
         password: null,
         repeat_password: null
     })
-    const [submitLoading, setSubmitLoading] = useState(false)
 
     function handleInput(event) {
         setForm(form => ({
@@ -28,13 +27,11 @@ export default function Register() {
     }
 
     function handleRegister() {
-        setSubmitLoading(true)
         ClientAuthService.register(form)
-            .then(response => navigate('/login'))
+            .then(() => navigate('/login'))
             .catch(error => {
                 setErrors(Api.resolveValidationError(error))
             })
-            .finally(() => setSubmitLoading(false))
     }
 
     return (
@@ -59,9 +56,14 @@ export default function Register() {
                     </div>
                     <div className="form-group">
                         <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" id="password" name="password"
+                        <input type="password" className={`form-control ${errors.password ? 'has-validation' : ''}`}
+                               id="password" name="password"
                                value={form.password} onChange={handleInput}>
                         </input>
+                        {errors.password && <div className="invalid-feedback">
+                            {errors.password.map((error, index) => <div key={index}>{error}</div>)}
+                        </div>}
+
                     </div>
                     <div className="form-group">
                         <label htmlFor="repeat_password">Repeat password</label>

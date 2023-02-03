@@ -14,7 +14,7 @@ use Throwable;
 
 class EmployeeProfileController extends Controller
 {
-    protected function profile() : EmployeeProfile
+    protected function profile() : ?EmployeeProfile
     {
         return $this->employee()->employeeProfile()->getResults();
     }
@@ -61,8 +61,8 @@ class EmployeeProfileController extends Controller
 
         return response()->json(
             [
-                'name'            => $employeeProfile->name,
-                'phone_number'    => $employeeProfile->phone_number,
+                'name'            => $employeeProfile?->name,
+                'phone_number'    => $employeeProfile?->phone_number,
                 'profile_picture' => Storage::url($employeeProfile->profile_picture ?? 'default-profile-picture.png'),
             ]
         );
@@ -80,9 +80,13 @@ class EmployeeProfileController extends Controller
             return response()->json($validator->errors(), 422);
         }
         $employeeProfile = $this->profile();
-        $previousProfilePicture = $employeeProfile->profile_picture;
+        $previousProfilePicture = $employeeProfile?->profile_picture;
         if ($previousProfilePicture !== null) {
             Storage::delete($previousProfilePicture);
+        }
+        if ($employeeProfile === null) {
+            $employeeProfile = new EmployeeProfile();
+            $employeeProfile->employee_id = $this->employee()->id;
         }
         $employeeProfile->profile_picture = $request->file('profile_picture')?->store('profile_pictures');
         $employeeProfile->updateOrFail();
@@ -95,9 +99,11 @@ class EmployeeProfileController extends Controller
     public function removeProfilePicture() : JsonResponse
     {
         $employeeProfile = $this->profile();
-        Storage::delete($employeeProfile->profile_picture);
-        $employeeProfile->profile_picture = null;
-        $employeeProfile->updateOrFail();
+        Storage::delete($employeeProfile?->profile_picture);
+        if ($employeeProfile !== null) {
+            $employeeProfile->profile_picture = null;
+            $employeeProfile->updateOrFail();
+        }
         return response()->json();
     }
 

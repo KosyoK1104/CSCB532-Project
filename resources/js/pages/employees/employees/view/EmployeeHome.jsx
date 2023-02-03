@@ -1,6 +1,7 @@
 import {useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import Api from "../../../../services/Api";
+import InfoLine from "../../../../components/InfoLine";
 
 const EmployeeHome = () => {
     const {id} = useParams();
@@ -30,13 +31,10 @@ const EmployeeHome = () => {
                         <img src={employee.profile_picture} alt="Profile picture" className="rounded img"/>
                     </div>
                     <div className="col-md-8">
-                        Name: {employee.name}
-                        <br/>
-                        Phone number: {employee.phone_number}
-                        <br/>
-                        Email: {employee.email}
-                        <br/>
-                        Type: {employee.type}
+                        <InfoLine label="Name" value={employee.name} size="small"/>
+                        <InfoLine label="Email" value={employee.email}/>
+                        <InfoLine label="Phone number" value={employee.phone_number}/>
+                        <InfoLine label="Type" value={employee.type}/>
                     </div>
                 </div>
             </div>

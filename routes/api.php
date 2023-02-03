@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ClientControllerForEmployees;
 use App\Http\Controllers\ClientProfileController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeProfileController;
@@ -36,6 +37,8 @@ Route::middleware(AuthenticatedClient::class)->group(function () {
     Route::get('/clients/me', [ClientController::class, 'me']);
     Route::post('/clients/logout', [ClientController::class, 'logout']);
     Route::get('/clients/me/profile', [ClientProfileController::class, 'forMe']);
+    Route::get('/clients/me/profile/summary', [ClientProfileController::class, 'summaryForMe']);
+    Route::put('/clients/me/profile', [ClientProfileController::class, 'update']);
     /*
      * TODO implement these
     Route::get('/clients/packages', [\App\Http\Controllers\PackageController::class, 'index']);
@@ -66,7 +69,11 @@ Route::middleware(AuthenticatedEmployee::class)->group(function () {
         Route::get('/employees/employees/{employee}', [EmployeeController::class, 'get']);
         Route::put('/employees/employees/{employee}', [EmployeeController::class, 'update']);
         Route::post('/employees/employees', [EmployeeController::class, 'create']);
+        Route::delete('/employees/employees/{employee}', [EmployeeController::class, 'delete']);
     });
+
+    Route::get('/employees/clients', [ClientControllerForEmployees::class, 'index']);
+    Route::get('/employees/clients/{client}', [ClientControllerForEmployees::class, 'get']);
 
     //Route::delete('/employees/clients/{client}', [ClientControllerForEmployee::class, 'destroy']);
 

@@ -40,6 +40,7 @@ class Client extends Authenticatable
     {
         return $this->hasOne(ClientProfile::class);
     }
+
     /*
         protected function createdAt() : Attribute
         {

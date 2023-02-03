@@ -11,7 +11,7 @@ import NotFound from "./NotFound"
 import ClientHomePage from "./clients/HomePage";
 import ClientAccountLayout from "./clients/account/AccountLayout";
 import ClientAccountHome from "./clients/account/AccountHome";
-import ClientAddress from "./clients/account/Address";
+import ClientUpdate from "./clients/account/ClientUpdate";
 
 import EmployeeHomePage from "./employees/HomePage";
 import EmployeeAccountHome from "./employees/account/AccountHome";
@@ -33,6 +33,11 @@ import EmployeeHome from "./employees/employees/view/EmployeeHome";
 import UpdateEmployee from "./employees/employees/view/UpdateEmployee";
 import CreateEmployee from "./employees/employees/CreateEmployee";
 import ChangePassword from "./employees/account/ChangePassword";
+import PackageListing from "./employees/packages/PackageListing";
+import PackageView from "./employees/packages/PackageView";
+import ClientListing from "./employees/clients/ClientListing";
+import ClientView from "./employees/clients/ClientView";
+import ClientRoot from "./employees/clients/ClientRoot";
 
 export default function App() {
     return (
@@ -49,7 +54,7 @@ export default function App() {
                         <Route path="client" element={<ClientHomePage/>}>
                             <Route path="account" element={<ClientAccountLayout/>}>
                                 <Route index element={<ClientAccountHome/>}/>
-                                <Route path="address" element={<ClientAddress/>}/>
+                                <Route path="update" element={<ClientUpdate/>}/>
                             </Route>
                         </Route>
 
@@ -71,6 +76,14 @@ export default function App() {
                                 <Route index element={<OfficeListing/>}/>
                                 <Route path="create" element={<CreateOffice/>}/>
                                 <Route path=":id" element={<OfficeView/>}/>
+                            </Route>
+                            <Route path="packages">
+                                <Route index element={<PackageListing/>}/>
+                                <Route path=":id" element={<PackageView/>}/>
+                            </Route>
+                            <Route path="clients" element={<ClientRoot/>}>
+                                <Route index element={<ClientListing/>}/>
+                                <Route path=":id" element={<ClientView/>}/>
                             </Route>
                         </Route>
 

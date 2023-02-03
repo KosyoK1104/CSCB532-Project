@@ -40,7 +40,7 @@ export default function AccountLayout() {
                             </span>
                         </li>
                         <li className="nav-item cursor-pointer col-12">
-                            <span onClick={() => navigate('/client/account/address')} className={navLink('/client/account/address')}>
+                            <span onClick={() => navigate('/client/account/update')} className={navLink('/client/account/update')}>
                                 <span className="nav-icon"><FaRegAddressBook/></span>
                                 Address
                             </span>

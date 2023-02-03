@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ClientMeResource;
 use App\Models\Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
@@ -22,16 +24,9 @@ final class ClientController extends Controller
         return auth('clients')->user();
     }
 
-    public function me() : JsonResponse
+    public function me() : ClientMeResource
     {
-        $client = $this->getClient();
-        return response()->json(
-            [
-                'id'       => $client->id,
-                'username' => $client->username,
-                'email'    => $client->email,
-            ]
-        );
+        return new ClientMeResource($this->getClient());
     }
 
     /**
@@ -42,7 +37,7 @@ final class ClientController extends Controller
 
     public function login(Request $request) : JsonResponse
     {
-        $client = (new \App\Models\Client)->where('email', '=', $request->string('email'))->first();
+        $client = (new Client)->where('email', '=', $request->string('email'))->first();
         if (is_null($client)) {
             throw new NotFoundHttpException('Invalid user');
         }
@@ -51,13 +46,13 @@ final class ClientController extends Controller
         }
 
         auth('clients')->login($client);
-        return response()->json(['data' => ['id' => $client->id]]);
+        return JsonResource::make();
     }
 
     public function logout() : JsonResponse
     {
         auth('clients')->logout();
-        return response()->json();
+        return JsonResource::make();
     }
 
     /**
@@ -76,7 +71,7 @@ final class ClientController extends Controller
         $client = new Client();
         $client->fill($validator->validated());
         $client->saveOrFail();
-        return response()->json(['data' => ['id' => $client->id]]);
+        return JsonResource::make();
     }
 
     /**
@@ -93,7 +88,7 @@ final class ClientController extends Controller
             return response()->json(['errors' => $validator->errors()], 401);
         }
         $client->update($validator->validated());
-        return response()->json();
+        return JsonResource::make();
     }
 
     /**

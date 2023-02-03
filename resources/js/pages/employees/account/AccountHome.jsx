@@ -1,6 +1,8 @@
 import React from "react";
 import EmployeeProfileService from "../../../services/EmployeeProfileService";
 import './AccountHome.css';
+import InfoLine from "../../../components/InfoLine";
+
 export default function AccountHome() {
 
     const [employee, setEmployee] = React.useState({
@@ -31,9 +33,8 @@ export default function AccountHome() {
                                 <img src={employee.profile_picture} alt="Profile picture" className="rounded img"/>
                             </div>
                             <div className="col-md-8">
-                                {employee.name}
-                                <br/>
-                                {employee.phone_number}
+                                <InfoLine label="Name" value={employee.name}/>
+                                <InfoLine label="Phone number" value={employee.phone_number}/>
                             </div>
                         </div>
                     </div>

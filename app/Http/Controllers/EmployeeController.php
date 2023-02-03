@@ -156,8 +156,16 @@ class EmployeeController extends Controller
             'name'         => 'required|min:4',
             'phone_number' => 'required|min:10',
         ]);
-        $employee->employeeProfile()->update($validator->validated());
-        $employee->saveOrFail();
+        $employeeProfile = $employee->employeeProfile()->getResults();
+        if (is_null($employeeProfile)) {
+            $employeeProfile = new EmployeeProfile();
+            $employeeProfile->employee_id = $employee->id;
+            $employeeProfile->fill($validator->validated());
+        }
+        else {
+            $employeeProfile->update($validator->validated());
+        }
+        $employeeProfile->saveOrFail();
         return response()->json(['data' => ['id' => $employee->id]]);
     }
 
@@ -175,11 +183,26 @@ class EmployeeController extends Controller
         ]);
         $employee = new Employee();
         $employee->fill([...$validator->validated(), 'password' => '123456789']);
+
         $employee->saveOrFail();
         $employeeProfile = new EmployeeProfile();
         $employeeProfile->employee_id = $employee->id;
         $employeeProfile->fill($validator->validated());
         $employeeProfile->saveOrFail();
+
         return response()->json(['data' => ['id' => $employee->id]]);
+    }
+
+    public function delete(Employee $employee) : JsonResponse
+    {
+        $currentEmployee = $this->getEmployee();
+        if (!$currentEmployee->isAdmin()) {
+            throw new InvalidArgumentException('Only admin can list employees');
+        }
+        if ($currentEmployee->is($employee)) {
+            throw new InvalidArgumentException('You cannot delete yourself');
+        }
+        $employee->delete();
+        return response()->json();
     }
 }
