@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import PackageService from "../../../services/PackageService";
 import {useNavigate} from "react-router-dom";
+import LoaderProvider from "../../../components/LoaderProvider";
 
 const packageService = {
     packages: [
@@ -165,21 +166,23 @@ const PackageListing = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {packages.map((el) => (
-                            <tr onDoubleClick={() => goToPackage(el.id)} key={el.id}>
-                                <td>{el.id}</td>
-                                <td>{el.sender}</td>
-                                <td>{el.recipient}</td>
-                                <td>{el.city}</td>
-                                <td>{el.address}</td>
-                                <td>{el.weight}</td>
-                                <td>
-                                    <button className="btn btn-outline-secondary btn-sm"
-                                            onClick={() => goToPackage(el.id)}>View
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
+                        <LoaderProvider>
+                            {packages.map((el) => (
+                                <tr onDoubleClick={() => goToPackage(el.id)} key={el.id}>
+                                    <td>{el.id}</td>
+                                    <td>{el.sender}</td>
+                                    <td>{el.recipient}</td>
+                                    <td>{el.city}</td>
+                                    <td>{el.address}</td>
+                                    <td>{el.weight}</td>
+                                    <td>
+                                        <button className="btn btn-outline-secondary btn-sm"
+                                                onClick={() => goToPackage(el.id)}>View
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </LoaderProvider>
                         </tbody>
                     </table>
                 </div>
