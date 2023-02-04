@@ -6,6 +6,10 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @property mixed $clientProfile
+ * @property mixed $id
+ */
 class ClientProfileResource extends JsonResource
 {
     public function toArray($request) : array

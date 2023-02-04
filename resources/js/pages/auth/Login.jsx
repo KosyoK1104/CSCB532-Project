@@ -4,17 +4,21 @@ import ClientAuthService from "../../services/ClientAuthService";
 import EmployeeAuthService from "../../services/EmployeeAuthService";
 import toast from "react-hot-toast";
 import Api from "../../services/Api";
-import {useDispatch} from "react-redux";
+import FormErrorWrapper from "../../components/FormErrorWrapper";
+import LoaderProvider from "../../components/LoaderProvider";
 
 export default function Login() {
     const navigate = useNavigate()
-    const dispatch = useDispatch()
     const [form, setForm] = useState({
         email: null,
         password: null,
     })
-    const [submitLoading, setSubmitLoading] = useState(false)
-    const [error, setError] = useState(null)
+    const [errors, setErrors] = useState(
+        {
+            email: [],
+            password: [],
+        }
+    )
 
     function handleInput(event) {
         setForm(form => ({
@@ -23,61 +27,68 @@ export default function Login() {
         }))
     }
 
-    function handleClientLogin(event) {
-        setSubmitLoading(true)
+    function handleClientLogin() {
         ClientAuthService.login(form)
-            .then(result => {
+            .then(() => {
                 navigate('/client/account')
             })
             .catch(error => {
-                setError(Api.resolveError(error))
+                if(error.response.status === 422) {
+                    setErrors(Api.resolveValidationError(error))
+                    return
+                }
                 toast.error(Api.resolveError(error))
             })
-            .finally(() => setSubmitLoading(false))
     }
 
-    function handleEmployeeLogin(event) {
-        setSubmitLoading(true)
+    function handleEmployeeLogin() {
         EmployeeAuthService.login(form)
-            .then(result => {
+            .then(() => {
                 navigate('/employee/account')
             })
             .catch(error => {
-                setError(Api.resolveError(error))
+                if(error.response.status === 422) {
+                    setErrors(Api.resolveValidationError(error))
+                    return
+                }
                 toast.error(Api.resolveError(error))
             })
-            .finally(() => setSubmitLoading(false))
     }
 
     return (
-        <div className="card w-100 w-lg-25 w-sm-75 w-md-50  position-absolute top-50 start-50 translate-middle">
-            <form>
-                <div className="card-header">
-                    <h4 className="card-title text-center text-secondary">Login</h4>
-                    <hr/>
-                </div>
-                <div className="card-body px-4">
-                    <div className="form-group">
-                        <label htmlFor="email">Email</label>
-                        <input type="email" className="form-control" id="email" name="email"
-                               value={form.email} onChange={handleInput}>
-                        </input>
+        <div className="container w-xl-25 w-lg-50 w-md-75 w-100 vh-100 d-flex">
+            <div className="card w-100 my-auto">
+                <form>
+                    <div className="card-header">
+                        <h4 className="card-title text-center text-secondary">Login</h4>
+                        <hr/>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" id="password" name="password"
-                               value={form.password} onChange={handleInput}>
-                        </input>
+                    <div className="card-body px-4">
+                        <LoaderProvider>
+                            <FormErrorWrapper error={errors.email}>
+                                <label htmlFor="email">Email</label>
+                                <input type="email" className="form-control" id="email" name="email"
+                                       value={form.email} onChange={handleInput}>
+                                </input>
+                            </FormErrorWrapper>
+
+                            <FormErrorWrapper error={errors.password}>
+                                <label htmlFor="password">Password</label>
+                                <input type="password" className="form-control" id="password" name="password"
+                                       value={form.password} onChange={handleInput}>
+                                </input>
+                            </FormErrorWrapper>
+                        </LoaderProvider>
                     </div>
-                </div>
-                <div className="card-footer pb-2 d-flex flex-sm-row flex-column justify-content-center gap-2">
-                    <button type="button" className="btn btn-primary" onClick={handleClientLogin}>Login as client
-                    </button>
-                    <button type="button" className="btn btn-outline-primary" onClick={handleEmployeeLogin}>Login as
-                        employee
-                    </button>
-                </div>
-            </form>
+                    <div className="card-footer pb-2 d-flex justify-content-center gap-2">
+                        <button type="button" className="btn btn-primary" onClick={handleClientLogin}>Login as client
+                        </button>
+                        <button type="button" className="btn btn-outline-primary" onClick={handleEmployeeLogin}>Login as
+                            employee
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     )
 }

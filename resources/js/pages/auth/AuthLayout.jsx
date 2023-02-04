@@ -4,7 +4,7 @@ import {Layout, Menu} from "antd";
 import {NavLink, Outlet} from "react-router-dom";
 
 export default function AuthLayout() {
-    const {Header, Content, Sider, Footer} = Layout;
+    const {Header, Content, Footer} = Layout;
 
     const headerMenuItems = [
         {
@@ -20,6 +20,7 @@ export default function AuthLayout() {
     ]
 
     return (
+
         <Layout style={{minHeight: '100vh'}}>
             <Header>
                 <Menu theme="dark" mode="horizontal">
@@ -32,7 +33,7 @@ export default function AuthLayout() {
                     })}
                 </Menu>
             </Header>
-            <Content className="position-relative">
+            <Content>
                 <Outlet/>
             </Content>
             <Footer>FOOTER</Footer>

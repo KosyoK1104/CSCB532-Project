@@ -6,6 +6,12 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @property mixed $employeeProfile
+ * @property mixed $type
+ * @property mixed $email
+ * @property mixed $id
+ */
 class EmployeeListingResource extends JsonResource
 {
 

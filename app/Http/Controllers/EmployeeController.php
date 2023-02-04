@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\HttpInvalidArgumentException;
+use App\Exceptions\HttpUnauthorizedException;
 use App\Http\Resources\EmployeeListingCollection;
 use App\Models\Employee;
 use App\Models\EmployeeProfile;
@@ -17,7 +19,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\Rules\Password;
-use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
@@ -64,11 +65,18 @@ class EmployeeController extends Controller
 
     public function login(Request $request) : JsonResponse
     {
-        $employee = (new Employee)->where('email', '=', $request->string('email'))->first();
+        $validator = Validator::make(
+            $request->request->all(),
+            [
+                'email'    => 'required|email',
+                'password' => 'required',
+            ]
+        );
+        $employee = (new Employee)->where('email', '=', $validator->validate()['email'])->first();
         if (is_null($employee)) {
             throw new NotFoundHttpException('Invalid user');
         }
-        if (!Hash::check($request->string('password')->value(), $employee->password)) {
+        if (!Hash::check($validator->validate()['password'], $employee->password)) {
             throw new NotFoundHttpException('Invalid user');
         }
 
@@ -76,6 +84,9 @@ class EmployeeController extends Controller
         return response()->json(['data' => ['id' => $employee->id]]);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function changePassword(Request $request) : JsonResponse
     {
         $validator = Validator::make($request->request->all(), [
@@ -88,7 +99,7 @@ class EmployeeController extends Controller
         $employee = $this->getEmployee();
 
         if (!Hash::check($validated['old_password'], $employee->password)) {
-            throw new InvalidArgumentException('Provided previous password does not match with current!');
+            throw new HttpInvalidArgumentException('Provided previous password does not match with current!');
         }
 
         $employee->password = $validated['new_password'];
@@ -106,13 +117,13 @@ class EmployeeController extends Controller
     {
         $currentEmployee = $this->getEmployee();
         if (!$currentEmployee->isAdmin()) {
-            throw new InvalidArgumentException('Only admin can list employees');
+            throw new HttpInvalidArgumentException('Only admin can list employees');
         }
         /**
          * @var Collection<int, Employee> $employees
          */
 
-        $employees = Employee::join('employee_profiles', 'employee_id', '=', 'id')->where(function (Builder $query) use ($request) {
+        $employees = (new \App\Models\Employee)->join('employee_profiles', 'employee_id', '=', 'id')->where(function (Builder $query) use ($request) {
             if ($request->has('name')) {
                 $query->where('employee_profiles.name', 'like', '%' . $request->string('name') . '%');
             }
@@ -130,7 +141,7 @@ class EmployeeController extends Controller
     {
         $currentEmployee = $this->getEmployee();
         if (!$currentEmployee->isAdmin()) {
-            throw new InvalidArgumentException('Only admin can list employees');
+            throw new HttpInvalidArgumentException('Only admin can list employees');
         }
         return response()->json(
             [
@@ -146,11 +157,14 @@ class EmployeeController extends Controller
         );
     }
 
+    /**
+     * @throws Throwable
+     */
     public function update(Employee $employee, Request $request) : JsonResponse
     {
         $currentEmployee = $this->getEmployee();
         if (!$currentEmployee->isAdmin()) {
-            throw new InvalidArgumentException('Only admin can list employees');
+            throw new HttpInvalidArgumentException('Only admin can list employees');
         }
         $validator = Validator::make($request->request->all(), [
             'name'         => 'required|min:4',
@@ -169,11 +183,14 @@ class EmployeeController extends Controller
         return response()->json(['data' => ['id' => $employee->id]]);
     }
 
+    /**
+     * @throws Throwable
+     */
     public function create(Request $request) : JsonResponse
     {
         $currentEmployee = $this->getEmployee();
         if (!$currentEmployee->isAdmin()) {
-            throw new InvalidArgumentException('Only admin can list employees');
+            throw new HttpInvalidArgumentException('Only admin can list employees');
         }
         $validator = Validator::make($request->request->all(), [
             'email'        => 'required|email|unique:employees',
@@ -197,10 +214,10 @@ class EmployeeController extends Controller
     {
         $currentEmployee = $this->getEmployee();
         if (!$currentEmployee->isAdmin()) {
-            throw new InvalidArgumentException('Only admin can list employees');
+            throw new HttpUnauthorizedException('Only admin can list employees');
         }
         if ($currentEmployee->is($employee)) {
-            throw new InvalidArgumentException('You cannot delete yourself');
+            throw new HttpInvalidArgumentException('You cannot delete yourself');
         }
         $employee->delete();
         return response()->json();

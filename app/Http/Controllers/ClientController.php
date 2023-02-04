@@ -8,7 +8,6 @@ use App\Http\Resources\ClientMeResource;
 use App\Models\Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
@@ -37,22 +36,27 @@ final class ClientController extends Controller
 
     public function login(Request $request) : JsonResponse
     {
-        $client = (new Client)->where('email', '=', $request->string('email'))->first();
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        $client = (new Client)->where('email', '=', $validator->validate()['email'])->first();
         if (is_null($client)) {
             throw new NotFoundHttpException('Invalid user');
         }
-        if (!Hash::check($request->string('password')->value(), $client->password)) {
+        if (!Hash::check($validator->validate()['password'], $client->password)) {
             throw new NotFoundHttpException('Invalid user');
         }
 
         auth('clients')->login($client);
-        return JsonResource::make();
+        return new JsonResponse();
     }
 
     public function logout() : JsonResponse
     {
         auth('clients')->logout();
-        return JsonResource::make();
+        return new JsonResponse();
     }
 
     /**
@@ -71,7 +75,7 @@ final class ClientController extends Controller
         $client = new Client();
         $client->fill($validator->validated());
         $client->saveOrFail();
-        return JsonResource::make();
+        return new JsonResponse();
     }
 
     /**
@@ -88,7 +92,7 @@ final class ClientController extends Controller
             return response()->json(['errors' => $validator->errors()], 401);
         }
         $client->update($validator->validated());
-        return JsonResource::make();
+        return new JsonResponse();
     }
 
     /**

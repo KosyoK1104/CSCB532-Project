@@ -12,9 +12,10 @@ use Illuminate\Http\Request;
 
 final class ClientControllerForEmployees extends Controller
 {
+    /** @noinspection PhpUnnecessaryCurlyVarSyntaxInspection */
     public function index(Request $request) : ClientListingCollection
     {
-        $clients = Client::join('client_profiles', 'client_profiles.client_id', '=', 'clients.id')->where(function (Builder $query) use ($request) {
+        $clients = (new \App\Models\Client)->join('client_profiles', 'client_profiles.client_id', '=', 'clients.id')->where(function (Builder $query) use ($request) {
             if ($request->has('name')) {
                 $name = explode(' ', $request->string('name')->value());
                 foreach ($name as $part) {

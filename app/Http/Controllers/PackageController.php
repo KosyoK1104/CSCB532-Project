@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Package;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Throwable;
 
 class PackageController extends Controller
 {
@@ -48,7 +50,7 @@ class PackageController extends Controller
     }
 
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function store(Request $request): JsonResponse
     {
@@ -102,20 +104,14 @@ class PackageController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Package $packages
-     * @return Response
-     */
     public function destroy(Package $packages): JsonResponse
     {
         $packages->deleteOrFail();
-        return response()->JsonResponse;
+        return response()->json();
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     private function generateTrackingNumber() : string
     {

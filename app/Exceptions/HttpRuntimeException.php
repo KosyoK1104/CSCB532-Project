@@ -6,7 +6,7 @@ namespace App\Exceptions;
 
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-final class HttpRuntimeException extends HttpException
+class HttpRuntimeException extends HttpException
 {
     public function __construct(string $message = '')
     {

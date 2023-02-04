@@ -10,7 +10,6 @@ use App\Models\Client;
 use App\Models\ClientProfile;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Validator;
 
 final class ClientProfileController extends Controller
@@ -61,9 +60,12 @@ final class ClientProfileController extends Controller
         $clientProfile = new ClientProfile();
         $clientProfile->client_id = $client->id;
         $clientProfile->fill($validated);
-        return JsonResource::make();
+        return new JsonResponse();
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function update(Request $request) : JsonResponse
     {
         $client = $this->client();
@@ -78,7 +80,7 @@ final class ClientProfileController extends Controller
             $clientProfile->client_id = $client->id;
         }
         $clientProfile->fill($validated)->saveOrFail();
-        return JsonResource::make();
+        return new JsonResponse();
     }
 
 }

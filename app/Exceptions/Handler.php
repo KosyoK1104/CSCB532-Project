@@ -44,6 +44,7 @@ class Handler extends ExceptionHandler
      * Register the exception handling callbacks for the application.
      *
      * @return void
+     * @noinspection PhpInconsistentReturnPointsInspection
      */
     public function register() : void
     {

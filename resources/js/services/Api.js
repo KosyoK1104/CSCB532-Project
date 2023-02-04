@@ -13,9 +13,7 @@ function withInterceptor() {
         store.dispatch(loading_minus())
         if(error.response.status === 401) {
             toast.error('Unauthenticated!')
-            // history.push('/login')
             window.location.href = '/login'
-            // window.location = '/login'
         }
         if(error.response.status === 403) {
             toast.error('Unauthorized!')
