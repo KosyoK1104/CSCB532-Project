@@ -1,66 +1,17 @@
-import {useParams} from "react-router-dom";
-import {useState} from "react";
-import Api from "../../../services/Api";
-import './PackageView.css';
-import InfoLine from "../../../components/InfoLine";
+import PackageViewInfo from "../../../components/package/PackageViewInfo";
 
-const PackageView = () => {
-    const {id} = useParams();
-    //Пратките имат подател, получател, адрес за доставка и тегло.
-    // За определяне на цената на за доставка играе роля теглото на пратката и дали тя ще се доставя до офис или до точен адрес
-
-    let [clientPackage, setClientPackage] = useState({
-        id: id,
-        sender: 'Test',
-        recipient: 'Test',
-        city: 'Test',
-        address: 'Test',
-        weight: 'Test',
-    });
-
-    const onChange = (e) => {
-        setClientPackage({
-            ...clientPackage,
-            name: e.target.value
-        })
-    }
-
-    const onSubmit = (e) => {
-        e.preventDefault();
-        Api.post('/api/employees/packages', clientPackage)
-            .catch((error) => {
-                console.log(eror);
-            })
-    }
+const EmployeePackageView = () => {
 
     return (
         <div className="container">
-            <div className="card">
-                <div className="card-header">
-                    <h3>Package {clientPackage.visual_id}</h3>
-                </div>
-                <div className="card-body">
-                    <div className="row">
-                        <div className="col-12 col-md-6">
-                            <InfoLine label="Sender" value={clientPackage.sender}/>
-                        </div>
-                        <div className="col-12 col-md-6">
-                            <InfoLine label="Recipient" value={clientPackage.recipient}/>
-                        </div>
-                        <div className="col-12 col-md-6">
-                            <InfoLine label="City" value={clientPackage.city}/>
-                        </div>
-                        <div className="col-12 col-md-6">
-                            <InfoLine label="Address" value={clientPackage.address}/>
-                        </div>
-                        <div className="col-12 col-md-6">
-                            <InfoLine label="Weight" value={clientPackage.weight}/>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <PackageViewInfo></PackageViewInfo>
+
+             {/*TODO: to fix this btn*/}
+            <th>
+                <button className="btn btn-primary">Mark as delivered</button>
+            </th>
         </div>
     );
 }
 
-export default PackageView;
+export default EmployeePackageView;

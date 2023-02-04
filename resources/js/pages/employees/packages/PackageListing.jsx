@@ -99,6 +99,12 @@ const PackageListing = () => {
         })
     }
 
+    // const handleFilterChange = (el) => {
+    //     setFilterParams({
+    //         ...filterParams,
+    //     })
+    // }
+
     const goToPackage = (id) => {
         navigate(`/employee/packages/${id}`)
     }
