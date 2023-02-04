@@ -1,3 +1,5 @@
+import './InfoLine.css';
+
 const InfoLine = ({label, value}) => {
 
     return (
