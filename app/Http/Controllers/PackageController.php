@@ -18,8 +18,13 @@ class PackageController extends Controller
      */
     public function index(): ?Response
     {
-        //
+        $packages = Package::all();
+
+        return response()->view('index', [
+            'packages' => $packages,
+        ]);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -65,6 +70,9 @@ class PackageController extends Controller
      */
     public function show(Package $packages): Response
     {
+        return response()->view('index', [
+            'package' => $packages,
+        ]);
 
     }
 
@@ -75,9 +83,23 @@ class PackageController extends Controller
      * @param Package $packages
      * @return Response
      */
-    public function update(Request $request, Package $packages): Response
+    public function update(Request $request, Package $packages): JsonResponse
     {
-        //
+        $validator = Validator::make($request->request->all(), [
+            'delivery_type' => 'required',
+            'status' => 'required',
+            'price' => 'required',
+            'weight' => 'required',
+            'recipient_name' => 'required|min:3',
+            'recipient_phone_number' => 'required|min:10',
+            'recipient_address' => 'required|min:5'
+        ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 401);
+        }
+        $packages->update($validator->validated());
+        return response()->json();
+
     }
 
     /**
@@ -86,9 +108,10 @@ class PackageController extends Controller
      * @param Package $packages
      * @return Response
      */
-    public function destroy(Package $packages): Response
+    public function destroy(Package $packages): JsonResponse
     {
-        //
+        $packages->deleteOrFail();
+        return response()->JsonResponse;
     }
 
     /**
@@ -105,4 +128,6 @@ class PackageController extends Controller
         }
         return $trackingNumber;
     }
+
+
 }
