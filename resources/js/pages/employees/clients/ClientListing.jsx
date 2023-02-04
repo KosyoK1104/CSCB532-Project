@@ -1,16 +1,42 @@
 import {useEffect, useState} from "react";
-import Api from "../../../services/Api";
 import {useNavigate} from "react-router-dom";
 import LoaderProvider from "../../../components/LoaderProvider";
+import ClientLisitngService from "../../../services/ClientLisitngService";
+import {DEFAULT_META} from "../../../services/PaginationService";
+import Pagination from "../../../components/Pagination";
 
 const ClientListing = () => {
     let [clients, setClients] = useState([]);
+    let [searchParams, setSearchParams] = useState({
+        name: null,
+        email: null,
+        phone_number: null,
+    })
+    let [meta, setMeta] = useState(DEFAULT_META);
     const navigate = useNavigate();
-    useEffect(() => {
-        Api.get('/api/employees/clients')
-            .then(response => {
-                setClients(response.data.data);
+
+    const load = (page = 1) => {
+        ClientLisitngService.load(page, searchParams)
+            .then((result) => {
+                setClients(result.data);
+                setMeta(result.meta);
             })
+
+    }
+    const handleChangeSearch = (e) => {
+        setSearchParams({
+            ...searchParams,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        load();
+    }
+
+    useEffect(() => {
+        load()
     }, []);
 
     const goToClient = (id) => {
@@ -33,6 +59,24 @@ const ClientListing = () => {
                                 <th>Phone</th>
                                 <th></th>
                             </tr>
+                            <tr>
+                                <th>
+                                    <input type="text" name="name" className="form-control" value={searchParams.name}
+                                           onChange={handleChangeSearch}/>
+                                </th>
+                                <th>
+                                    <input type="text" name="email" className="form-control" value={searchParams.email}
+                                           onChange={handleChangeSearch}/>
+                                </th>
+                                <th>
+                                    <input type="text" name="phone_number" className="form-control"
+                                           value={searchParams.phone_number}
+                                           onChange={handleChangeSearch}/>
+                                </th>
+                                <th>
+                                    <button className="btn btn-primary" onClick={handleSearch}>Search</button>
+                                </th>
+                            </tr>
                             </thead>
                             <tbody>
                             {clients.map(client => (
@@ -49,6 +93,7 @@ const ClientListing = () => {
                             ))}
                             </tbody>
                         </table>
+                        <Pagination meta={meta} onPageChange={load}/>
                     </LoaderProvider>
                 </div>
             </div>

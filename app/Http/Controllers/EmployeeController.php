@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\EmployeeListingCollection;
 use App\Models\Employee;
 use App\Models\EmployeeProfile;
 use App\Models\EmployeeType;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -100,7 +102,7 @@ class EmployeeController extends Controller
         return response()->json();
     }
 
-    public function listing() : JsonResponse
+    public function listing(Request $request) : EmployeeListingCollection
     {
         $currentEmployee = $this->getEmployee();
         if (!$currentEmployee->isAdmin()) {
@@ -109,21 +111,19 @@ class EmployeeController extends Controller
         /**
          * @var Collection<int, Employee> $employees
          */
-        $employees = Employee::all();
-        return response()->json(
-            [
-                'data' => $employees->map(
-                    function (Employee $employee) {
-                        return [
-                            'id'    => $employee->id,
-                            'email' => $employee->email,
-                            'type'  => $employee->type->value,
-                            'name'  => $employee->employeeProfile()->getResults()?->name,
-                        ];
-                    }
-                ),
-            ]
-        );
+
+        $employees = Employee::join('employee_profiles', 'employee_id', '=', 'id')->where(function (Builder $query) use ($request) {
+            if ($request->has('name')) {
+                $query->where('employee_profiles.name', 'like', '%' . $request->string('name') . '%');
+            }
+            if ($request->has('email')) {
+                $query->where('email', '=', $request->string('email'));
+            }
+            if ($request->has('type')) {
+                $query->where('type', '=', EmployeeType::from((string) $request->string('type'))->value);
+            }
+        })->paginate();
+        return new EmployeeListingCollection($employees);
     }
 
     public function get(Employee $employee) : JsonResponse

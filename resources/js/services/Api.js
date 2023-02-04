@@ -33,20 +33,19 @@ function withInterceptor() {
 }
 
 export default {
-    formatQueryParams(params = {}, page = null) {
-        let queryParams = ''
+    formatQueryParams(searchParams = {}, page = null) {
+        let queryParams = []
+        for(let param in searchParams) {
+            if(!(searchParams[param] === null || searchParams[param] === '')) {
 
-        if(page) {
-            queryParams += 'page=' + page
-        }
-
-        for(let key in params) {
-            if(params[key]) {
-                queryParams += '&' + key + '=' + params[key]
+                queryParams.push(param + '=' + encodeURIComponent(searchParams[param].trim()))
             }
         }
 
-        return queryParams
+        if(page !== null) {
+            queryParams.push('page=' + page)
+        }
+        return queryParams.length !== 0 ? '?' + queryParams.join('&') : ''
     },
 
     get: function(endpoint = '', config = {}) {
@@ -68,5 +67,10 @@ export default {
 
     resolveValidationError: function(error) {
         return error.response.data.errors
+    },
+
+    encodeUrl: function(url, page = 1, params = {}) {
+        this.formatQueryParams(params, page)
+        return url + this.formatQueryParams(params, page)
     }
 }

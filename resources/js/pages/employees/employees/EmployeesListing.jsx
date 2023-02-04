@@ -2,19 +2,41 @@ import {useEffect, useState} from "react";
 import Api from "../../../services/Api";
 import {useNavigate} from "react-router-dom";
 import LoaderProvider from "../../../components/LoaderProvider";
+import EmplolyeeListingService from "../../../services/EmployeeListingService";
+import Pagination from "../../../components/Pagination";
+import {DEFAULT_META} from "../../../services/PaginationService";
 
 const EmployeesListing = () => {
     const [employees, setEmployees] = useState([]);
+    const [meta, setMeta] = useState(DEFAULT_META);
+    const [searchParams, setSearchParams] = useState({
+        name: null,
+        email: null,
+        type: null,
+    })
+
+    const TYPES = [
+        {value: '', label: ''},
+        {value: 'admin', label: 'Admin'},
+        {value: 'delivery', label: 'Delivery'},
+        {value: 'office', label: 'Office'},
+    ]
+
     const navigate = useNavigate();
 
-    const load = () => {
-        Api.get('/api/employees/employees')
-            .then(response => {
-                setEmployees(response.data.data);
-            })
-            .catch(error => {
-                console.log(error);
-            })
+    const load = (page = 1) => {
+        console.log(searchParams);
+        EmplolyeeListingService.load(page, searchParams).then(result => {
+            setEmployees(result.data);
+            setMeta(result.meta);
+        })
+    }
+
+    const handleSearchChange = (e) => {
+        setSearchParams({
+            ...searchParams,
+            [e.target.name]: e.target.value
+        })
     }
 
     useEffect(() => {
@@ -52,11 +74,24 @@ const EmployeesListing = () => {
                                 <th width="10"></th>
                             </tr>
                             <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
                                 <th>
-                                    <button className="btn btn-primary w-100">Search</button>
+                                    <input type="text" className="form-control form-control-sm"
+                                           onChange={handleSearchChange} name="name" value={searchParams.name}/>
+                                </th>
+                                <th>
+                                    <input type="text" className="form-control form-control-sm"
+                                           onChange={handleSearchChange} name="email" value={searchParams.email}/>
+                                </th>
+                                <th>
+                                    <select className="form-select form-select-sm" onChange={handleSearchChange}
+                                            name="type" value={searchParams.type}>
+                                        {TYPES.map((type, index) => (
+                                            <option key={index} value={type.value}>{type.label}</option>
+                                        ))}
+                                    </select>
+                                </th>
+                                <th>
+                                    <button className="btn btn-primary w-100" onClick={load}>Search</button>
                                 </th>
                             </tr>
                             </thead>
@@ -80,6 +115,7 @@ const EmployeesListing = () => {
                             ))}
                             </tbody>
                         </table>
+                        <Pagination meta={meta} onPageChange={load}/>
                     </LoaderProvider>
                 </div>
             </div>
