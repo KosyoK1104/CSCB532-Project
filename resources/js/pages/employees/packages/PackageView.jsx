@@ -7,9 +7,10 @@ const EmployeePackageView = () => {
             <PackageViewInfo></PackageViewInfo>
 
              {/*TODO: to fix this btn*/}
-            <th>
+            <br></br>
+            <div>
                 <button className="btn btn-primary">Mark as delivered</button>
-            </th>
+            </div>
         </div>
     );
 }
