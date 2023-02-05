@@ -1,0 +1,57 @@
+/*
+ styles = {
+    selectFilter: {
+        position: "relative",
+    },
+    selectFilterInput: {
+        position: "relative",
+    },
+    selectFilterOptions: {
+        position: "absolute",
+        top: "100%",
+        left: 0,
+        right: 0,
+        zIndex: 1,
+        listStyle: "none",
+        margin: 0,
+        padding: 0,
+        backgroundColor: "#fff",
+        border: "1px solid #ccc",
+        borderRadius: 4,
+        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+    },
+    selectFilterOption: {
+        padding: "8px 16px",
+        cursor: "pointer",
+    }
+}*/
+
+.select-filter {
+    position: relative;
+}
+.select-filter-input {
+    position: relative;
+}
+.select-filter-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    max-height: 200px;
+    overflow-y: auto;
+}
+.select-filter-option {
+    padding: 8px 16px;
+    cursor: pointer;
+}
+.select-filter-option:hover {
+    background-color: #eee;
+}
