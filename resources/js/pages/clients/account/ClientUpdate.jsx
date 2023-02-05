@@ -63,7 +63,7 @@ export default function ClientUpdate() {
                 <form onSubmit={handleSubmit}>
                     <div className="card-header">
                         <h5 className="card-title ps-3 pt-2">
-                            Address
+                            Update
                         </h5>
                     </div>
 

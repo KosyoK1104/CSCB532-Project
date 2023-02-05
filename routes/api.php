@@ -39,6 +39,7 @@ Route::middleware(AuthenticatedClient::class)->group(function () {
     Route::get('/clients/me/profile', [ClientProfileController::class, 'forMe']);
     Route::get('/clients/me/profile/summary', [ClientProfileController::class, 'summaryForMe']);
     Route::put('/clients/me/profile', [ClientProfileController::class, 'update']);
+    Route::post('/clients/me/change-password', [ClientController::class, 'changePassword']);
     /*
      * TODO implement these
     Route::get('/clients/packages', [\App\Http\Controllers\PackageController::class, 'index']);

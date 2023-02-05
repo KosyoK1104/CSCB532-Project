@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,7 +12,7 @@ return new class extends Migration{
      *
      * @return void
      */
-    public function up()
+    public function up() : void
     {
         Schema::create('packages', function (Blueprint $table) {
             $table->uuid('id')->primary();
@@ -20,7 +22,7 @@ return new class extends Migration{
             $table->foreign('office_id')->references('id')->on('offices')->restrictOnDelete()->restrictOnUpdate();
             $table->foreign('client_id')->references('id')->on('clients')->restrictOnDelete()->restrictOnUpdate();
             $table->string('delivery_type'); //this should be enum
-            $table->string('status');
+            $table->string('status'); //this should be enum
             $table->double('price')->unsigned();
             $table->double('weight')->unsigned();
 
@@ -42,7 +44,7 @@ return new class extends Migration{
      *
      * @return void
      */
-    public function down()
+    public function down() : void
     {
         Schema::dropIfExists('packages');
     }

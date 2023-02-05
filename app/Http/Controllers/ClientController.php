@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\HttpInvalidArgumentException;
 use App\Http\Resources\ClientMeResource;
 use App\Models\Client;
 use Illuminate\Http\JsonResponse;
@@ -37,7 +38,7 @@ final class ClientController extends Controller
     public function login(Request $request) : JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required',
         ]);
 
@@ -92,6 +93,26 @@ final class ClientController extends Controller
             return response()->json(['errors' => $validator->errors()], 401);
         }
         $client->update($validator->validated());
+        return new JsonResponse();
+    }
+
+    public function changePassword(Request $request) : JsonResponse
+    {
+        $validator = Validator::make($request->request->all(), [
+            'old_password'    => 'required',
+            'new_password'    => 'required|string|min:6',
+            'new_password_confirmation' => 'required|string|same:new_password',
+        ]);
+
+        $validated = $validator->validate();
+
+        if (!Hash::check($validated['old_password'], $this->getClient()->password)) {
+            throw new HttpInvalidArgumentException('Invalid old password');
+        }
+
+        $client = $this->getClient();
+        $client->password = $validated['new_password'];
+        $client->saveOrFail();
         return new JsonResponse();
     }
 

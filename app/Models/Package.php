@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  *
@@ -20,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string $recipient_name
  * @property string $recipient_phone_number
  * @property string $recipient_address
+ * @property int $status
  * @property int $created_at
  * @property int $updated_at
  */
@@ -32,7 +32,8 @@ class Package extends Model
     protected $fillable = ["weight", "delivery_type", "recipient_name", "recipient_address", "recipient_phone_number"];
 
     protected $casts = [
-        'type' => DeliveryType::class,
+        'type'   => DeliveryType::class,
+        'status' => DeliveryStatus::class,
     ];
 
     public function packageOffice() : BelongsTo
@@ -40,7 +41,7 @@ class Package extends Model
         return $this->BelongsTo(Office::class);
     }
 
-    public function client(): BelongsTo
+    public function client() : BelongsTo
     {
         return $this->BelongsTo(Client::class);
     }

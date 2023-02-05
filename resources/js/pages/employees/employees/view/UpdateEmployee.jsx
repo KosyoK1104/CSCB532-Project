@@ -1,6 +1,8 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import Api from "../../../../services/Api";
+import FormErrorWrapper from "../../../../components/FormErrorWrapper";
+import toast from "react-hot-toast";
 
 const UpdateEmployee = () => {
     const {id} = useParams();
@@ -13,11 +15,20 @@ const UpdateEmployee = () => {
         type: null,
     });
 
+    const [errors, setErrors] = useState({
+        name: null,
+        email: null,
+    })
+
     const handleChange = (e) => {
         console.log(e.target.name, e.target.value);
         setEmployee({
             ...employee,
             [e.target.name]: e.target.value
+        })
+        setErrors({
+            ...errors,
+            [e.target.name]: null
         })
     }
 
@@ -25,7 +36,12 @@ const UpdateEmployee = () => {
         e.preventDefault();
         Api.put('/api/employees/employees/' + id, employee)
             .then(() => load())
-            .catch((error) => console.log(error))
+            .catch((error) => {
+                if(error.response.status === 422) {
+                    setErrors(Api.resolveValidationError(error))
+                }
+                toast.error(Api.resolveError(error))
+            })
     }
 
     const load = () => {
@@ -34,7 +50,7 @@ const UpdateEmployee = () => {
                 setEmployee(result.data.data);
             })
             .catch((error) => {
-                console.log((error))
+                setErrors(Api.resolveError(error))
             })
     }
 
@@ -51,16 +67,16 @@ const UpdateEmployee = () => {
                 <div className="card-body">
                     <div className="row">
                         <div className="col-md-6 col-12">
-                            <div className="form-group mt-2">
+                            <FormErrorWrapper error={errors.name}>
                                 <label htmlFor="name" className="form-label">Name</label>
                                 <input name="name" value={employee.name} className="form-control"
                                        onChange={handleChange}/>
-                            </div>
-                            <div className="form-group mt-2">
+                            </FormErrorWrapper>
+                            <FormErrorWrapper error={errors.phone_number}>
                                 <label htmlFor="phone_number" className="form-label">Phone number</label>
                                 <input name="phone_number" value={employee.phone_number} className="form-control"
                                        onChange={handleChange}/>
-                            </div>
+                            </FormErrorWrapper>
                         </div>
                     </div>
                 </div>
@@ -69,7 +85,8 @@ const UpdateEmployee = () => {
                 </div>
             </form>
         </div>
-    );
+    )
+        ;
 }
 
 export default UpdateEmployee;

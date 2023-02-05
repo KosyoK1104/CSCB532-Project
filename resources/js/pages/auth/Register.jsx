@@ -55,6 +55,7 @@ export default function Register() {
                     </div>
                     <div className="card-body px-4">
                         <LoaderProvider>
+                            <div className="d-flex"></div>
                             <FormErrorWrapper error={errors.email}>
                                 <label htmlFor="email">Email</label>
                                 <input type="email" className="form-control" id="email" name="email"

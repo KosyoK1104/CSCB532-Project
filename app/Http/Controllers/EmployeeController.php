@@ -99,7 +99,7 @@ class EmployeeController extends Controller
         $employee = $this->getEmployee();
 
         if (!Hash::check($validated['old_password'], $employee->password)) {
-            throw new HttpInvalidArgumentException('Provided previous password does not match with current!');
+            throw new HttpInvalidArgumentException('Provided old password does not match with current!');
         }
 
         $employee->password = $validated['new_password'];

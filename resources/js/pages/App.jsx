@@ -12,6 +12,7 @@ import ClientHomePage from "./clients/HomePage";
 import ClientAccountLayout from "./clients/account/AccountLayout";
 import ClientAccountHome from "./clients/account/AccountHome";
 import ClientUpdate from "./clients/account/ClientUpdate";
+import ClientChangePassword from "./clients/account/ChangePassword";
 
 import EmployeeHomePage from "./employees/HomePage";
 import EmployeeAccountHome from "./employees/account/AccountHome";
@@ -57,6 +58,7 @@ export default function App() {
                             <Route path="account" element={<ClientAccountLayout/>}>
                                 <Route index element={<ClientAccountHome/>}/>
                                 <Route path="update" element={<ClientUpdate/>}/>
+                                <Route path="change-password" element={<ClientChangePassword/>}/>
                             </Route>
                             <Route path="myPackages">
                                 <Route index element={<ClientPackageListing/>}/>

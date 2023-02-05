@@ -1,6 +1,6 @@
 import React from "react";
 import {BsPersonSquare} from "react-icons/bs";
-import {FaRegAddressBook, FiSettings, GiSettingsKnobs, SlLogout} from "react-icons/all";
+import {FaRegAddressBook, FiSettings, SlLogout} from "react-icons/all";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import Me from "../../../services/MeClient";
 import {logout} from "../../../store/clients/MeClient";
@@ -40,22 +40,19 @@ export default function AccountLayout() {
                             </span>
                         </li>
                         <li className="nav-item cursor-pointer col-12">
-                            <span onClick={() => navigate('/client/account/update')} className={navLink('/client/account/update')}>
+                            <span onClick={() => navigate('/client/account/update')}
+                                  className={navLink('/client/account/update')}>
                                 <span className="nav-icon"><FaRegAddressBook/></span>
-                                Address
+                                Update
                             </span>
                         </li>
                         <li className="nav-item cursor-pointer col-12">
-                            <a href="#" className="nav-link">
-                                <span className="nav-icon"><GiSettingsKnobs/></span>
-                                Preferences
-                            </a>
-                        </li>
-                        <li className="nav-item cursor-pointer col-12">
-                            <a href="#" className="nav-link">
-                                <span className="nav-icon"><FiSettings/></span>
-                                Settings
-                            </a>
+                            <span onClick={() => navigate('/client/account/change-password')}
+                                  className={navLink('/client/account/change-password')}>
+                                    <span className="nav-icon">
+                                        <FiSettings/></span>
+                                Change password
+                            </span>
                         </li>
                         <li className="nav-item cursor-pointer col-12">
                             <span onClick={handleLogout} className="nav-link">

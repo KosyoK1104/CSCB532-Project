@@ -42,6 +42,4 @@ class Office extends Model
     {
         return $this->hasMany(Package::class);
     }
-
-
 }

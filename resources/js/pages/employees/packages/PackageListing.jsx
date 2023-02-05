@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import PackageService from "../../../services/PackageService";
 import {useNavigate} from "react-router-dom";
 import LoaderProvider from "../../../components/LoaderProvider";
-import TableListingStyle from "../TableListingStyle.css";
 
 const packageService = {
     packages: [
@@ -120,7 +119,7 @@ const EmployeePackageListing = () => {
                 </div>
                 <LoaderProvider>
                     <div className="card-body p-3">
-                        <table className="table table-hover">
+                        <table className="table table-hover table-striped">
                             <thead>
                             <tr>
                                 <th>ID</th>

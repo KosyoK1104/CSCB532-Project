@@ -1,6 +1,9 @@
 import EmployeeProfileService from "../../../services/EmployeeProfileService";
 import {useEffect, useState} from "react";
 import './AccountSettings.css';
+import FormErrorWrapper from "../../../components/FormErrorWrapper";
+import Api from "../../../services/Api";
+import toast from "react-hot-toast";
 
 const AccountSettings = () => {
     const DEFAULT_PROFILE_PICTURE = '/storage/default-profile-picture.png';
@@ -9,6 +12,10 @@ const AccountSettings = () => {
         name: '',
         phone_number: '',
         profile_picture: '',
+    });
+    let [errors, setErrors] = useState({
+        name: '',
+        phone_number: '',
     });
 
     const acceptedImageTypes = ['image/png', 'image/jpeg', 'image/jpg'];
@@ -58,14 +65,17 @@ const AccountSettings = () => {
         })
         EmployeeProfileService.deleteProfilePicture()
             .catch((error) => {
-                console.log(error);
+                toast.error(Api.resolveError(error));
             })
     }
     const handleSubmit = (e) => {
         e.preventDefault();
         EmployeeProfileService.update(user)
             .catch((error) => {
-                console.log(error);
+                if(error.response.status === 422) {
+                    setErrors(Api.resolveValidationError(error));
+                }
+                toast.error(Api.resolveError(error));
             })
     };
 
@@ -81,18 +91,17 @@ const AccountSettings = () => {
                     <div className="row">
                         <div className="col-md-6 col-12">
                             <form onSubmit={handleSubmit} id="settings">
-                                <div className="form-group">
+                                <FormErrorWrapper error={errors.name}>
                                     <label htmlFor="name">Name</label>
                                     <input type="text" className="form-control" id="name" name="name"
                                            onChange={handleChange} value={user.name}/>
-                                </div>
-                                <div className="form-group">
+                                </FormErrorWrapper>
+                                <FormErrorWrapper error={errors.phone_number}>
                                     <label htmlFor="phone_number">Phone number</label>
                                     <input type="text" className="form-control" id="phone_number"
                                            name="phone_number"
                                            onChange={handleChange} value={user.phone_number}/>
-                                </div>
-                                {/*<button type="submit" form={} className="btn btn-primary mt-3">Save</button>*/}
+                                </FormErrorWrapper>
                             </form>
                         </div>
                         <div className="col-md-6 col-12">
@@ -107,13 +116,6 @@ const AccountSettings = () => {
                                            className="form-control"
                                            accept={acceptedImageTypes.join(', ')}/>
                                 </div>
-                                {/*<div className="d-flex gap-2">
-                                    <button type="submit" className="btn btn-primary mt-3">Save</button>
-                                    {user.profile_picture === DEFAULT_PROFILE_PICTURE ? '' :
-                                        <button className="btn btn-primary mt-3"
-                                                onClick={handleDeleteProfilePicture}>Delete
-                                        </button>}
-                                </div>*/}
                             </form>
                         </div>
                     </div>

@@ -24,7 +24,7 @@ const ChangePassword = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        Api.post('/api/employees/me/change-password', password)
+        Api.post('/api/clients/me/change-password', password)
             .then(() => {
                 setPassword({
                     old_password: '',
