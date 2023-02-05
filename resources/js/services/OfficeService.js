@@ -1,9 +1,20 @@
 import Api from '../services/Api'
 
-const load = (page = 1, searchParams = {}) => {
-    return Api.get('/api/offices?' + Api.formatQueryParams(searchParams, page))
-        .then((response) => {
-            return response.data.data
+/**
+ *
+ * @param page<int>
+ * @param searchParams<Object>
+ */
+function load(page, searchParams) {
+
+    return Api.get(Api.encodeUrl('/api/employees/offices', page, searchParams))
+        .then(response => {
+            //FIXME The response is undefined?
+            console.log(response);
+            return {
+                data: response.data.data,
+                meta: response.data.meta
+            }
         })
 }
 

@@ -14,8 +14,6 @@ class OfficeFactory extends Factory
             'name'       => $this->faker->name(),
             'city'       => $this->faker->city(),
             'address'    => $this->faker->address(),
-            'created_at' => $this->faker->randomNumber(),
-            'updated_at' => $this->faker->randomNumber(),
         ];
     }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\ClientControllerForEmployees;
 use App\Http\Controllers\ClientProfileController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeProfileController;
+use App\Http\Controllers\OfficeController;
 use App\Http\Middleware\AdminAuthenticatedEmployee;
 use App\Http\Middleware\AuthenticatedClient;
 use App\Http\Middleware\AuthenticatedEmployee;
@@ -76,7 +77,7 @@ Route::middleware(AuthenticatedEmployee::class)->group(function () {
     Route::get('/employees/clients', [ClientControllerForEmployees::class, 'index']);
     Route::get('/employees/clients/{client}', [ClientControllerForEmployees::class, 'get']);
 
-    //Route::delete('/employees/clients/{client}', [ClientControllerForEmployee::class, 'destroy']);
+//    Route::delete('/employees/clients/{client}', [ClientControllerForEmployee::class, 'destroy']);
 
     /*
      * TODO implement these
@@ -90,13 +91,14 @@ Route::middleware(AuthenticatedEmployee::class)->group(function () {
     Route::get('/emoloyees/packages/{package}/in-warehouse', [\App\Http\Controllers\PackageControllerForEmployee::class, 'inWarehouse']);
     */
     /*
-     * TODO implement these
      * Route::get('/employees/offices);
      * Route::get('/employees/offices/{office});
      * Route::post('/employees/offices);
      * Route::put('/employees/offices/{office});
      * Route::delete('/employees/offices/{offices});
      */
+
+    Route::get('/employees/offices', [OfficeController::class, 'index']);
 });
 
 Route::match(['get', 'post', 'put', 'delete'], '/{any}', function () {
