@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import PackageService from "../../../services/PackageService";
 import {useNavigate} from "react-router-dom";
 import LoaderProvider from "../../../components/LoaderProvider";
+import TableListingStyle from "../TableListingStyle.css";
 
 const packageService = {
     packages: [
@@ -111,12 +112,13 @@ const EmployeePackageListing = () => {
     }
 
     return (
-        <LoaderProvider>
-            <div className="container">
-                <div className="card">
-                    <div className="card-header">
-                        <h3 className="card-title">All packages</h3>
-                    </div>
+
+        <div className="container">
+            <div className="card">
+                <div className="card-header">
+                    <h3 className="card-title">All packages</h3>
+                </div>
+                <LoaderProvider>
                     <div className="card-body p-3">
                         <table className="table table-hover">
                             <thead>
@@ -167,6 +169,7 @@ const EmployeePackageListing = () => {
                                 <th>
                                     <button className="btn btn-primary" onClick={handleSearch}>Search</button>
                                 </th>
+
                             </tr>
                             </thead>
                             <tbody>
@@ -188,9 +191,10 @@ const EmployeePackageListing = () => {
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </LoaderProvider>
             </div>
-        </LoaderProvider>
+        </div>
+
     )
 }
 

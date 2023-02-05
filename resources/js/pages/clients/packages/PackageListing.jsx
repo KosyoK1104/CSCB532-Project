@@ -1,4 +1,4 @@
-import {useEffect,useState} from "react";
+import {useEffect, useState} from "react";
 import PackageService from "../../../services/PackageService";
 import {useNavigate} from "react-router-dom";
 import LoaderProvider from "../../../components/LoaderProvider";
@@ -111,12 +111,13 @@ const ClientPackageListing = () => {
     }
 
     return (
-        <LoaderProvider>
-            <div className="container">
-                <div className="card">
-                    <div className="card-header">
-                        <h3 className="card-title">All packages</h3>
-                    </div>
+
+        <div className="container">
+            <div className="card">
+                <div className="card-header">
+                    <h3 className="card-title">All packages</h3>
+                </div>
+                <LoaderProvider>
                     <div className="card-body p-3">
                         <table className="table table-hover">
                             <thead>
@@ -188,9 +189,9 @@ const ClientPackageListing = () => {
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </LoaderProvider>
             </div>
-        </LoaderProvider>
+        </div>
     )
 }
 
