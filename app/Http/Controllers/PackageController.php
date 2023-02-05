@@ -7,7 +7,6 @@ namespace App\Http\Controllers;
 use App\Models\DeliveryStatus;
 use App\Models\DeliveryType;
 use App\Models\Package;
-use App\Models\PackageStatus;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -90,10 +89,8 @@ class PackageController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
      * @param Request $request
      * @param Package $packages
-     * @return Response
      */
     public function update(Request $request, Package $packages): JsonResponse
     {

@@ -46,4 +46,9 @@ class Package extends Model
         return $this->BelongsTo(Client::class);
     }
 
+    public function employee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class);
+    }
+
 }

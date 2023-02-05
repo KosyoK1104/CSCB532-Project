@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('password');
             $table->string('type');
             $table->uuid('office_id')->nullable()->default(null);
+            $table->uuid('package_id')->nullable()->default(null);
             $table->foreign('office_id')->references('id')->on('offices');
+            $table->foreign('package_id')->references('id')->on('packages');
             $table->integer('created_at')->unsigned();
             $table->integer('updated_at')->unsigned();
         });
