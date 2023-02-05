@@ -24,7 +24,7 @@ export default function AuthLayout() {
         <Layout style={{minHeight: '100vh'}}>
             <Header>
                 <Menu theme="dark" mode="horizontal">
-                    {headerMenuItems.map(function(el) {
+                    {headerMenuItems.map(function (el) {
                         return <Menu.Item key={el.key}>
                             <NavLink className="text-decoration-none"
                                      to={el.path}>{el.label}</NavLink>
@@ -36,7 +36,15 @@ export default function AuthLayout() {
             <Content>
                 <Outlet/>
             </Content>
-            <Footer>FOOTER</Footer>
+            <Footer style={{
+                "width": "100 %",
+                "background-color": "rgba(0,0,0,0.1)",
+                "color": "black",
+                "text-align": "center",
+                "flex-direction": "column",
+                "padding-top": "10px",
+                "padding-bottom": "10px",
+            }}>All rights reserved ©2023</Footer>
         </Layout>
         /*
             <div className="container__view">
