@@ -22,8 +22,8 @@ export default function AuthLayout() {
     return (
 
         <Layout style={{minHeight: '100vh'}}>
-            <Header>
-                <Menu theme="dark" mode="horizontal">
+            <Header style={{"background": "#426b93"}}>
+                <Menu theme="dark" mode="horizontal" style={{"background": "#426b93", "font-size":"17px", "color":"white"}}>
                     {headerMenuItems.map(function (el) {
                         return <Menu.Item key={el.key}>
                             <NavLink className="text-decoration-none"
