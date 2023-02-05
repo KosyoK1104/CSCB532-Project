@@ -3,7 +3,10 @@ import Me from "../../services/MeClient";
 import {logout} from "../../store/clients/MeClient";
 import toast from "react-hot-toast";
 import {useDispatch} from "react-redux";
+import {useNavigate} from "react-router-dom";
+
 const AppHeader = ({me}) => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     let [isOpen, setIsOpen] = useState(false);
     const handleLogout = () => {
@@ -25,7 +28,7 @@ const AppHeader = ({me}) => {
                                   onClick={() => navigate('/client/account')}>Account</span>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">My packages</a>
+                            <a className="nav-link cursor-pointer"onClick={() => navigate('/client/myPackages')}>My packages</a>
                         </li>
                     </ul>
                     <div className="ms-auto">

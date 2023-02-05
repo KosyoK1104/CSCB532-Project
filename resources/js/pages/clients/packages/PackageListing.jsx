@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect,useState} from "react";
 import PackageService from "../../../services/PackageService";
 import {useNavigate} from "react-router-dom";
 import LoaderProvider from "../../../components/LoaderProvider";
@@ -15,7 +15,7 @@ const packageService = {
         },
         {
             id: 2,
-            sender: 'Georgi',
+            sender: 'Ivan',
             recipient: 'Zlatomir',
             city: 'Sofia',
             address: 'Rakovska 5',
@@ -50,7 +50,7 @@ const packageService = {
 }
 
 
-const EmployeePackageListing = () => {
+const ClientPackageListing = () => {
     const navigate = useNavigate();
     let [packages, setPackages] = useState([]);
     let [page, setPage] = useState(1);
@@ -107,7 +107,7 @@ const EmployeePackageListing = () => {
     // }
 
     const goToPackage = (id) => {
-        navigate(`/employee/packages/${id}`)
+        navigate(`/client/myPackages/${id}`)
     }
 
     return (
@@ -194,4 +194,4 @@ const EmployeePackageListing = () => {
     )
 }
 
-export default EmployeePackageListing
+export default ClientPackageListing
