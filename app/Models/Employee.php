@@ -42,10 +42,6 @@ class Employee extends Authenticatable
         return $this->hasOne(EmployeeProfile::class);
     }
 
-    public function packages(): HasMany
-    {
-        return $this->hasMany(Package::class);
-    }
 
     public function isAdmin() : bool
     {
