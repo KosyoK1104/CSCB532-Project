@@ -9,6 +9,7 @@ use App\Models\Client;
 use App\Models\ClientProfile;
 use App\Models\Employee;
 use App\Models\EmployeeProfile;
+use App\Models\Package;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -29,6 +30,10 @@ class DatabaseSeeder extends Seeder
             ->has(EmployeeProfile::factory())
             ->create()
         ;
+
+        Package::factory(5)
+            ->create()
+            ;
 
 //        ClientProfile::factory()->for($clients)->create();
         // \App\Models\User::factory(10)->create();
