@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $tracking_number
  * @property double $price
  * @property double $weight
- * @property string $delivery_type
+ * @property DeliveryType $delivery_type
  * @property string $recipient_name
  * @property string $recipient_phone_number
  * @property string $recipient_address

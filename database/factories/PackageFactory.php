@@ -3,7 +3,10 @@
 namespace Database\Factories;
 
 
+use App\Models\DeliveryStatus;
+use App\Models\DeliveryType;
 use App\Models\Package;
+use App\Models\PackageStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Ramsey\Uuid\Uuid;
 
@@ -22,8 +25,8 @@ class PackageFactory extends Factory
         return [
             'id' => Uuid::uuid4(),
             'tracking_number' => $this->faker->iban(),
-            'delivery_type' => 'cargoTEST',
-            'status' => $this->faker->boolean,
+            'delivery_type' => DeliveryType::from(DeliveryType::options()[array_rand(DeliveryType::cases())]),
+            'status' => DeliveryStatus::from(DeliveryStatus::options()[array_rand(DeliveryStatus::cases())]),
             'price' => $this->faker->randomDigitNotNull(),
             'weight' => $this->faker->randomDigitNotNull(),
             'recipient_name' => $this->faker->name(),

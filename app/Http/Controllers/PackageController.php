@@ -4,16 +4,25 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\DeliveryStatus;
+use App\Models\DeliveryType;
 use App\Models\Package;
+use App\Models\PackageStatus;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Enum;
 use Throwable;
 
 class PackageController extends Controller
 {
+
+    public function __construct()
+    {
+    }
+
     /**
      * Display a listing of the resource.
      * @return ?Response
@@ -40,7 +49,8 @@ class PackageController extends Controller
             'tracking_number' => 'required|string|min:6',
             'price' => 'required|double|min:0',
             'weight' => 'required|string',
-            'delivery_type' => 'required|string',
+            'delivery_type' => new Enum(DeliveryType::class),
+            'status' => new Enum(DeliveryStatus::class),
             'recipient_name' => 'required|string',
             'recipient_phone_number' => 'required|string|max:10|min:10',
             'recipient_address' => 'required|string',
