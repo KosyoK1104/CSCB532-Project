@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PackageListingCollection;
 use App\Models\DeliveryStatus;
 use App\Models\DeliveryType;
 use App\Models\Package;
@@ -24,15 +25,11 @@ class PackageController extends Controller
 
     /**
      * Display a listing of the resource.
-     * @return ?Response
+     * @return PackageListingCollection
      */
-    public function index(): ?Response
+    public function index(): PackageListingCollection
     {
-        $packages = Package::all();
-
-        return response()->view('index', [
-            'packages' => $packages,
-        ]);
+        return new PackageListingCollection(Package::paginate());
     }
 
 
@@ -77,14 +74,11 @@ class PackageController extends Controller
      * Display the specified resource.
      *
      * @param Package $packages
-     * @return Response
+     * @return JsonResponse
      */
-    public function show(Package $packages): Response
+    public function show(Package $packages): JsonResponse
     {
-        return response()->view('index', [
-            'package' => $packages,
-        ]);
-
+        return response()->json($packages);
     }
 
     /**
