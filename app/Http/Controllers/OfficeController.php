@@ -6,7 +6,11 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\HttpUnauthorizedException;
 use App\Http\Resources\OfficeListingCollection;
+use App\Models\Employee;
+use App\Models\EmployeeType;
 use App\Models\Office;
+use App\Models\OfficeStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -14,16 +18,34 @@ use Illuminate\Support\Facades\DB;
 
 class OfficeController extends Controller
 {
+    private function getEmployee() : Employee
+    {
+        return auth('employees')->user();
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return OfficeListingCollection
      */
-    public function index() : OfficeListingCollection
+    public function index(Request $request) : OfficeListingCollection
     {
         // get all offices
         // $offices = DB::table('offices')->paginate();
-        return new OfficeListingCollection(Office::paginate());
+        $offices = Office::where(function (Builder $query) use ($request) {
+//            if ($request->has('name')) {
+//                $query->where('employee_profiles.name', 'like', '%' . $request->string('name') . '%');
+//            }
+//            if ($request->has('email')) {
+//                $query->where('email', '=', $request->string('email'));
+//            }
+//            if ($request->has('type')) {
+//                $query->where('type', '=', EmployeeType::from((string) $request->string('type'))->value);
+//            }
+            $query->where('status', '=', OfficeStatus::ACTIVE->value);
+        })->paginate();
+
+        return new OfficeListingCollection($offices);
     }
 
     /**
@@ -73,17 +95,19 @@ class OfficeController extends Controller
      *
      * @param Office $office
      * @return JsonResponse
+     * @throws \Throwable
      */
     public function delete(Office $office) : JsonResponse
     {
-//        dd("delete the office");
-//        $currentEmployee = auth('employees')->user()->load('type');
-//        if (!$currentEmployee->isAdmin()) {
-//            throw new HttpUnauthorizedException('Only admin can list employees');
-//        }
+//        dd($office);
+        $currentEmployee = $this->getEmployee();
+        if (!$currentEmployee->isAdmin()) {
+            throw new HttpUnauthorizedException('Only admin can delete offices');
+        }
 
-        //delete the office
-        $office->delete();
+        $office->status = OfficeStatus::INACTIVE;
+        $office->saveOrFail();
+
         return response()->json();
     }
 }

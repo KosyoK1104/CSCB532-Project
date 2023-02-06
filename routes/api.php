@@ -90,7 +90,7 @@ Route::middleware(AuthenticatedEmployee::class)->group(function () {
      */
 
     Route::get('/employees/offices', [OfficeController::class, 'index']);
-    Route::delete('/employees/offices/{offices}', [OfficeController::class, 'delete']);
+    Route::delete('/employees/offices/{office}', [OfficeController::class, 'delete']);
 });
 
 Route::match(['get', 'post', 'put', 'delete'], '/{any}', function () {

@@ -64,8 +64,8 @@ const OfficeListing = () => {
     }
 
     const deleteOffice = (id) => {
-        // Api.delete(`/api/employee/offices/${id}`)
-        //     .then(() => load())
+        Api.delete(`/api/employees/offices/${id}`)
+            .then(() => load())
     }
 
     return (

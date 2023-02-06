@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property int $created_at
  * @property int $updated_at
  * @property int $visual_id
+ * @property OfficeStatus $status
  */
 
 class Office extends Model
@@ -38,6 +39,9 @@ class Office extends Model
     //timestamp format
     protected $dateFormat = 'U';
 
+    protected $casts = [
+        'status'   => OfficeStatus::class,
+    ];
 
     public function packages(): HasMany
     {

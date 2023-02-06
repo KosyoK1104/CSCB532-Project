@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
 //        ;
 
         Office::factory(40)
-            ->hasPackages(8)
+//            ->hasPackages(8)
             ->create()
         ;
 
