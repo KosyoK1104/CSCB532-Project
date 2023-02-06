@@ -36,7 +36,7 @@ class Package extends Model
         'status' => DeliveryStatus::class,
     ];
 
-    public function packageOffice() : BelongsTo
+    public function office() : BelongsTo
     {
         return $this->BelongsTo(Office::class);
     }

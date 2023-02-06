@@ -126,14 +126,29 @@ class PackageController extends Controller
         return response()->json($packages);
     }
 
-
-    public function showForClient(Package $packages) : JsonResponse
+    public function showForClient(Package $package) : JsonResponse
     {
         $client = $this->client();
-        if ($packages->client_id !== $client->id) {
+        if ($package->client_id !== $client->id) {
             throw new HttpInvalidArgumentException('You can only view your own packages');
         }
-        return response()->json($packages);
+        return response()->json(
+            [
+                'data' =>
+                    [
+                        'id'                     => $package->id,
+                        'tracking_number'        => $package->tracking_number,
+                        'office_name'            => $package->office()->first()?->name,
+                        'delivery_type'          => $package->delivery_type,
+                        'status'                 => $package->status,
+                        'price'                  => $package->price,
+                        'weight'                 => $package->weight,
+                        'recipient_name'         => $package->recipient_name,
+                        'recipient_phone_number' => $package->recipient_phone_number,
+                        'recipient_address'      => $package->recipient_address,
+                    ],
+            ]
+        );
     }
 
     public function markAsDelivered(Package $package) : JsonResponse
@@ -142,7 +157,7 @@ class PackageController extends Controller
         if ($employee->type === EmployeeType::DELIVERY && $package->delivery_type === DeliveryType::OFFICE) {
             throw new HttpInvalidArgumentException('Only office employees can mark packages as delivered');
         }
-        if ($employee->type === EmployeeType::OFFICE && $package->delivery_type === DeliveryType::ADDRESS){
+        if ($employee->type === EmployeeType::OFFICE && $package->delivery_type === DeliveryType::ADDRESS) {
             throw new HttpInvalidArgumentException('Only delivery employees can mark packages as delivered');
         }
         $package->status = DeliveryStatus::DELIVERED;
