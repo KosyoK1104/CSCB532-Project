@@ -27,27 +27,27 @@ class DatabaseSeeder extends Seeder
 //            ->hasPackages(3)
 //            ->create()
 //        ;
-
-
+//
+//
 //        Office::factory(40)
 //            ->create()
 //        ;
-
+//
 //                Employee::factory(35)
 //                    ->has(EmployeeProfile::factory())
 //                    ->create()
 //                ;
-
+//
 //        Package::factory(40)
 //            ->create()
 //            ;
 
 //        ClientProfile::factory()->for($clients)->create();
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+//         \App\Models\User::factory(10)->create();
+//
+//         \App\Models\User::factory()->create([
+//             'name' => 'Test User',
+//             'email' => 'test@example.com',
+//         ]);
     }
 }

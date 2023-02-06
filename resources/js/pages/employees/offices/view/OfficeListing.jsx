@@ -23,6 +23,12 @@ const OfficeListing = () => {
         OfficeService.load(page, searchParams)
             .then((response) => {
                 setOffices(response.data)
+
+                //TODO show notification if there are no offices
+                if (response.data.length === 0) {
+                    alert('No offices found')
+                }
+
                 setMeta(response.meta);
             })
     }
@@ -39,6 +45,7 @@ const OfficeListing = () => {
     }
 
     const handleSearch = (e) => {
+        //TODO @Simeon - implement the search functionality
         e.preventDefault()
         console.log(e.target.value);
         // inMemoryOfficeService.load(page, searchParams)
