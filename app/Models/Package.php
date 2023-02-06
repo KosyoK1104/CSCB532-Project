@@ -32,7 +32,7 @@ class Package extends Model
     protected $fillable = ["weight", "delivery_type", "recipient_name", "recipient_address", "recipient_phone_number"];
 
     protected $casts = [
-        'type'   => DeliveryType::class,
+        'delivery_type'   => DeliveryType::class,
         'status' => DeliveryStatus::class,
     ];
 

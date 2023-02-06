@@ -8,6 +8,7 @@ use App\Http\Controllers\ClientProfileController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeProfileController;
 use App\Http\Controllers\OfficeController;
+use App\Http\Controllers\PackageController;
 use App\Http\Middleware\AdminAuthenticatedEmployee;
 use App\Http\Middleware\AuthenticatedClient;
 use App\Http\Middleware\AuthenticatedEmployee;
@@ -41,12 +42,10 @@ Route::middleware(AuthenticatedClient::class)->group(function () {
     Route::get('/clients/me/profile/summary', [ClientProfileController::class, 'summaryForMe']);
     Route::put('/clients/me/profile', [ClientProfileController::class, 'update']);
     Route::post('/clients/me/change-password', [ClientController::class, 'changePassword']);
-    /*
-     * TODO implement these
-    Route::get('/clients/packages', [\App\Http\Controllers\PackageController::class, 'index']);
-    Route::post('/clients/packages', [\App\Http\Controllers\PackageController::class, 'create']);
-    Route::get('/clients/packages/{package}', [\App\Http\Controllers\PackageController::class, 'get']);
-    */
+
+    Route::post('/clients/packages', [PackageController::class, 'storeFromClient']);
+    Route::get('/clients/packages/{package}', [PackageController::class, 'showForClient']);
+    Route::get('/clients/packages', [PackageController::class, 'indexForClient']);
     /*
      * Route::get('/clients/offices);
      */
@@ -75,21 +74,14 @@ Route::middleware(AuthenticatedEmployee::class)->group(function () {
     });
 
     Route::get('/employees/clients', [ClientControllerForEmployees::class, 'index']);
+    Route::get('/employees/clients/all', [ClientControllerForEmployees::class, 'all']);
     Route::get('/employees/clients/{client}', [ClientControllerForEmployees::class, 'get']);
 
-//    Route::delete('/employees/clients/{client}', [ClientControllerForEmployee::class, 'destroy']);
+    Route::post('/employees/packages', [PackageController::class, 'storeFromOffice']);
+    Route::get('/employees/packages', [PackageController::class, 'index']);
+    Route::get('/employees/packages/{package}', [PackageController::class, 'show']);
+    Route::put('/employees/packages/{package}/deliver', [PackageController::class, 'markAsDelivered']);
 
-    /*
-     * TODO implement these
-    Route::get('/emoloyees/packages', [\App\Http\Controllers\PackageControllerForEmployee::class, 'index']);
-    Route::get('/emoloyees/packages/{package}', [\App\Http\Controllers\PackageControllerForEmployee::class, 'get']);
-    Route::get('/emoloyees/clients/{client}/packages', [\App\Http\Controllers\PackageControllerForEmployee::class, 'forClient']);
-    Route::get('/emoloyees/clients/{client}/packages/{package}', [\App\Http\Controllers\PackageControllerForEmployee::class, 'forClient']);
-    Route::get('/emoloyees/packages/{package}/receive', [\App\Http\Controllers\PackageControllerForEmployee::class, 'receive']);
-    Route::get('/emoloyees/packages/{package}/give', [\App\Http\Controllers\PackageControllerForEmployee::class, 'give']);
-    Route::get('/emoloyees/packages/{package}/in-office', [\App\Http\Controllers\PackageControllerForEmployee::class, 'inOffice']);
-    Route::get('/emoloyees/packages/{package}/in-warehouse', [\App\Http\Controllers\PackageControllerForEmployee::class, 'inWarehouse']);
-    */
     /*
      * Route::get('/employees/offices);
      * Route::get('/employees/offices/{office});

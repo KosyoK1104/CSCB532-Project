@@ -34,6 +34,11 @@ final class ClientControllerForEmployees extends Controller
         return new ClientListingCollection($clients);
     }
 
+    public function all() : JsonResponse
+    {
+        return response()->json(['data' => Client::all()]);
+    }
+
     public function get(Client $client) : JsonResponse
     {
         return response()->json(
