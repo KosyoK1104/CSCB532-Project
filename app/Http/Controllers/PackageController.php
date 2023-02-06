@@ -138,6 +138,13 @@ class PackageController extends Controller
 
     public function markAsDelivered(Package $package) : JsonResponse
     {
+        $employee = $this->employee();
+        if ($employee->type === EmployeeType::DELIVERY && $package->delivery_type === DeliveryType::OFFICE) {
+            throw new HttpInvalidArgumentException('Only office employees can mark packages as delivered');
+        }
+        if ($employee->type === EmployeeType::OFFICE && $package->delivery_type === DeliveryType::ADDRESS){
+            throw new HttpInvalidArgumentException('Only delivery employees can mark packages as delivered');
+        }
         $package->status = DeliveryStatus::DELIVERED;
         $package->saveOrFail();
         return response()->json(['id' => $package->id]);
