@@ -83,14 +83,14 @@ Route::middleware(AuthenticatedEmployee::class)->group(function () {
     Route::put('/employees/packages/{package}/deliver', [PackageController::class, 'markAsDelivered']);
 
     /*
-     * Route::get('/employees/offices);
-     * Route::get('/employees/offices/{office});
-     * Route::post('/employees/offices);
-     * Route::put('/employees/offices/{office});
-     * Route::delete('/employees/offices/{offices});
+     * Route::get('/employees/offices');
+     * Route::get('/employees/offices/{office}');
+     * Route::post('/employees/offices');
+     * Route::put('/employees/offices/{office}');
      */
 
     Route::get('/employees/offices', [OfficeController::class, 'index']);
+    Route::delete('/employees/offices/{offices}', [OfficeController::class, 'delete']);
 });
 
 Route::match(['get', 'post', 'put', 'delete'], '/{any}', function () {

@@ -14,9 +14,9 @@ return new class extends Migration{
      */
     public function up() : void
     {
-        DB::statement('ALTER TABLE offices ADD `visual_id` INT NOT NULL AUTO_INCREMENT UNIQUE;');
-        DB::statement('UPDATE offices SET visual_id = visual_id + 1000;');
-        DB::statement('ALTER TABLE offices AUTO_INCREMENT = 1000;');
+        Schema::table('offices', function (Blueprint $table) {
+            $table->string('visual_id');
+        });
     }
 
     /**

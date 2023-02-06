@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\HttpUnauthorizedException;
 use App\Http\Resources\OfficeListingCollection;
 use App\Models\Office;
 use Illuminate\Http\JsonResponse;
@@ -20,8 +21,8 @@ class OfficeController extends Controller
      */
     public function index() : OfficeListingCollection
     {
-        //get all offices
-//        $offices = DB::table('offices')->paginate();
+        // get all offices
+        // $offices = DB::table('offices')->paginate();
         return new OfficeListingCollection(Office::paginate());
     }
 
@@ -73,10 +74,16 @@ class OfficeController extends Controller
      * @param Office $office
      * @return JsonResponse
      */
-    public function destroy(Office $office) : JsonResponse
+    public function delete(Office $office) : JsonResponse
     {
+//        dd("delete the office");
+//        $currentEmployee = auth('employees')->user()->load('type');
+//        if (!$currentEmployee->isAdmin()) {
+//            throw new HttpUnauthorizedException('Only admin can list employees');
+//        }
+
         //delete the office
         $office->delete();
-        return response()->json(['data' => ['id' => $office->id]]);
+        return response()->json();
     }
 }

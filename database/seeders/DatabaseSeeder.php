@@ -22,21 +22,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run() : void
     {
-        Client::factory(5)
-            ->has(ClientProfile::factory())
-            ->hasPackages(3)
-            ->create()
-        ;
+//        Client::factory(5)
+//            ->has(ClientProfile::factory())
+//            ->hasPackages(3)
+//            ->create()
+//        ;
 
         Office::factory(40)
             ->hasPackages(8)
             ->create()
         ;
 
-        Employee::factory(35)
-            ->has(EmployeeProfile::factory())
-            ->create()
-        ;
+//        Employee::factory(35)
+//            ->has(EmployeeProfile::factory())
+//            ->create()
+//        ;
 
 //        ClientProfile::factory()->for($clients)->create();
 //         \App\Models\User::factory(10)->create();

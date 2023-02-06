@@ -6,6 +6,7 @@ import {useSelector} from "react-redux";
 import LoaderProvider from "../../../../components/LoaderProvider";
 import {DEFAULT_META} from "../../../../services/PaginationService";
 import Pagination from "../../../../components/Pagination";
+import Api from "../../../../services/Api";
 
 const OfficeListing = () => {
     const me = useSelector(state => state.meEmployee.me);
@@ -15,7 +16,7 @@ const OfficeListing = () => {
     const [meta, setMeta] = useState(DEFAULT_META);
     const [searchParams, setSearchParams] = useState({
         name: '',
-        id: '',
+        visual_id: '',
         city: '',
     })
 
@@ -23,7 +24,7 @@ const OfficeListing = () => {
         OfficeService.load(page, searchParams)
             .then((response) => {
                 setOffices(response.data)
-
+                //id, name, city, address FIND visual_id
                 //TODO show notification if there are no offices
                 if (response.data.length === 0) {
                     alert('No offices found')
@@ -63,10 +64,8 @@ const OfficeListing = () => {
     }
 
     const deleteOffice = (id) => {
-        //TODO @Simeon - implement the delete office functionality
-        //send request to delete this office to the DeleteOfficeController
-        //if the response is successful, then remove the office from the state
-        //if the response is not successful, then show an error message
+        // Api.delete(`/api/employee/offices/${id}`)
+        //     .then(() => load())
     }
 
     return (
@@ -113,7 +112,7 @@ const OfficeListing = () => {
                             <tbody>
                             {offices.map((office) => (
                                 <tr onDoubleClick={() => goToEditOffice(office.id)} key={office.id}>
-                                    <td>{office.id}</td>
+                                    <td>{office.visual_id}</td>
                                     <td>{office.name}</td>
                                     <td>{office.city}</td>
                                     <td>

@@ -9,8 +9,6 @@ function load(page, searchParams) {
 
     return Api.get(Api.encodeUrl('/api/employees/offices', page, searchParams))
         .then(response => {
-            //FIXME The response is undefined?
-            console.log(response);
             return {
                 data: response.data.data,
                 meta: response.data.meta

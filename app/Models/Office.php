@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string $address
  * @property int $created_at
  * @property int $updated_at
+ * @property int $visual_id
  */
 
 class Office extends Model
