@@ -51,7 +51,7 @@ const ClientListing = () => {
                 </div>
                 <div className="card-body">
                     <LoaderProvider>
-                        <table className="table table-hover">
+                        <table className="table table-hover table-striped">
                             <thead>
                             <tr>
                                 <th>Name</th>

@@ -84,7 +84,7 @@ const OfficeListing = () => {
                 </div>
                 <div className="card-body p-3">
                     <LoaderProvider>
-                        <table className="table table-hover">
+                        <table className="table table-hover table-striped">
                             <thead>
                             <tr>
                                 <th>ID</th>

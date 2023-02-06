@@ -119,7 +119,7 @@ const ClientPackageListing = () => {
                 </div>
                 <LoaderProvider>
                     <div className="card-body p-3">
-                        <table className="table table-hover">
+                        <table className="table table-hover table-striped">
                             <thead>
                             <tr>
                                 <th>ID</th>
