@@ -121,9 +121,27 @@ class PackageController extends Controller
      * @param Package $packages
      * @return JsonResponse
      */
-    public function show(Package $packages) : JsonResponse
+    public function show(Package $package) : JsonResponse
     {
-        return response()->json($packages);
+        return response()->json(
+            [
+                'data' =>
+                    [
+                        'id'                     => $package->id,
+                        'tracking_number'        => $package->tracking_number,
+                        'office_name'            => $package->office()->first()?->name,
+                        'client_name'            => $package->client()->first()->first_name . ' ' . $package->client()->first()->last_name,
+                        'client_phone_number'    => $package->client()->first()->phone_number,
+                        'delivery_type'          => $package->delivery_type,
+                        'status'                 => $package->status,
+                        'price'                  => $package->price,
+                        'weight'                 => $package->weight,
+                        'recipient_name'         => $package->recipient_name,
+                        'recipient_phone_number' => $package->recipient_phone_number,
+                        'recipient_address'      => $package->recipient_address,
+                    ],
+            ]
+        );
     }
 
     public function showForClient(Package $package) : JsonResponse
