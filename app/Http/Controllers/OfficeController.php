@@ -99,7 +99,6 @@ class OfficeController extends Controller
      */
     public function delete(Office $office) : JsonResponse
     {
-//        dd($office);
         $currentEmployee = $this->getEmployee();
         if (!$currentEmployee->isAdmin()) {
             throw new HttpUnauthorizedException('Only admin can delete offices');

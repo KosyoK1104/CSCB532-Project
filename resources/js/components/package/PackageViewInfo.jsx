@@ -32,7 +32,7 @@ const PackageView = () => {
 
         Api.post('/api/employees/packages', clientPackage)
             .catch((error) => {
-                console.log(eror);
+                console.log(error);
             })
     }
 
