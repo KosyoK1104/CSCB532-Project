@@ -2,95 +2,44 @@ import {useEffect, useState} from "react";
 import PackageService from "../../../services/PackageService";
 import {useNavigate} from "react-router-dom";
 import LoaderProvider from "../../../components/LoaderProvider";
-
-const packageService = {
-    packages: [
-        {
-            id: 1,
-            sender: 'Ivan',
-            recipient: 'Petkan',
-            city: 'Varna',
-            address: 'Levski',
-            weight: 2,
-        },
-        {
-            id: 2,
-            sender: 'Georgi',
-            recipient: 'Zlatomir',
-            city: 'Sofia',
-            address: 'Rakovska 5',
-            weight: 1.5,
-        }
-    ],
-    load: (page, searchParams) => {
-        let packages = packageService.packages
-        if (searchParams.id) {
-            packages = packages.filter((el) => el.id === parseInt(searchParams.id))
-        }
-        if (searchParams.sender) {
-            packages = packages.filter((el) => el.sender.toLowerCase().includes(searchParams.sender.toLowerCase()))
-        }
-        if (searchParams.recipient) {
-            packages = packages.filter((el) => el.recipient.toLowerCase().includes(searchParams.recipient.toLowerCase()))
-        }
-        if (searchParams.city) {
-            packages = packages.filter((el) => el.city.toLowerCase().includes(searchParams.city.toLowerCase()))
-        }
-        if (searchParams.address) {
-            packages = packages.filter((el) => el.address.toLowerCase().includes(searchParams.address.toLowerCase()))
-        }
-        if (searchParams.weight) {
-            packages = packages.filter((el) => el.weight === parseFloat(searchParams.weight))
-        }
-
-        return Promise.resolve({
-            data: packages
-        })
-    }
-}
-
+import Pagination from "../../../components/Pagination";
+import {DEFAULT_META} from "../../../services/PaginationService";
 
 const EmployeePackageListing = () => {
+    let [meta, setMeta] = useState(DEFAULT_META);
     const navigate = useNavigate();
+
     let [packages, setPackages] = useState([]);
-    let [page, setPage] = useState(1);
     let [searchParams, setSearchParams] = useState({
         id: '',
-        sender: '',
-        recipient: '',
-        city: '',
-        address: '',
+        tracking_number: '',
+        office_id: '',
+        client_id: '',
+        delivery_type: '',
+        status: '',
+        price: '',
         weight: '',
+        recipient_name: '',
+        recipient_phone_number: '',
+        recipient_address: '',
     });
 
-    const load = () => {
+    const load = (page = 1) => {
         PackageService.load(page, searchParams)
             .then((response) => {
-                setPackages(response.data)
+                setPackages(response.data);
+                setMeta(response.meta);
             })
+
     }
 
     useEffect(() => {
-        packageService.load(page, searchParams)
-            .then((response) => {
-                setPackages(response.data)
-            })
-    }, [])
-
-    const handlePageChange = (page) => {
-        setPage(page)
-        packageService.load(page, searchParams)
-            .then((response) => {
-                setPackages(response.data)
-            })
-    }
+        load()
+    }, []);
 
     const handleSearch = (e) => {
         e.preventDefault()
-        packageService.load(page, searchParams)
-            .then((response) => {
-                setPackages(response.data)
-            })
+        load();
     }
 
     const handleSearchChange = (e) => {
@@ -100,11 +49,6 @@ const EmployeePackageListing = () => {
         })
     }
 
-    // const handleFilterChange = (el) => {
-    //     setFilterParams({
-    //         ...filterParams,
-    //     })
-    // }
 
     const goToPackage = (id) => {
         navigate(`/employee/packages/${id}`)
@@ -123,11 +67,16 @@ const EmployeePackageListing = () => {
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Sender</th>
-                                <th>Recipient</th>
-                                <th>City</th>
-                                <th>Address</th>
+                                <th>Tracking number</th>
+                                <th>Office ID</th>
+                                <th>Client ID</th>
+                                <th>Delivery type</th>
+                                <th>Status</th>
+                                <th>Price</th>
                                 <th>Weight</th>
+                                <th>Recipient name</th>
+                                <th>Recipient phone</th>
+                                <th>Recipient address</th>
                                 <th></th>
                             </tr>
                             <tr>
@@ -135,36 +84,56 @@ const EmployeePackageListing = () => {
                                     <input type="text" name="id" className="form-control" value={searchParams.id}
                                            onChange={handleSearchChange}/>
                                 </th>
-
                                 <th>
-                                    <input type="text" name="sender" className="form-control"
-                                           value={searchParams.sender}
+                                    <input type="text" name="tracking-number" className="form-control"
+                                           value={searchParams.tracking_number}
                                            onChange={handleSearchChange}/>
                                 </th>
-
                                 <th>
-                                    <input type="text" name="recipient" className="form-control"
-                                           value={searchParams.recipient}
+                                    <input type="text" name="office-id" className="form-control"
+                                           value={searchParams.office_id}
                                            onChange={handleSearchChange}/>
                                 </th>
-
                                 <th>
-                                    <input type="text" name="city" className="form-control" value={searchParams.city}
+                                    <input type="text" name="client-id" className="form-control"
+                                           value={searchParams.client_id}
                                            onChange={handleSearchChange}/>
                                 </th>
-
                                 <th>
-                                    <input type="text" name="address" className="form-control"
-                                           value={searchParams.address}
+                                    <input type="text" name="delivery-type" className="form-control"
+                                           value={searchParams.delivery_type}
                                            onChange={handleSearchChange}/>
                                 </th>
-
+                                <th>
+                                    <input type="text" name="status" className="form-control"
+                                           value={searchParams.status}
+                                           onChange={handleSearchChange}/>
+                                </th>
+                                <th>
+                                    <input type="text" name="price" className="form-control"
+                                           value={searchParams.price}
+                                           onChange={handleSearchChange}/>
+                                </th>
                                 <th>
                                     <input type="text" name="weight" className="form-control"
                                            value={searchParams.weight}
                                            onChange={handleSearchChange}/>
                                 </th>
-
+                                <th>
+                                    <input type="text" name="recipient-name" className="form-control"
+                                           value={searchParams.recipient_name}
+                                           onChange={handleSearchChange}/>
+                                </th>
+                                <th>
+                                    <input type="text" name="recipient-phone-number" className="form-control"
+                                           value={searchParams.recipient_phone_number}
+                                           onChange={handleSearchChange}/>
+                                </th>
+                                <th>
+                                    <input type="text" name="recipient-address" className="form-control"
+                                           value={searchParams.recipient_address}
+                                           onChange={handleSearchChange}/>
+                                </th>
                                 <th>
                                     <button className="btn btn-primary" onClick={handleSearch}>Search</button>
                                 </th>
@@ -190,6 +159,7 @@ const EmployeePackageListing = () => {
                             </tbody>
                         </table>
                     </div>
+                    <Pagination meta={meta} onPageChange={load}/>
                 </LoaderProvider>
             </div>
         </div>
