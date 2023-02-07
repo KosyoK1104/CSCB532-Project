@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\HttpInvalidArgumentException;
 use App\Exceptions\HttpUnauthorizedException;
 use App\Http\Resources\OfficeListingCollection;
+use App\Models\Client;
 use App\Models\Employee;
 use App\Models\EmployeeType;
 use App\Models\Office;
@@ -132,4 +133,49 @@ class OfficeController extends Controller
 
         return response()->json();
     }
+
+//    /**
+//     * @throws \Throwable
+//     */
+//    public function create(Office $office) : JsonResponse
+//    {
+//        $currentEmployee = $this->getEmployee();
+//        if (!$currentEmployee->isAdmin()) {
+//            throw new HttpUnauthorizedException('Only admin can create offices');
+//        }
+//
+//        //TODO do the rest
+//    }
+
+    public function get(Office $office) : JsonResponse
+    {
+//        dd($office);
+        return response()->json(
+            [
+                'data' =>
+                    [
+                        'id'            => $office->id,
+                        'visual_id'     => $office->visual_id,
+                        'name'          => $office->name,
+                        'city'          => $office->city,
+                        'address'       => $office->address,
+                        'status'        => $office->status->value,
+                    ],
+
+            ]
+        );
+    }
+
+    public function all() : JsonResponse
+    {
+        $offices = Office::where('status','=',OfficeStatus::ACTIVE->value)->all()->map(function (Office $office) {
+            return [
+                'id'            => $office->id,
+                'visual_id'     => $office->visual_id,
+                'name'          => $office->name,
+            ];
+        });
+        return response()->json($offices);
+    }
+
 }

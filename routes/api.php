@@ -46,6 +46,7 @@ Route::middleware(AuthenticatedClient::class)->group(function () {
     Route::post('/clients/packages', [PackageController::class, 'storeFromClient']);
     Route::get('/clients/packages/{package}', [PackageController::class, 'showForClient']);
     Route::get('/clients/packages', [PackageController::class, 'indexForClient']);
+    Route::get('/clients/offices/all', [OfficeController::class, 'all']);
     /*
      * Route::get('/clients/offices);
      */
@@ -92,6 +93,8 @@ Route::middleware(AuthenticatedEmployee::class)->group(function () {
     Route::get('/employees/offices', [OfficeController::class, 'index']);
     Route::delete('/employees/offices/{office}', [OfficeController::class, 'delete']);
     Route::post('/employees/offices/{office}/activate', [OfficeController::class, 'activate']);
+    Route::get('/employees/offices/{office}', [OfficeController::class, 'get']);
+    Route::get('/employees/offices/all', [OfficeController::class, 'all']);
 });
 
 Route::match(['get', 'post', 'put', 'delete'], '/{any}', function () {

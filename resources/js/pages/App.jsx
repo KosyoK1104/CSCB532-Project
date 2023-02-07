@@ -25,7 +25,7 @@ import {ConfigProvider} from "antd";
 import OfficeRoot from "./employees/offices/OfficeRoot";
 import OfficeListing from "./employees/offices/view/OfficeListing";
 import CreateOffice from "./employees/offices/view/CreateOffice";
-import OfficeView from "./employees/offices/view/OfficeView";
+import EditOffice from "./employees/offices/view/EditOffice";
 import AccountSettings from "./employees/account/AccountSettings";
 import EmployeeRoot from "./employees/employees/EmployeeRoot";
 import EmployeesListing from "./employees/employees/EmployeesListing";
@@ -84,7 +84,7 @@ export default function App() {
                             <Route path="offices" element={<OfficeRoot/>}>
                                 <Route index element={<OfficeListing/>}/>
                                 <Route path="create" element={<CreateOffice/>}/>
-                                <Route path=":id" element={<OfficeView/>}/>
+                                <Route path=":id" element={<EditOffice/>}/>
                             </Route>
                             <Route path="packages">
                                 <Route index element={<EmployeePackageListing/>}/>
