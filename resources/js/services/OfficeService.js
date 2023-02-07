@@ -17,6 +17,14 @@ function load(page, searchParams) {
         })
 }
 
+function all() {
+    return Api.get('/api/employees/offices/all')
+        .then(response => {
+            return response.data.data
+        })
+}
+
 export default {
-    load
+    load,
+    all
 }

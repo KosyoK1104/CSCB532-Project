@@ -36,6 +36,7 @@ import CreateEmployee from "./employees/employees/CreateEmployee";
 import ChangePassword from "./employees/account/ChangePassword";
 import EmployeePackageListing from "./employees/packages/PackageListing";
 import EmployeePackageView from "./employees/packages/PackageView";
+import EmployeePackageCreate from "./employees/packages/CreatePackage";
 import ClientPackageListing from "./clients/packages/PackageListing";
 import ClientPackageView from "./clients/packages/PackageView";
 import ClientListing from "./employees/clients/ClientListing";
@@ -88,13 +89,13 @@ export default function App() {
                             <Route path="packages">
                                 <Route index element={<EmployeePackageListing/>}/>
                                 <Route path=":id" element={<EmployeePackageView/>}/>
+                                <Route path="create" element={<EmployeePackageCreate/>}/>
                             </Route>
                             <Route path="clients" element={<ClientRoot/>}>
                                 <Route index element={<ClientListing/>}/>
                                 <Route path=":id" element={<ClientView/>}/>
                             </Route>
                         </Route>
-
                         <Route path="*" element={<NotFound/>}/>
                     </Routes>
                     <Toaster/>

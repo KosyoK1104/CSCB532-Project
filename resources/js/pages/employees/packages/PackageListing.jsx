@@ -11,21 +11,13 @@ const EmployeePackageListing = () => {
 
     let [packages, setPackages] = useState([]);
     let [searchParams, setSearchParams] = useState({
-        id: '',
         tracking_number: '',
-        office_id: '',
-        client_id: '',
         delivery_type: '',
-        status: '',
-        price: '',
-        weight: '',
-        recipient_name: '',
         recipient_phone_number: '',
-        recipient_address: '',
     });
 
     const load = (page = 1) => {
-        PackageService.load(page, searchParams)
+        PackageService.loadEmployee(page, searchParams)
             .then((response) => {
                 setPackages(response.data);
                 setMeta(response.meta);
@@ -66,73 +58,40 @@ const EmployeePackageListing = () => {
                         <table className="table table-hover table-striped">
                             <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Tracking number</th>
-                                <th>Office ID</th>
-                                <th>Client ID</th>
-                                <th>Delivery type</th>
-                                <th>Status</th>
                                 <th>Price</th>
                                 <th>Weight</th>
-                                <th>Recipient name</th>
-                                <th>Recipient phone</th>
-                                <th>Recipient address</th>
+                                <th>Recipient phone number</th>
+                                <th>Type</th>
                                 <th></th>
                             </tr>
                             <tr>
-                                <th>
-                                    <input type="text" name="id" className="form-control" value={searchParams.id}
-                                           onChange={handleSearchChange}/>
-                                </th>
                                 <th>
                                     <input type="text" name="tracking-number" className="form-control"
                                            value={searchParams.tracking_number}
                                            onChange={handleSearchChange}/>
                                 </th>
                                 <th>
-                                    <input type="text" name="office-id" className="form-control"
-                                           value={searchParams.office_id}
-                                           onChange={handleSearchChange}/>
+                                    {/*// no filter*/}
                                 </th>
                                 <th>
-                                    <input type="text" name="client-id" className="form-control"
-                                           value={searchParams.client_id}
-                                           onChange={handleSearchChange}/>
+                                    {/*// no filter*/}
                                 </th>
                                 <th>
-                                    <input type="text" name="delivery-type" className="form-control"
-                                           value={searchParams.delivery_type}
-                                           onChange={handleSearchChange}/>
+                                    <input className="form-control" value={searchParams.recipient_phone_number}
+                                           name="recipient_phone_number"
+                                           onChange={handleSearchChange}
+                                    />
                                 </th>
                                 <th>
-                                    <input type="text" name="status" className="form-control"
-                                           value={searchParams.status}
-                                           onChange={handleSearchChange}/>
-                                </th>
-                                <th>
-                                    <input type="text" name="price" className="form-control"
-                                           value={searchParams.price}
-                                           onChange={handleSearchChange}/>
-                                </th>
-                                <th>
-                                    <input type="text" name="weight" className="form-control"
-                                           value={searchParams.weight}
-                                           onChange={handleSearchChange}/>
-                                </th>
-                                <th>
-                                    <input type="text" name="recipient-name" className="form-control"
-                                           value={searchParams.recipient_name}
-                                           onChange={handleSearchChange}/>
-                                </th>
-                                <th>
-                                    <input type="text" name="recipient-phone-number" className="form-control"
-                                           value={searchParams.recipient_phone_number}
-                                           onChange={handleSearchChange}/>
-                                </th>
-                                <th>
-                                    <input type="text" name="recipient-address" className="form-control"
-                                           value={searchParams.recipient_address}
-                                           onChange={handleSearchChange}/>
+                                    <select className="form-control" value={searchParams.delivery_type}
+                                           name="delivery_type"
+                                           onChange={handleSearchChange}
+                                    >
+                                        <option value=""></option>
+                                        <option value="address">Address</option>
+                                        <option value="office">Office</option>
+                                    </select>
                                 </th>
                                 <th>
                                     <button className="btn btn-primary" onClick={handleSearch}>Search</button>
@@ -143,12 +102,11 @@ const EmployeePackageListing = () => {
                             <tbody>
                             {packages.map((el) => (
                                 <tr onDoubleClick={() => goToPackage(el.id)} key={el.id}>
-                                    <td>{el.id}</td>
-                                    <td>{el.sender}</td>
-                                    <td>{el.recipient}</td>
-                                    <td>{el.city}</td>
-                                    <td>{el.address}</td>
-                                    <td>{el.weight}</td>
+                                    <td>{el.tracking_number}</td>
+                                    <td>{parseFloat(el.price).toFixed(2)}</td>
+                                    <td>{parseFloat(el.weight).toFixed(2)}</td>
+                                    <td>{el.recipient_phone_number}</td>
+                                    <td>{el.delivery_type}</td>
                                     <td>
                                         <button className="btn btn-outline-secondary btn-sm"
                                                 onClick={() => goToPackage(el.id)}>View

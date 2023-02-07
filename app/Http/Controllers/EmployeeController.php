@@ -169,8 +169,12 @@ class EmployeeController extends Controller
         $validator = Validator::make($request->request->all(), [
             'name'         => 'required|min:4',
             'phone_number' => 'required|min:10',
+            'office_id'    => 'sometimes|exists:offices,id',
         ]);
         $employeeProfile = $employee->employeeProfile()->getResults();
+        if ($employee->type === EmployeeType::OFFICE) {
+            $employee->office_id = $validator->validated()['office_id'];
+        }
         if (is_null($employeeProfile)) {
             $employeeProfile = new EmployeeProfile();
             $employeeProfile->employee_id = $employee->id;
@@ -180,6 +184,7 @@ class EmployeeController extends Controller
             $employeeProfile->update($validator->validated());
         }
         $employeeProfile->saveOrFail();
+        $employee->saveOrFail();
         return response()->json(['data' => ['id' => $employee->id]]);
     }
 

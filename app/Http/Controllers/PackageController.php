@@ -45,6 +45,7 @@ class PackageController extends Controller
      */
     public function index() : PackageListingCollection
     {
+        // tracking_number, recipient_phone_number, delivery_type
         return new PackageListingCollection(Package::paginate());
     }
 
