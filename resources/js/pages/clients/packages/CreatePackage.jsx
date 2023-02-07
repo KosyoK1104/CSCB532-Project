@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import Api from "../../../services/Api";
 import LoaderProvider from "../../../components/LoaderProvider";
 import FormErrorWrapper from "../../../components/FormErrorWrapper";
-import ClientLisitngService from "../../../services/ClientLisitngService";
 import SelectFilter from "../../../components/SelectFilter";
 
 const CreatePackage = () => {
@@ -14,7 +13,6 @@ const CreatePackage = () => {
     const [form, setForm] = useState({
         weight: null,
         delivery_type: 'address',
-        client_id: null,
         recipient_name: null,
         recipient_address: null,
         recipient_phone_number: null,
@@ -31,10 +29,9 @@ const CreatePackage = () => {
     })
 
     const [offices, setOffices] = useState([]);
-    const [clients, setClients] = useState([]);
 
     useEffect(() => {
-        OfficeService.allForEmployee()
+        OfficeService.allForClient()
             .then(result => {
                 result = result.map(office => {
                     return {
@@ -43,10 +40,6 @@ const CreatePackage = () => {
                     }
                 })
                 setOffices(result);
-            })
-        ClientLisitngService.all()
-            .then(result => {
-                setClients(result);
             })
     }, [])
 
@@ -66,9 +59,9 @@ const CreatePackage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        PackageService.submitEmployee(form)
+        PackageService.submitClient(form)
             .then(result => {
-                navigate('/employee/packages/' + result.id)
+                navigate('/client/packages/' + result.id)
             })
             .catch(error => {
                 if(error.response.status === 422) {
@@ -94,17 +87,6 @@ const CreatePackage = () => {
                                             onChange={handleChange} value={form.delivery_type}>
                                         <option value="office">Office</option>
                                         <option value="address">Address</option>
-                                    </select>
-                                </FormErrorWrapper>
-                                <FormErrorWrapper error={errors.delivery_type}>
-                                    <label htmlFor="client_id">Client</label>
-                                    <select className="form-control" id="client_id" name="client_id"
-                                            onChange={handleChange} value={form.client_id}>
-                                        <option value="">Select Client</option>
-                                        {clients.map(client => (
-                                            <option key={client.id}
-                                                    value={client.id}>{client.name} [{client.phone_number}]</option>
-                                        ))}
                                     </select>
                                 </FormErrorWrapper>
                             </div>

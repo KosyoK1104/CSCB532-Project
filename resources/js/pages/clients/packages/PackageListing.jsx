@@ -2,95 +2,34 @@ import {useEffect, useState} from "react";
 import PackageService from "../../../services/PackageService";
 import {useNavigate} from "react-router-dom";
 import LoaderProvider from "../../../components/LoaderProvider";
-
-const packageService = {
-    packages: [
-        {
-            id: 1,
-            sender: 'Ivan',
-            recipient: 'Petkan',
-            city: 'Varna',
-            address: 'Levski',
-            weight: 2,
-        },
-        {
-            id: 2,
-            sender: 'Ivan',
-            recipient: 'Zlatomir',
-            city: 'Sofia',
-            address: 'Rakovska 5',
-            weight: 1.5,
-        }
-    ],
-    load: (page, searchParams) => {
-        let packages = packageService.packages
-        if (searchParams.id) {
-            packages = packages.filter((el) => el.id === parseInt(searchParams.id))
-        }
-        if (searchParams.sender) {
-            packages = packages.filter((el) => el.sender.toLowerCase().includes(searchParams.sender.toLowerCase()))
-        }
-        if (searchParams.recipient) {
-            packages = packages.filter((el) => el.recipient.toLowerCase().includes(searchParams.recipient.toLowerCase()))
-        }
-        if (searchParams.city) {
-            packages = packages.filter((el) => el.city.toLowerCase().includes(searchParams.city.toLowerCase()))
-        }
-        if (searchParams.address) {
-            packages = packages.filter((el) => el.address.toLowerCase().includes(searchParams.address.toLowerCase()))
-        }
-        if (searchParams.weight) {
-            packages = packages.filter((el) => el.weight === parseFloat(searchParams.weight))
-        }
-
-        return Promise.resolve({
-            data: packages
-        })
-    }
-}
-
+import Pagination from "../../../components/Pagination";
+import {DEFAULT_META} from "../../../services/PaginationService";
 
 const ClientPackageListing = () => {
     const navigate = useNavigate();
+    let [meta, setMeta] = useState(DEFAULT_META);
     let [packages, setPackages] = useState([]);
-    let [page, setPage] = useState(1);
     let [searchParams, setSearchParams] = useState({
-        id: '',
-        sender: '',
-        recipient: '',
-        city: '',
-        address: '',
-        weight: '',
+        tracking_number: '',
+        delivery_type: '',
+        recipient_phone_number: '',
     });
 
-    const load = () => {
-        PackageService.load(page, searchParams)
+    const load = (page = 1) => {
+        PackageService.loadClient(page, searchParams)
             .then((response) => {
                 setPackages(response.data)
+                setMeta(response.meta)
             })
     }
 
     useEffect(() => {
-        packageService.load(page, searchParams)
-            .then((response) => {
-                setPackages(response.data)
-            })
+        load()
     }, [])
-
-    const handlePageChange = (page) => {
-        setPage(page)
-        packageService.load(page, searchParams)
-            .then((response) => {
-                setPackages(response.data)
-            })
-    }
 
     const handleSearch = (e) => {
         e.preventDefault()
-        packageService.load(page, searchParams)
-            .then((response) => {
-                setPackages(response.data)
-            })
+        load()
     }
 
     const handleSearchChange = (e) => {
@@ -100,85 +39,81 @@ const ClientPackageListing = () => {
         })
     }
 
-    // const handleFilterChange = (el) => {
-    //     setFilterParams({
-    //         ...filterParams,
-    //     })
-    // }
-
     const goToPackage = (id) => {
-        navigate(`/client/myPackages/${id}`)
+        navigate(`/client/packages/${id}`)
     }
 
     return (
-
         <div className="container">
             <div className="card">
                 <div className="card-header">
                     <h3 className="card-title">All packages</h3>
+                    <div className="card-options">
+                        <button className="btn btn-primary" onClick={() => navigate('/client/packages/create')}>Create
+                            package
+                        </button>
+                    </div>
                 </div>
                 <LoaderProvider>
                     <div className="card-body p-3">
                         <table className="table table-hover table-striped">
                             <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Sender</th>
-                                <th>Recipient</th>
-                                <th>City</th>
-                                <th>Address</th>
+                                <th>Tracking number</th>
+                                <th>Price</th>
                                 <th>Weight</th>
+                                <th>Recipient phone number</th>
+                                <th>Type</th>
+                                <th>Status</th>
                                 <th></th>
                             </tr>
                             <tr>
                                 <th>
-                                    <input type="text" name="id" className="form-control" value={searchParams.id}
+                                    <input type="text" name="tracking_number" className="form-control"
+                                           value={searchParams.tracking_number}
                                            onChange={handleSearchChange}/>
                                 </th>
-
                                 <th>
-                                    <input type="text" name="sender" className="form-control"
-                                           value={searchParams.sender}
-                                           onChange={handleSearchChange}/>
+                                    {/*// no filter*/}
                                 </th>
-
                                 <th>
-                                    <input type="text" name="recipient" className="form-control"
-                                           value={searchParams.recipient}
-                                           onChange={handleSearchChange}/>
+                                    {/*// no filter*/}
                                 </th>
-
                                 <th>
-                                    <input type="text" name="city" className="form-control" value={searchParams.city}
-                                           onChange={handleSearchChange}/>
+                                    <input className="form-control"
+                                           name="recipient_phone_number"
+                                           value={searchParams.recipient_phone_number}
+                                           onChange={handleSearchChange}
+                                    />
                                 </th>
-
                                 <th>
-                                    <input type="text" name="address" className="form-control"
-                                           value={searchParams.address}
-                                           onChange={handleSearchChange}/>
+                                    <select className="form-control" value={searchParams.delivery_type}
+                                            name="delivery_type"
+                                            onChange={handleSearchChange}
+                                    >
+                                        <option value=""></option>
+                                        <option value="address">Address</option>
+                                        <option value="office">Office</option>
+                                    </select>
                                 </th>
-
                                 <th>
-                                    <input type="text" name="weight" className="form-control"
-                                           value={searchParams.weight}
-                                           onChange={handleSearchChange}/>
+                                    {/*// no filter*/}
                                 </th>
-
                                 <th>
                                     <button className="btn btn-primary" onClick={handleSearch}>Search</button>
                                 </th>
+
                             </tr>
                             </thead>
                             <tbody>
                             {packages.map((el) => (
                                 <tr onDoubleClick={() => goToPackage(el.id)} key={el.id}>
-                                    <td>{el.id}</td>
-                                    <td>{el.sender}</td>
-                                    <td>{el.recipient}</td>
-                                    <td>{el.city}</td>
-                                    <td>{el.address}</td>
-                                    <td>{el.weight}</td>
+                                    <td>{el.tracking_number}</td>
+                                    <td>{parseFloat(el.price).toFixed(2)}</td>
+                                    <td>{parseFloat(el.weight).toFixed(2)}</td>
+                                    <td>{el.recipient_phone_number}</td>
+                                    <td>{el.delivery_type}</td>
+                                    <td>{el.status}</td>
                                     <td>
                                         <button className="btn btn-outline-secondary btn-sm"
                                                 onClick={() => goToPackage(el.id)}>View
@@ -189,6 +124,7 @@ const ClientPackageListing = () => {
                             </tbody>
                         </table>
                     </div>
+                    <Pagination meta={meta} onPageChange={load}/>
                 </LoaderProvider>
             </div>
         </div>

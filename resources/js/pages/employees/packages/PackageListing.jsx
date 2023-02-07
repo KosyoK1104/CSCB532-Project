@@ -8,7 +8,6 @@ import {DEFAULT_META} from "../../../services/PaginationService";
 const EmployeePackageListing = () => {
     let [meta, setMeta] = useState(DEFAULT_META);
     const navigate = useNavigate();
-
     let [packages, setPackages] = useState([]);
     let [searchParams, setSearchParams] = useState({
         tracking_number: '',
@@ -47,7 +46,6 @@ const EmployeePackageListing = () => {
     }
 
     return (
-
         <div className="container">
             <div className="card">
                 <div className="card-header">
@@ -132,7 +130,6 @@ const EmployeePackageListing = () => {
                 </LoaderProvider>
             </div>
         </div>
-
     )
 }
 

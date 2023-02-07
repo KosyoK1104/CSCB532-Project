@@ -17,8 +17,15 @@ function load(page, searchParams) {
         })
 }
 
-function all() {
+function allForEmployee() {
     return Api.get('/api/employees/offices/all')
+        .then(response => {
+            return response.data.data
+        })
+}
+
+function allForClient() {
+    return Api.get('/api/client/offices/all')
         .then(response => {
             return response.data.data
         })
@@ -26,5 +33,6 @@ function all() {
 
 export default {
     load,
-    all
+    allForEmployee,
+    allForClient
 }

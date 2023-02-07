@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Exceptions\HttpInvalidArgumentException;
-use App\Http\Resources\EmployeeListingCollection;
 use App\Http\Resources\PackageListingCollection;
 use App\Http\Services\PricingService;
 use App\Models\Client;
@@ -100,7 +99,7 @@ class PackageController extends Controller
         $package->status = DeliveryStatus::CREATED;
         $package->client_id = $client->id;
         $package->tracking_number = $this->generateTrackingNumber();
-        $package->price = $this->pricingService->calculatePrice($package->weight, $package->delivery_type);
+        $package->price = $this->pricingService->calculatePrice((int) $package->weight, $package->delivery_type);
         $package->saveOrFail();
 
         return response()->json(['data' => ['id' => $package->id]]);
@@ -206,7 +205,7 @@ class PackageController extends Controller
     {
         $client = $this->client();
 
-        $packages = (new \App\Models\Package)->where( 'client_id', '=', $client->id)->where(function (Builder $query) use ($request) {
+        $packages = (new \App\Models\Package)->where('client_id', '=', $client->id)->where(function (Builder $query) use ($request) {
             if ($request->has('tracking_number')) {
                 $query->where('tracking_number', 'like', '%' . $request->string('tracking_number') . '%');
             }
@@ -219,7 +218,6 @@ class PackageController extends Controller
         })->paginate();
 
         return new PackageListingCollection($packages);
-
     }
 
     /*public function update(Request $request, Package $packages) : JsonResponse

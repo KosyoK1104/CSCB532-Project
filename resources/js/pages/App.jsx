@@ -39,6 +39,7 @@ import EmployeePackageView from "./employees/packages/PackageView";
 import EmployeePackageCreate from "./employees/packages/CreatePackage";
 import ClientPackageListing from "./clients/packages/PackageListing";
 import ClientPackageView from "./clients/packages/PackageView";
+import ClientPackageCreate from "./clients/packages/CreatePackage";
 import ClientListing from "./employees/clients/ClientListing";
 import ClientView from "./employees/clients/ClientView";
 import ClientRoot from "./employees/clients/ClientRoot";
@@ -61,9 +62,10 @@ export default function App() {
                                 <Route path="update" element={<ClientUpdate/>}/>
                                 <Route path="change-password" element={<ClientChangePassword/>}/>
                             </Route>
-                            <Route path="myPackages">
+                            <Route path="packages">
                                 <Route index element={<ClientPackageListing/>}/>
                                 <Route path=":id" element={<ClientPackageView/>}/>
+                                <Route path="create" element={<ClientPackageCreate/>}/>
                             </Route>
                         </Route>
 
