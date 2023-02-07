@@ -29,7 +29,7 @@ class Package extends Model
 
     protected $dateFormat = 'U';
 
-    protected $fillable = ["weight", "delivery_type", "recipient_name", "recipient_address", "recipient_phone_number"];
+    protected $fillable = ["weight", "delivery_type", "recipient_name", "recipient_address", "recipient_phone_number", "office_id"];
 
     protected $casts = [
         'delivery_type'   => DeliveryType::class,

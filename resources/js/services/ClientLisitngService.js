@@ -9,4 +9,11 @@ export default {
                     meta: response.data.meta
                 }
             })
-    }}
+    },
+    all() {
+        return Api.get('/api/employees/clients/all')
+            .then(response => {
+                return response.data.data
+            })
+    }
+}

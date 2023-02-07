@@ -36,7 +36,17 @@ final class ClientControllerForEmployees extends Controller
 
     public function all() : JsonResponse
     {
-        return response()->json(['data' => Client::all()]);
+        return response()->json(
+            [
+                'data' => Client::all()->map(function (Client $client) {
+                    return [
+                        'id'           => $client->id,
+                        'name'         => $client->clientProfile->name(),
+                        'phone_number' => $client->clientProfile->phone_number,
+                    ];
+                }),
+            ]
+        );
     }
 
     public function get(Client $client) : JsonResponse
@@ -60,4 +70,5 @@ final class ClientControllerForEmployees extends Controller
             ]
         );
     }
+
 }

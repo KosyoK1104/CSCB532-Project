@@ -52,6 +52,11 @@ const EmployeePackageListing = () => {
             <div className="card">
                 <div className="card-header">
                     <h3 className="card-title">All packages</h3>
+                    <div className="card-options">
+                        <button className="btn btn-primary" onClick={() => navigate('/employee/packages/create')}>Create
+                            package
+                        </button>
+                    </div>
                 </div>
                 <LoaderProvider>
                     <div className="card-body p-3">
@@ -63,11 +68,12 @@ const EmployeePackageListing = () => {
                                 <th>Weight</th>
                                 <th>Recipient phone number</th>
                                 <th>Type</th>
+                                <th>Status</th>
                                 <th></th>
                             </tr>
                             <tr>
                                 <th>
-                                    <input type="text" name="tracking-number" className="form-control"
+                                    <input type="text" name="tracking_number" className="form-control"
                                            value={searchParams.tracking_number}
                                            onChange={handleSearchChange}/>
                                 </th>
@@ -78,20 +84,24 @@ const EmployeePackageListing = () => {
                                     {/*// no filter*/}
                                 </th>
                                 <th>
-                                    <input className="form-control" value={searchParams.recipient_phone_number}
+                                    <input className="form-control"
                                            name="recipient_phone_number"
+                                           value={searchParams.recipient_phone_number}
                                            onChange={handleSearchChange}
                                     />
                                 </th>
                                 <th>
                                     <select className="form-control" value={searchParams.delivery_type}
-                                           name="delivery_type"
-                                           onChange={handleSearchChange}
+                                            name="delivery_type"
+                                            onChange={handleSearchChange}
                                     >
                                         <option value=""></option>
                                         <option value="address">Address</option>
                                         <option value="office">Office</option>
                                     </select>
+                                </th>
+                                <th>
+                                    {/*// no filter*/}
                                 </th>
                                 <th>
                                     <button className="btn btn-primary" onClick={handleSearch}>Search</button>
@@ -107,6 +117,7 @@ const EmployeePackageListing = () => {
                                     <td>{parseFloat(el.weight).toFixed(2)}</td>
                                     <td>{el.recipient_phone_number}</td>
                                     <td>{el.delivery_type}</td>
+                                    <td>{el.status}</td>
                                     <td>
                                         <button className="btn btn-outline-secondary btn-sm"
                                                 onClick={() => goToPackage(el.id)}>View

@@ -98,7 +98,7 @@ export default function App() {
                         </Route>
                         <Route path="*" element={<NotFound/>}/>
                     </Routes>
-                    <Toaster/>
+                    <Toaster containerClassName="text-center" containerStyle={{fontSize: '14px'}}/>
                 </BrowserRouter>
             </Provider>
         </ConfigProvider>

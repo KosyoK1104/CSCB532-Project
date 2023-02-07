@@ -13,7 +13,6 @@ use App\Models\DeliveryStatus;
 use App\Models\DeliveryType;
 use App\Models\Employee;
 use App\Models\EmployeeType;
-use App\Models\Office;
 use App\Models\Package;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
@@ -45,7 +44,7 @@ class PackageController extends Controller
      * Display a listing of the resource.
      * @return PackageListingCollection
      */
-    public function index($request) : PackageListingCollection
+    public function index(Request $request) : PackageListingCollection
     {
         // tracking_number, recipient_phone_number, delivery_type
         $packages = Package::where(function (Builder $query) use ($request) {
@@ -71,14 +70,13 @@ class PackageController extends Controller
     public function validateRequest(Request $request) : array
     {
         $validator = Validator::make($request->request->all(), [
-            'tracking_number'        => 'required|string|min:6',
-            //            'price'                  => 'required|double|min:0',
             'weight'                 => 'required|string',
             'delivery_type'          => new Enum(DeliveryType::class),
             'status'                 => new Enum(DeliveryStatus::class),
             'recipient_name'         => 'required|string',
             'recipient_phone_number' => 'required|string|max:10|min:10',
-            'recipient_address'      => 'required|string',
+            'recipient_address'      => 'sometimes',
+            'office_id'              => 'sometimes|nullable|exists:offices,id',
         ]);
 
         return $validator->validated();
@@ -92,9 +90,11 @@ class PackageController extends Controller
         $client = $this->client();
         $validatedRequest = $this->validateRequest($request);
         $package = new Package();
-        if ($validatedRequest['delivery_type'] === DeliveryType::OFFICE) {
-            $office = Office::findOrFail($request->request->get('office_id'))->first();
-            $package->office_id = $office->id;
+        if ($validatedRequest['delivery_type'] === DeliveryType::OFFICE->value) {
+            unset($validatedRequest['recipient_address']);
+        }
+        else {
+            unset($validatedRequest['office_id']);
         }
         $package->fill($validatedRequest);
         $package->status = DeliveryStatus::CREATED;
@@ -103,7 +103,7 @@ class PackageController extends Controller
         $package->price = $this->pricingService->calculatePrice($package->weight, $package->delivery_type);
         $package->saveOrFail();
 
-        return response()->json(['id' => $package->id]);
+        return response()->json(['data' => ['id' => $package->id]]);
     }
 
     /**
@@ -117,22 +117,27 @@ class PackageController extends Controller
         }
 
         $validatedRequest = $this->validateRequest($request);
+        if ($validatedRequest['delivery_type'] === DeliveryType::OFFICE->value) {
+            unset($validatedRequest['recipient_address']);
+        }
+        else {
+            unset($validatedRequest['office_id']);
+        }
         $package = new Package();
         $package->fill($validatedRequest);
-        $package->office_id = $employee->office_id;
         $package->status = DeliveryStatus::CREATED;
-        $package->client_id = $request->string('client_id');
+        $package->client_id = Client::findOrFail($request->string('client_id'))->first()->id;
         $package->tracking_number = $this->generateTrackingNumber();
-        $package->price = $this->pricingService->calculatePrice($package->weight, $package->delivery_type);
+        $package->price = $this->pricingService->calculatePrice((int) $package->weight, $package->delivery_type);
         $package->saveOrFail();
 
-        return response()->json(['id' => $package->id]);
+        return response()->json(['data' => ['id' => $package->id]]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param Package $packages
+     * @param Package $package
      * @return JsonResponse
      */
     public function show(Package $package) : JsonResponse
@@ -197,7 +202,7 @@ class PackageController extends Controller
         return response()->json(['id' => $package->id]);
     }
 
-    public function indexForClient($request) : PackageListingCollection
+    public function indexForClient(Request $request) : PackageListingCollection
     {
         $client = $this->client();
 

@@ -1,6 +1,6 @@
 const FormErrorWrapper = ({children, error}) => {
     return (
-        <div className="form-group has-validation">
+        <div className="form-group has-validation w-100">
             <div className={`${error ? 'is-invalid' : ''}`}>
                 {children}
             </div>
