@@ -28,15 +28,15 @@ class DatabaseSeeder extends Seeder
             ->create()
         ;
 
-        Office::factory(40)
-            ->hasPackages(8)
-            ->create()
-        ;
-
-        Employee::factory(35)
-            ->has(EmployeeProfile::factory())
-            ->create()
-        ;
+//        Office::factory(40)
+//            ->hasPackages(8)
+//            ->create()
+//        ;
+//
+//        Employee::factory(35)
+//            ->has(EmployeeProfile::factory())
+//            ->create()
+//        ;
 
 //        ClientProfile::factory()->for($clients)->create();
 //         \App\Models\User::factory(10)->create();

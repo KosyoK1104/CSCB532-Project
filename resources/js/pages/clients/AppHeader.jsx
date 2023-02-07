@@ -28,7 +28,7 @@ const AppHeader = ({me}) => {
                                   onClick={() => navigate('/client/account')}>Account</span>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link cursor-pointer"onClick={() => navigate('/client/myPackages')}>My packages</a>
+                            <a className="nav-link cursor-pointer"onClick={() => navigate('/client/packages')}>My packages</a>
                         </li>
                     </ul>
                     <div className="ms-auto">
