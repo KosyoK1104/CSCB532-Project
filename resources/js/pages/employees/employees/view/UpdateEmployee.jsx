@@ -3,6 +3,8 @@ import {useEffect, useState} from "react";
 import Api from "../../../../services/Api";
 import FormErrorWrapper from "../../../../components/FormErrorWrapper";
 import toast from "react-hot-toast";
+import SelectFilter from "../../../../components/SelectFilter";
+import OfficeService from "../../../../services/OfficeService";
 
 const UpdateEmployee = () => {
     const {id} = useParams();
@@ -13,15 +15,17 @@ const UpdateEmployee = () => {
         phone_number: null,
         profile_picture: null,
         type: null,
+        office_id: null,
     });
+    let [offices, setOffices] = useState([]);
 
     const [errors, setErrors] = useState({
         name: null,
         email: null,
+        office_id: null,
     })
 
     const handleChange = (e) => {
-        console.log(e.target.name, e.target.value);
         setEmployee({
             ...employee,
             [e.target.name]: e.target.value
@@ -56,6 +60,16 @@ const UpdateEmployee = () => {
 
     useEffect(() => {
         load()
+        OfficeService.allForEmployee()
+            .then((result) => {
+                result = result.map(office => {
+                    return {
+                        value: office.id,
+                        name: `[${office.visual_id}] ${office.name}`
+                    }
+                })
+                setOffices(result)
+            })
     }, [])
     return (
         <div className="card">
@@ -77,6 +91,17 @@ const UpdateEmployee = () => {
                                 <input name="phone_number" value={employee.phone_number} className="form-control"
                                        onChange={handleChange}/>
                             </FormErrorWrapper>
+                            {employee.type === 'office' && (
+                                <FormErrorWrapper error={errors.office_id}>
+                                    <label htmlFor="office_id" className="form-label">Office</label>
+                                    <SelectFilter data={offices} value={employee.office_id}
+                                                  onSelect={(v) => setEmployee({
+                                                      ...employee,
+                                                      office_id: v
+                                                  })}/>
+                                </FormErrorWrapper>
+                            )
+                            }
                         </div>
                     </div>
                 </div>

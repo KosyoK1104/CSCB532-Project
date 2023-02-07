@@ -53,7 +53,6 @@ class Handler extends ExceptionHandler
                 return response()->json(
                     [
                         'error' => [
-                            'error'   => 'Not found',
                             'message' => $e->getMessage(),
                             'code'    => $e->getStatusCode(),
                         ],

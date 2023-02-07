@@ -89,6 +89,7 @@ Route::middleware(AuthenticatedEmployee::class)->group(function () {
      * Route::post('/employees/offices');
      * Route::put('/employees/offices/{office}');
      */
+    Route::post('/employees/report/earnings', [\App\Http\Controllers\ReportController::class, 'earnings']);
 
     Route::get('/employees/offices', [OfficeController::class, 'index']);
     Route::delete('/employees/offices/{office}', [OfficeController::class, 'delete']);

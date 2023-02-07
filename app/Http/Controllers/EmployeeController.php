@@ -152,6 +152,7 @@ class EmployeeController extends Controller
                     'name'            => $employee->employeeProfile()->getResults()?->name,
                     'phone_number'    => $employee->employeeProfile()->getResults()?->phone_number,
                     'profile_picture' => Storage::url($employee->employeeProfile()->getResults()?->profile_picture ?? 'default-profile-picture.png'),
+                    'office_id'       => $employee->office_id,
                 ],
             ]
         );

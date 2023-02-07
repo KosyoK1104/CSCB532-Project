@@ -32,6 +32,16 @@ const AppHeader = ({me, handleLogout}) => {
                                 <span className="nav-link"
                                       onClick={() => navigate('/employee/employees')}>Employees</span>
                                 </li>
+
+                            )
+                        }
+
+                        {
+                            me.type === 'admin' && (
+                                <li className="nav-item cursor-pointer">
+                                <span className="nav-link"
+                                      onClick={() => navigate('/employee/report/earnings')}>Report</span>
+                                </li>
                             )
                         }
                     </ul>

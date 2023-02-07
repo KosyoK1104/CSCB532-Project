@@ -43,6 +43,7 @@ import ClientPackageCreate from "./clients/packages/CreatePackage";
 import ClientListing from "./employees/clients/ClientListing";
 import ClientView from "./employees/clients/ClientView";
 import ClientRoot from "./employees/clients/ClientRoot";
+import ReportView from "./employees/Report/ReportView";
 
 export default function App() {
     return (
@@ -96,6 +97,9 @@ export default function App() {
                             <Route path="clients" element={<ClientRoot/>}>
                                 <Route index element={<ClientListing/>}/>
                                 <Route path=":id" element={<ClientView/>}/>
+                            </Route>
+                            <Route path="report">
+                                <Route path='earnings' element={<ReportView/>}/>
                             </Route>
                         </Route>
                         <Route path="*" element={<NotFound/>}/>
