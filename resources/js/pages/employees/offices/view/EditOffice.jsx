@@ -39,7 +39,7 @@ const EditOffice = () => {
         Api.put('/api/employees/offices/' + id, office)
             .then(() => load())
             .catch((error) => {
-                if(error.response.status === 422) {
+                if (error.response.status === 422) {
                     setErrors(Api.resolveValidationError(error))
                 }
                 toast.error(Api.resolveError(error))
@@ -72,37 +72,37 @@ const EditOffice = () => {
                         <div className="card-body">
                             <div className="form-group">
                                 <FormErrorWrapper error={errors.name}>
-                                <label htmlFor="name">Name</label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    className="form-control"
-                                    value={office.name}
-                                    onChange={handleChange}
-                                />
+                                    <label htmlFor="name">Name</label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        className="form-control"
+                                        value={office.name}
+                                        onChange={handleChange}
+                                    />
                                 </FormErrorWrapper>
                             </div>
                             <div className="form-group">
                                 <FormErrorWrapper error={errors.city}>
-                                <label htmlFor="address">City</label>
-                                <input
-                                    type="text"
-                                    name="city"
-                                    className="form-control"
-                                    value={office.city}
-                                    onChange={handleChange}
-                                />
-                            </FormErrorWrapper>
+                                    <label htmlFor="address">City</label>
+                                    <input
+                                        type="text"
+                                        name="city"
+                                        className="form-control"
+                                        value={office.city}
+                                        onChange={handleChange}
+                                    />
+                                </FormErrorWrapper>
                             </div>
                             <div className="form-group">
                                 <FormErrorWrapper error={errors.address}>
-                                <label htmlFor="address">Address</label>
-                                <textarea
-                                    name="address"
-                                    className="form-control"
-                                    value={office.address}
-                                    onChange={handleChange}
-                                />
+                                    <label htmlFor="address">Address</label>
+                                    <textarea
+                                        name="address"
+                                        className="form-control"
+                                        value={office.address}
+                                        onChange={handleChange}
+                                    />
                                 </FormErrorWrapper>
                             </div>
                             <div className="form-group">

@@ -95,7 +95,7 @@ Route::middleware(AuthenticatedEmployee::class)->group(function () {
     Route::post('/employees/offices/{office}/activate', [OfficeController::class, 'activate']);
     Route::get('/employees/offices/{office}', [OfficeController::class, 'get']);
     Route::get('/employees/offices/all', [OfficeController::class, 'all']);
-    Route::put('/employees/offices/{office}', [OfficeController::class, 'update']);//implement
+    Route::put('/employees/offices/{office}', [OfficeController::class, 'update']);
 });
 
 Route::match(['get', 'post', 'put', 'delete'], '/{any}', function () {
