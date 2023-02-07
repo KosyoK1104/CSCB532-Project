@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Exceptions\HttpInvalidArgumentException;
+use App\Http\Resources\EmployeeListingCollection;
 use App\Http\Resources\PackageListingCollection;
 use App\Http\Services\PricingService;
 use App\Models\Client;
@@ -15,6 +16,7 @@ use App\Models\EmployeeType;
 use App\Models\Office;
 use App\Models\Package;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -43,10 +45,21 @@ class PackageController extends Controller
      * Display a listing of the resource.
      * @return PackageListingCollection
      */
-    public function index() : PackageListingCollection
+    public function index($request) : PackageListingCollection
     {
         // tracking_number, recipient_phone_number, delivery_type
-        return new PackageListingCollection(Package::paginate());
+        $packages = Package::where(function (Builder $query) use ($request) {
+            if ($request->has('tracking_number')) {
+                $query->where('tracking_number', 'like', '%' . $request->string('tracking_number') . '%');
+            }
+            if ($request->has('recipient_phone_number')) {
+                $query->where('recipient_phone_number', 'like', '%' . $request->string('recipient_phone_number') . '%');
+            }
+            if ($request->has('delivery_type')) {
+                $query->where('delivery_type', '=', DeliveryType::from((string) $request->string('delivery_type'))->value);
+            }
+        })->paginate();
+        return new PackageListingCollection($packages);
     }
 
     /**
@@ -184,11 +197,24 @@ class PackageController extends Controller
         return response()->json(['id' => $package->id]);
     }
 
-    public function indexForClient() : JsonResponse
+    public function indexForClient($request) : PackageListingCollection
     {
         $client = $this->client();
-        $packages = Package::where('client_id', $client->id)->paginate();
-        return response()->json($packages);
+
+        $packages = (new \App\Models\Package)->where( 'client_id', '=', $client->id)->where(function (Builder $query) use ($request) {
+            if ($request->has('tracking_number')) {
+                $query->where('tracking_number', 'like', '%' . $request->string('tracking_number') . '%');
+            }
+            if ($request->has('recipient_phone_number')) {
+                $query->where('recipient_phone_number', '=', $request->string('recipient_phone_number'));
+            }
+            if ($request->has('delivery_type')) {
+                $query->where('delivery_type', '=', DeliveryType::from((string) $request->string('delivery_type'))->value);
+            }
+        })->paginate();
+
+        return new PackageListingCollection($packages);
+
     }
 
     /*public function update(Request $request, Package $packages) : JsonResponse
