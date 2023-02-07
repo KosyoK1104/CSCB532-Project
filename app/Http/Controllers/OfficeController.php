@@ -30,19 +30,21 @@ class OfficeController extends Controller
      */
     public function index(Request $request) : OfficeListingCollection
     {
-        // get all offices
-        // $offices = DB::table('offices')->paginate();
+        // get offices according to request with pagination
+        //TODO Make it better for searching
         $offices = Office::where(function (Builder $query) use ($request) {
-//            if ($request->has('name')) {
-//                $query->where('employee_profiles.name', 'like', '%' . $request->string('name') . '%');
-//            }
-//            if ($request->has('email')) {
-//                $query->where('email', '=', $request->string('email'));
-//            }
-//            if ($request->has('type')) {
-//                $query->where('type', '=', EmployeeType::from((string) $request->string('type'))->value);
-//            }
-            $query->where('status', '=', OfficeStatus::ACTIVE->value);
+            if ($request->has('name')) {
+                $query->where('name', 'like', '%' . $request->string('name') . '%');
+            }
+            if ($request->has('city')) {
+                $query->where('city', 'like', '%' . $request->string('city') . '%');
+            }
+            if ($request->has('visual_id')) {
+                $query->where('visual_id', 'like', '%' . $request->string('visual_id') . '%');
+            }
+            if($request->has('status')){
+                $query->where('status', '=', OfficeStatus::from((string)$request->string('status'))->value);
+            }
         })->paginate();
 
         return new OfficeListingCollection($offices);

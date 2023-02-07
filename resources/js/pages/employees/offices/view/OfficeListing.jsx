@@ -15,10 +15,17 @@ const OfficeListing = () => {
     const [offices, setOffices] = useState([]);
     const [meta, setMeta] = useState(DEFAULT_META);
     const [searchParams, setSearchParams] = useState({
-        name: '',
         visual_id: '',
+        name: '',
         city: '',
+        status: '',
     })
+
+    const TYPES = [
+        {value: '', label: ''},
+        {value: 'active', label: 'Active'},
+        {value: 'inactive', label: 'Inactive'},
+    ]
 
     const load = (page = 1) => {
         OfficeService.load(page, searchParams)
@@ -45,16 +52,6 @@ const OfficeListing = () => {
         })
     }
 
-    const handleSearch = (e) => {
-        //TODO @Simeon - implement the search functionality
-        e.preventDefault()
-        console.log(e.target.value);
-        // inMemoryOfficeService.load(page, searchParams)
-        //     .then((response) => {
-        //         setOffices(response.data)
-        //     })
-    }
-
     const goToEditOffice = (id) => {
         if(me.type !== 'admin') {
             return;
@@ -71,17 +68,21 @@ const OfficeListing = () => {
     return (
         <div className="container">
             <div className="card">
-                <div className="card-header">
+                <div className="card-header d-flex justify-content-between">
                     <h3 className="card-title">Offices</h3>
                     {/*TODO @Simeon - create new tab tor creating offices and make controller and route*/}
                     {
                         me.type === 'admin' && (
-                            <button className="btn btn-success" onClick={() => navigate('/employee/offices/create')}>Create</button>
+                        <div className="d-flex gx-1">
+                            <button onClick={() => navigate('/employee/offices/create')}
+                                    className="btn btn-success">Create
+                            </button>
+                        </div>
                         )
                     }
 
                 </div>
-                <div className="card-body p-3">
+                <div className="card-body">
                     <LoaderProvider>
                         <table className="table table-hover table-striped">
                             <thead>
@@ -89,24 +90,33 @@ const OfficeListing = () => {
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>City</th>
-                                <th>Actions</th>
+                                <th>Status</th>
+                                <th width="10"></th>
                             </tr>
                             <tr>
-                                <td>
-                                    <input type="text" name="id" className="form-control" value={searchParams.id}
+                                <th>
+                                    <input type="text" name="id" className="form-control form-control-sm" value={searchParams.id}
                                            onChange={handleSearchChange}/>
-                                </td>
-                                <td>
-                                    <input type="text" name="name" className="form-control" value={searchParams.name}
+                                </th>
+                                <th>
+                                    <input type="text" name="name" className="form-control form-control-sm" value={searchParams.name}
                                            onChange={handleSearchChange}/>
-                                </td>
-                                <td>
-                                    <input type="text" name="city" className="form-control" value={searchParams.city}
+                                </th>
+                                <th>
+                                    <input type="text" name="city" className="form-control form-control-sm" value={searchParams.city}
                                            onChange={handleSearchChange}/>
-                                </td>
-                                <td>
-                                    <button className="btn btn-primary w-100" onClick={handleSearch}>Search</button>
-                                </td>
+                                </th>
+                                <th>
+                                    <select className="form-select form-select-sm" onChange={handleSearchChange}
+                                            name="status" value={searchParams.status}>
+                                        {TYPES.map((status, index) => (
+                                            <option key={index} value={status.value}>{status.label}</option>
+                                        ))}
+                                    </select>
+                                </th>
+                                <th>
+                                    <button className="btn btn-primary w-100" onClick={load}>Search</button>
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -115,16 +125,19 @@ const OfficeListing = () => {
                                     <td>{office.visual_id}</td>
                                     <td>{office.name}</td>
                                     <td>{office.city}</td>
+                                    <td>{office.status}</td>
                                     <td>
                                         {
-                                            me.type === 'admin' && (
+                                            (me.type === 'admin') && ((office.status === 'active') && (
                                                 <div className="d-flex gap-2">
                                                     <button className="btn btn-sm btn-outline-warning w-100" onClick={() => goToEditOffice(office.id)}>Edit
                                                     </button>
                                                     <button className="btn btn-sm btn-outline-danger w-100" onClick={() => deleteOffice(office.id)} >Delete
                                                     </button>
                                                 </div>
-                                            )
+                                            ) || (
+                                                <button className="btn btn-sm btn-outline-success w-100" onClick={() => activateOffice(office.id)}>Activate</button>
+                                            ))
                                         }
                                     </td>
                                 </tr>

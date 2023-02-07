@@ -13,6 +13,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed $city
  * @property mixed $address
  * @property mixed $visual_id
+ * @property mixed $status
  */
 class OfficeListingResource extends JsonResource
 {
@@ -25,6 +26,7 @@ class OfficeListingResource extends JsonResource
             'city'  => $this->city,
             'address'  => $this->address,
             'visual_id'  => $this->visual_id,
+            'status'  => $this->status,
         ];
     }
 }
