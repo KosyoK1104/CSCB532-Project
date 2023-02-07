@@ -85,7 +85,7 @@ const ClientListing = () => {
                                     <td>{client.email}</td>
                                     <td>{client.phone_number}</td>
                                     <td>
-                                        <button onDoubleClick={() => goToClient(client.id)}
+                                        <button onClick={() => goToClient(client.id)}
                                                 className="btn btn-sm btn-outline-secondary btn-sm">View
                                         </button>
                                     </td>
