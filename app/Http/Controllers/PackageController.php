@@ -149,7 +149,7 @@ class PackageController extends Controller
                         'tracking_number'        => $package->tracking_number,
                         'office_name'            => $package->office()->first()?->name,
                         'client_name'            => $package->client()->first()?->clientProfile()->getResults()?->first_name . ' ' . $package->client()->first()?->clientProfile()->getResults()?->last_name,
-                        'client_phone_number'    => $package->client()->first()->phone_number,
+                        'client_phone_number'    => $package->client()->first()?->clientProfile()->getResults()?->phone_number,
                         'delivery_type'          => $package->delivery_type,
                         'status'                 => $package->status,
                         'price'                  => $package->price,
