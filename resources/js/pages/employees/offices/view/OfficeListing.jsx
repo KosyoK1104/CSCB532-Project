@@ -65,6 +65,11 @@ const OfficeListing = () => {
             .then(() => load())
     }
 
+    const activateOffice = (id) => {
+        Api.post(`/api/employees/offices/${id}/activate`)
+            .then(() => load())
+    }
+
     return (
         <div className="container">
             <div className="card">

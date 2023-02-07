@@ -35,7 +35,9 @@ const HomePage = () => {
     return (
         <div>
             <AppHeader me={me} handleLogout={handleLogout}/>
-            <Outlet/>
+            <div className='pb-3'>
+                <Outlet/>
+            </div>
         </div>
     )
 }

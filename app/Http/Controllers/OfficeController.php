@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\HttpInvalidArgumentException;
 use App\Exceptions\HttpUnauthorizedException;
 use App\Http\Resources\OfficeListingCollection;
 use App\Models\Employee;
@@ -107,6 +108,26 @@ class OfficeController extends Controller
         }
 
         $office->status = OfficeStatus::INACTIVE;
+        $office->saveOrFail();
+
+        return response()->json();
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    public function activate(Office $office) : JsonResponse
+    {
+        $currentEmployee = $this->getEmployee();
+        if (!$currentEmployee->isAdmin()) {
+            throw new HttpUnauthorizedException('Only admin can delete offices');
+        }
+
+        if($office->status == OfficeStatus::ACTIVE->value){
+            throw new HttpInvalidArgumentException('Office is already active');
+        }
+
+        $office->status = OfficeStatus::ACTIVE;
         $office->saveOrFail();
 
         return response()->json();

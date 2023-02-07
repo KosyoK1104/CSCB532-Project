@@ -27,7 +27,9 @@ export default function HomePage() {
     return (
         <div>
             <AppHeader me={me}/>
-            <Outlet/>
+            <div className='pb-3'>
+                <Outlet/>
+            </div>
         </div>
     )
 }
