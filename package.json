@@ -23,6 +23,6 @@
         "react-icons": "^4.6.0",
         "react-loading": "^2.0.3",
         "react-redux": "^8.0.5",
-        "react-router-guards": "^1.0.2",
+        "react-router-guards": "^1.0.2"
     }
 }

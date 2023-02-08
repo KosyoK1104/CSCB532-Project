@@ -24,6 +24,12 @@ const EmployeePackageListing = () => {
 
     }
 
+    const TYPES = [
+        {value: '', label: ''},
+        {value: 'address', label: 'Address'},
+        {value: 'office', label: 'Office'},
+    ]
+
     useEffect(() => {
         load()
     }, []);
@@ -48,10 +54,10 @@ const EmployeePackageListing = () => {
     return (
         <div className="container">
             <div className="card">
-                <div className="card-header">
+                <div className="card-header d-flex justify-content-between">
                     <h3 className="card-title">All packages</h3>
-                    <div className="card-options">
-                        <button className="btn btn-primary" onClick={() => navigate('/employee/packages/create')}>Create
+                    <div className="d-flex gx-1">
+                        <button className="btn btn-success" onClick={() => navigate('/employee/packages/create')}>Create
                             package
                         </button>
                     </div>
@@ -67,11 +73,11 @@ const EmployeePackageListing = () => {
                                 <th>Recipient phone number</th>
                                 <th>Type</th>
                                 <th>Status</th>
-                                <th></th>
+                                <th width="10"></th>
                             </tr>
                             <tr>
                                 <th>
-                                    <input type="text" name="tracking_number" className="form-control"
+                                    <input type="text" name="tracking_number" className="form-control form-control-sm"
                                            value={searchParams.tracking_number}
                                            onChange={handleSearchChange}/>
                                 </th>
@@ -82,20 +88,18 @@ const EmployeePackageListing = () => {
                                     {/*// no filter*/}
                                 </th>
                                 <th>
-                                    <input className="form-control"
+                                    <input className="form-control form-control-sm"
                                            name="recipient_phone_number"
                                            value={searchParams.recipient_phone_number}
                                            onChange={handleSearchChange}
                                     />
                                 </th>
                                 <th>
-                                    <select className="form-control" value={searchParams.delivery_type}
-                                            name="delivery_type"
-                                            onChange={handleSearchChange}
-                                    >
-                                        <option value=""></option>
-                                        <option value="address">Address</option>
-                                        <option value="office">Office</option>
+                                    <select className="form-select form-select-sm" onChange={handleSearchChange}
+                                            name="delivery_type" value={searchParams.delivery_type}>
+                                        {TYPES.map((type, index) => (
+                                            <option key={index} value={type.value}>{type.label}</option>
+                                        ))}
                                     </select>
                                 </th>
                                 <th>

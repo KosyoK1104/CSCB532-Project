@@ -59,7 +59,7 @@ const EmployeesListing = () => {
                     <h3 className="card-title">Employees</h3>
                     <div className="d-flex gx-1">
                         <button onClick={() => navigate('/employee/employees/create')}
-                                className="btn btn-primary">Create
+                                className="btn btn-success">Create
                         </button>
                     </div>
                 </div>
