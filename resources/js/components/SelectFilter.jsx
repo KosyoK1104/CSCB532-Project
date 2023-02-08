@@ -16,7 +16,7 @@ const SelectFilter = ({data, onSelect, value}) => {
         setFilter(event.target.value);
         setFilteredData(
             data.filter((item) =>
-                item.name.toLowerCase().startsWith(event.target.name.toLowerCase())
+                item.name.toLowerCase().includes(event.target.name.toLowerCase())
             )
         );
     };
