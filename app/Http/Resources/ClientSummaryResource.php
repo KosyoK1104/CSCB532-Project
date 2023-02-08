@@ -18,10 +18,10 @@ class ClientSummaryResource extends JsonResource
         return [
             'id'                => $this->id,
             'email'             => $this->email,
-            'name'              => $this->clientProfile->name(),
-            'phone_number'      => $this->clientProfile->phone_number,
-            'address'           => $this->clientProfile->address(),
-            'is_address_filled' => $this->clientProfile->isAddressFilled(),
+            'name'              => $this->clientProfile?->name(),
+            'phone_number'      => $this->clientProfile?->phone_number,
+            'address'           => $this->clientProfile?->address(),
+            'is_address_filled' => $this->clientProfile?->isAddressFilled() ?? false,
         ];
     }
 }

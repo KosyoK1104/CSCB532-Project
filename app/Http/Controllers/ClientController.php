@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
@@ -68,8 +69,8 @@ final class ClientController extends Controller
     {
         $validator = Validator::make($request->request->all(), [
             'email'           => 'required|email|unique:clients',
-            'username'        => 'required|string|min::6|unique:clients',
-            'password'        => 'required|string|min::6',
+            'username'        => 'required|string|min:6|unique:clients',
+            'password'        => new Password(6),
             'repeat_password' => 'required|string|same:password',
         ]);
 
