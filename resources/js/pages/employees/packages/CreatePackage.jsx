@@ -8,6 +8,7 @@ import LoaderProvider from "../../../components/LoaderProvider";
 import FormErrorWrapper from "../../../components/FormErrorWrapper";
 import ClientLisitngService from "../../../services/ClientLisitngService";
 import SelectFilter from "../../../components/SelectFilter";
+import DropDawnOffices from "../../../components/DropDawnOffices";
 
 const CreatePackage = () => {
     const navigate = useNavigate();
@@ -107,6 +108,8 @@ const CreatePackage = () => {
                                         ))}
                                     </select>
                                 </FormErrorWrapper>
+                                {/*<DropDawnOffices>*/}
+                                {/*</DropDawnOffices>*/}
                             </div>
                             <div className="d-md-flex justify-content-start gap-2">
                                 <FormErrorWrapper error={errors.recipient_name}>
