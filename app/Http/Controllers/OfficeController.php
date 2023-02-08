@@ -7,16 +7,12 @@ namespace App\Http\Controllers;
 use App\Exceptions\HttpInvalidArgumentException;
 use App\Exceptions\HttpUnauthorizedException;
 use App\Http\Resources\OfficeListingCollection;
-use App\Models\Client;
 use App\Models\Employee;
-use App\Models\EmployeeType;
 use App\Models\Office;
 use App\Models\OfficeStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class OfficeController extends Controller
@@ -45,8 +41,8 @@ class OfficeController extends Controller
             if ($request->has('visual_id')) {
                 $query->where('visual_id', 'like', '%' . $request->string('visual_id') . '%');
             }
-            if($request->has('status')){
-                $query->where('status', '=', OfficeStatus::from((string)$request->string('status'))->value);
+            if ($request->has('status')) {
+                $query->where('status', '=', OfficeStatus::from((string) $request->string('status'))->value);
             }
         })->paginate();
 
@@ -70,9 +66,9 @@ class OfficeController extends Controller
 
         //validate request
         $validator = Validator::make($request->request->all(), [
-            'name'          => 'required|min:4',
-            'city'          => 'required|min:5',
-            'address'       => 'required|min:5',
+            'name'    => 'required|min:4',
+            'city'    => 'required|min:5',
+            'address' => 'required|min:5',
         ]);
 
         if ($validator->fails()) {
@@ -115,10 +111,10 @@ class OfficeController extends Controller
 
         //update office from request
         $validator = Validator::make($request->request->all(), [
-            'name'          => 'required|min:4',
-            'city'          => 'required|min:10',
-            'address'       => 'required|min:5',
-            'id'            => 'required|exists:offices,id',
+            'name'    => 'required|min:4',
+            'city'    => 'required|min:10',
+            'address' => 'required|min:5',
+            'id'      => 'required|exists:offices,id',
         ]);
 
         if ($validator->fails()) {
@@ -161,7 +157,7 @@ class OfficeController extends Controller
             throw new HttpUnauthorizedException('Only admin can delete offices');
         }
 
-        if($office->status == OfficeStatus::ACTIVE->value){
+        if ($office->status == OfficeStatus::ACTIVE->value) {
             throw new HttpInvalidArgumentException('Office is already active');
         }
 
@@ -190,12 +186,12 @@ class OfficeController extends Controller
             [
                 'data' =>
                     [
-                        'id'            => $office->id,
-                        'visual_id'     => $office->visual_id,
-                        'name'          => $office->name,
-                        'city'          => $office->city,
-                        'address'       => $office->address,
-                        'status'        => $office->status->value,
+                        'id'        => $office->id,
+                        'visual_id' => $office->visual_id,
+                        'name'      => $office->name,
+                        'city'      => $office->city,
+                        'address'   => $office->address,
+                        'status'    => $office->status->value,
                     ],
 
             ]
@@ -204,14 +200,14 @@ class OfficeController extends Controller
 
     public function all() : JsonResponse
     {
-        $offices = Office::where('status','=',OfficeStatus::ACTIVE->value)->all()->map(function (Office $office) {
+        $offices = Office::where('status', '=', OfficeStatus::ACTIVE->value)->get()->map(function (Office $office) {
             return [
-                'id'            => $office->id,
-                'visual_id'     => $office->visual_id,
-                'name'          => $office->name,
+                'id'        => $office->id,
+                'visual_id' => $office->visual_id,
+                'name'      => $office->name,
             ];
         });
-        return response()->json($offices);
+        return response()->json(['data' => $offices]);
     }
 
 }

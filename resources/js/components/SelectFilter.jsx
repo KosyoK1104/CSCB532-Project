@@ -7,6 +7,7 @@ const findValue = (data, value) => {
 }
 
 const SelectFilter = ({data, onSelect, value}) => {
+    const [initialData, setInitialData] = useState(data);
     const [filter, setFilter] = useState(findValue(data, value));
     const [filteredData, setFilteredData] = useState(data);
     const [showOptions, setShowOptions] = useState(false);
@@ -14,9 +15,14 @@ const SelectFilter = ({data, onSelect, value}) => {
 
     const handleFilterChange = (event) => {
         setFilter(event.target.value);
+        if(event.target.value === "") {
+            setFilteredData(initialData);
+            return;
+        }
         setFilteredData(
-            data.filter((item) =>
-                item.name.toLowerCase().includes(event.target.name.toLowerCase())
+            initialData.filter((item) => {
+                    return item.name.toLowerCase().includes(event.target.value.toLowerCase())
+                }
             )
         );
     };
