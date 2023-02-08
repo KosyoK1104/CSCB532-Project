@@ -9,11 +9,14 @@ const PackageView = ({clientPackage}) => {
                 <InfoLine label="Tracking number" value={clientPackage.tracking_number}/>
             </div>
             <div className="col-12 col-md-6">
-                <InfoLine label="Office# " value={clientPackage.office_id}/>
+                <InfoLine label="Office# " value={clientPackage.office_name}/>
             </div>
 
             <div className="col-12 col-md-6">
-                <InfoLine label="Delivery type" value={clientPackage.status}/>
+                <InfoLine label="Delivery status" value={clientPackage.status}/>
+            </div>
+            <div className="col-12 col-md-6">
+                <InfoLine label="Delivery type" value={clientPackage.delivery_type}/>
             </div>
             <div className="col-12 col-md-6">
                 <InfoLine label="Price" value={clientPackage.price}/>
