@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Exceptions\HttpUnauthorizedException;
+use App\Models\DeliveryStatus;
 use App\Models\Package;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -36,10 +37,11 @@ final class ReportController extends Controller
                 'to'   => 'required|integer',
             ]
         );
+        $validator->validate();
         $packages = Package::where(function (Builder $query) use ($request) {
-            $query->where('status', 'delivered')
-                ->where('created_at', '>=', (new \DateTimeImmutable('@' . $request->string('from')))->setTime(0, 0)->getTimestamp())
-                ->where('created_at', '<=', (new \DateTimeImmutable('@' . $request->string('to')))->setTime(23, 59, 59)->getTimestamp())
+            $query->where('status', DeliveryStatus::DELIVERED->value)
+                ->where('created_at', '>=', (new \DateTimeImmutable('@' . ($request->integer('from')/1000)))->setTime(0, 0)->getTimestamp())
+                ->where('created_at', '<=', (new \DateTimeImmutable('@' . ($request->integer('to')/1000)))->setTime(23, 59, 59)->getTimestamp())
             ;
         })->get();
 
