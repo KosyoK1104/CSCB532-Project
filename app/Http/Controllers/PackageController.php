@@ -119,6 +119,9 @@ class PackageController extends Controller
         }
 
         $validatedRequest = $this->validateRequest($request);
+        $clientValidator = Validator::validate($request->request->all(), [
+            'client_id' => 'required|exists:clients,id',
+        ]);
         if ($validatedRequest['delivery_type'] === DeliveryType::OFFICE->value) {
             unset($validatedRequest['recipient_address']);
         }
@@ -128,7 +131,7 @@ class PackageController extends Controller
         $package = new Package();
         $package->fill($validatedRequest);
         $package->status = DeliveryStatus::CREATED;
-        $package->client_id = Client::findOrFail($request->string('client_id'))->first()->id;
+        $package->client_id = $clientValidator['client_id'];
         $package->tracking_number = $this->generateTrackingNumber();
         $package->price = $this->pricingService->calculatePrice((int) $package->weight, $package->delivery_type);
         $package->saveOrFail();

@@ -8,7 +8,6 @@ import LoaderProvider from "../../../components/LoaderProvider";
 import FormErrorWrapper from "../../../components/FormErrorWrapper";
 import ClientLisitngService from "../../../services/ClientLisitngService";
 import SelectFilter from "../../../components/SelectFilter";
-import DropDawnOffices from "../../../components/DropDawnOffices";
 
 const CreatePackage = () => {
     const navigate = useNavigate();
@@ -58,6 +57,13 @@ const CreatePackage = () => {
         })
     }
 
+    const handleSelectClient = (value) => {
+        setForm({
+            ...form,
+            client_id: value
+        })
+    }
+
     const handleChange = (e) => {
         setForm({
             ...form,
@@ -97,7 +103,7 @@ const CreatePackage = () => {
                                         <option value="address">Address</option>
                                     </select>
                                 </FormErrorWrapper>
-                                <FormErrorWrapper error={errors.delivery_type}>
+                                <FormErrorWrapper error={errors.client_id}>
                                     <label htmlFor="client_id">Client</label>
                                     <select className="form-control form-select" id="client_id" name="client_id"
                                             onChange={handleChange} value={form.client_id}>
@@ -108,8 +114,6 @@ const CreatePackage = () => {
                                         ))}
                                     </select>
                                 </FormErrorWrapper>
-                                {/*<DropDawnOffices>*/}
-                                {/*</DropDawnOffices>*/}
                             </div>
                             <div className="d-md-flex justify-content-start gap-2">
                                 <FormErrorWrapper error={errors.recipient_name}>
