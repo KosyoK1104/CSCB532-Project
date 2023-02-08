@@ -58,14 +58,33 @@ class OfficeController extends Controller
      *
      * @param Request $request
      * @return JsonResponse
+     * @throws \Throwable
      */
     public function store(Request $request) : JsonResponse
     {
+        //check if user is admin
+        $currentEmployee = $this->getEmployee();
+        if (!$currentEmployee->isAdmin()) {
+            throw new HttpUnauthorizedException('Only admin can create offices');
+        }
+
+        //validate request
+        $validator = Validator::make($request->request->all(), [
+            'name'          => 'required|min:4',
+            'city'          => 'required|min:5',
+            'address'       => 'required|min:5',
+        ]);
+
+        if ($validator->fails()) {
+            throw new HttpInvalidArgumentException($validator->errors()->first());
+        }
+
         //create a new office from request
         $office = new Office();
-        $office->fill($request->all());
-        $office->save();
-        return response()->json();
+        $office->fill($validator->validated());
+        $office->saveOrFail();
+
+        return response()->json(['data' => ['id' => $office->id]]);
     }
 
     /**
@@ -167,7 +186,6 @@ class OfficeController extends Controller
 
     public function get(Office $office) : JsonResponse
     {
-//        dd($office);
         return response()->json(
             [
                 'data' =>

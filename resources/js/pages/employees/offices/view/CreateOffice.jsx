@@ -1,91 +1,98 @@
+import {useEffect, useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
+import Api from "../../../../services/Api";
+import toast from "react-hot-toast";
+import LoaderProvider from "../../../../components/LoaderProvider";
+import FormErrorWrapper from "../../../../components/FormErrorWrapper";
+
 const CreateOffice = () => {
-    const [office, setOffice] = useState({
+    let [office, setOffice] = useState({
         name: '',
+        city: '',
         address: '',
-        phone: '',
-        email: '',
-        website: '',
-        description: '',
     });
 
-    const [errors, setErrors] = useState({});
+    const navigate = useNavigate();
+
+    const [errors, setErrors] = useState({
+        name: null,
+        city: null,
+        address: null,
+    })
 
     const handleChange = (e) => {
-        const {name, value} = e.target;
-        setOffice({...office, [name]: value});
+        setOffice({
+            ...office,
+            [e.target.name]: e.target.value
+        })
+        setErrors({
+            ...errors,
+            [e.target.name]: null
+        })
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios
-            .post('/api/offices', office)
-            .then((res) => {
-                if(res.data.status === 'success') {
-                    setOffice({
-                        name: '',
-                        city: '',
-                        address: '',
-                    });
-                    setErrors({});
-                    alert(res.data.message);
+        Api.post('/api/employees/offices', office)
+            .then(() => navigate('/employee/offices'))
+            .catch((error) => {
+                if (error.response.status === 422) {
+                    setErrors(Api.resolveValidationError(error))
                 }
+                toast.error(Api.resolveError(error))
             })
-            .catch((err) => {
-                    setErrors(err.response.data.errors);
-                }
-            );
     };
 
     return (
         <div className="container">
-            <div className="row justify-content-center">
-                <div className="col-md-8">
-                    <div className="card">
-                        <form onSubmit={handleSubmit}>
-                            <div className="card-header">Create Office</div>
-                            <div className="card-body">
-                                <div className="form-group">
+            <div className="card">
+                <div className="card-header">
+                    <h3 className="card-title">{office.visual_id}</h3>
+                </div>
+                <LoaderProvider>
+                    <form onSubmit={handleSubmit}>
+                        <div className="card-body">
+                            <div className="form-group">
+                                <FormErrorWrapper error={errors.name}>
                                     <label htmlFor="name">Name</label>
                                     <input
                                         type="text"
                                         name="name"
-                                        id="name"
-                                        className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                                        className="form-control"
                                         value={office.name}
                                         onChange={handleChange}
                                     />
-                                    <div className="invalid-feedback">{errors.name}</div>
-                                </div>
-                                <div className="form-group">
+                                </FormErrorWrapper>
+                            </div>
+                            <div className="form-group">
+                                <FormErrorWrapper error={errors.city}>
                                     <label htmlFor="address">City</label>
                                     <input
                                         type="text"
                                         name="city"
-                                        id="city"
-                                        className={`form-control ${errors.city ? 'is-invalid' : ''}`}
+                                        className="form-control"
                                         value={office.city}
                                         onChange={handleChange}
                                     />
-                                    <div className="invalid-feedback">{errors.city}</div>
-                                </div>
-                                <div className="form-group">
+                                </FormErrorWrapper>
+                            </div>
+                            <div className="form-group">
+                                <FormErrorWrapper error={errors.address}>
                                     <label htmlFor="address">Address</label>
                                     <textarea
                                         name="address"
-                                        id="address"
-                                        className={`form-control ${errors.address ? 'is-invalid' : ''}`}
+                                        className="form-control"
                                         value={office.address}
                                         onChange={handleChange}
                                     />
-                                    <div className="invalid-feedback">{errors.address}</div>
-                                </div>
-                                <div className="form-group">
-                                    <button className="btn btn-primary">Create</button>
-                                </div>
+                                </FormErrorWrapper>
                             </div>
-                        </form>
-                    </div>
-                </div>
+                            <div className="form-group">
+                                <button className="btn btn-primary" type='submit'>Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </LoaderProvider>
             </div>
         </div>
     );

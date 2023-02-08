@@ -99,6 +99,7 @@ Route::middleware(AuthenticatedEmployee::class)->group(function () {
     Route::get('/employees/offices/{office}', [OfficeController::class, 'get']);
     Route::get('/employees/offices/all', [OfficeController::class, 'all']);
     Route::put('/employees/offices/{office}', [OfficeController::class, 'update']);
+    Route::post('/employees/offices', [OfficeController::class, 'store']);
 });
 
 Route::match(['get', 'post', 'put', 'delete'], '/{any}', function () {
