@@ -7,6 +7,7 @@ const findValue = (data, value) => {
 }
 
 const SelectFilter = ({data, onSelect, value}) => {
+    console.log(data)
     const [initialData, setInitialData] = useState(data);
     const [filter, setFilter] = useState(findValue(data, value));
     const [filteredData, setFilteredData] = useState(data);
