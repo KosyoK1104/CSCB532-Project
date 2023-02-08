@@ -13,6 +13,7 @@ const EmployeePackageListing = () => {
         tracking_number: '',
         delivery_type: '',
         recipient_phone_number: '',
+        status: '',
     });
 
     const load = (page = 1) => {
@@ -30,6 +31,12 @@ const EmployeePackageListing = () => {
         {value: 'office', label: 'Office'},
     ]
 
+    const STATUS_TYPES = [
+        {value: '', label: ''},
+        {value: 'created', label: 'created'},
+        {value: 'delivered', label: 'delivered'},
+    ]
+
     useEffect(() => {
         load()
     }, []);
@@ -38,6 +45,16 @@ const EmployeePackageListing = () => {
         e.preventDefault()
         load();
     }
+
+    //listen if all inputs are empty then load all packages
+    useEffect(() => {
+        if (searchParams.tracking_number === ''
+            && searchParams.delivery_type === ''
+            && searchParams.recipient_phone_number === ''
+            && searchParams.status === '') {
+            load();
+        }
+    }, [searchParams]);
 
     const handleSearchChange = (e) => {
         setSearchParams({
@@ -103,7 +120,12 @@ const EmployeePackageListing = () => {
                                     </select>
                                 </th>
                                 <th>
-                                    {/*// no filter*/}
+                                    <select className="form-select form-select-sm" onChange={handleSearchChange}
+                                            name="status" value={searchParams.status}>
+                                        {STATUS_TYPES.map((status, index) => (
+                                            <option key={index} value={status.value}>{status.label}</option>
+                                        ))}
+                                    </select>
                                 </th>
                                 <th>
                                     <button className="btn btn-primary" onClick={handleSearch}>Search</button>

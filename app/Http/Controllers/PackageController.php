@@ -56,6 +56,9 @@ class PackageController extends Controller
             if ($request->has('delivery_type')) {
                 $query->where('delivery_type', '=', DeliveryType::from((string) $request->string('delivery_type'))->value);
             }
+            if ($request->has('status')) {
+                $query->where('status', '=', DeliveryStatus::from((string) $request->string('status'))->value);
+            }
         })->paginate();
         return new PackageListingCollection($packages);
     }
@@ -111,8 +114,8 @@ class PackageController extends Controller
     public function storeFromOffice(Request $request) : JsonResponse
     {
         $employee = $this->employee();
-        if ($employee->type !== EmployeeType::OFFICE) {
-            throw new HttpInvalidArgumentException('Only office employees can create packages');
+        if ($employee->type === EmployeeType::DELIVERY) {
+            throw new HttpInvalidArgumentException('Only office employees and admins can create packages');
         }
 
         $validatedRequest = $this->validateRequest($request);

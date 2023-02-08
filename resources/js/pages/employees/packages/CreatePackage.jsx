@@ -98,7 +98,7 @@ const CreatePackage = () => {
                                 </FormErrorWrapper>
                                 <FormErrorWrapper error={errors.delivery_type}>
                                     <label htmlFor="client_id">Client</label>
-                                    <select className="form-control" id="client_id" name="client_id"
+                                    <select className="form-control form-select" id="client_id" name="client_id"
                                             onChange={handleChange} value={form.client_id}>
                                         <option value="">Select Client</option>
                                         {clients.map(client => (
