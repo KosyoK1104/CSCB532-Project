@@ -25,7 +25,7 @@ function allForEmployee() {
 }
 
 function allForClient() {
-    return Api.get('/api/client/offices/all')
+    return Api.get('/api/clients/offices/all')
         .then(response => {
             return response.data.data
         })
