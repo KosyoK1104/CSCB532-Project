@@ -21,7 +21,7 @@ class Employee extends Authenticatable
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['email', 'username', 'password', 'type'];
+    protected $fillable = ['email', 'password', 'type'];
     protected $hidden = ['password'];
 
     protected $casts = [
