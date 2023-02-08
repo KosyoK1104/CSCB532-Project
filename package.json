@@ -24,6 +24,5 @@
         "react-loading": "^2.0.3",
         "react-redux": "^8.0.5",
         "react-router-guards": "^1.0.2",
-        "react-spring": "^9.6.1"
     }
 }
